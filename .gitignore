@@ -141,6 +141,7 @@ cython_debug/
 
 # add
 .idea/
+scripts/
 
 # vue ignore
 .DS_Store

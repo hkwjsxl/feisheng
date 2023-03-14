@@ -1,4 +1,3 @@
-import os
 import sys
 from pathlib import Path
 
@@ -11,20 +10,10 @@ sys.path.insert(0, BASE_DIR)
 # 将所有app目录的根加入到环境变量中，后续无需更改app的引入方式
 sys.path.insert(1, os.path.join(BASE_DIR, 'apps'))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hzsts96!plee1awc1wli5r!z)d@7u41wyr7$ejckvb#0umb&ai'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,8 +42,7 @@ ROOT_URLCONF = 'fsapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,15 +58,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fsapi.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+# mysql配置
 DATABASES = {
     'default': {
         'ENGINE': 'dj_db_conn_pool.backends.mysql',
         'NAME': 'fs',
-        'HOST': MYSQL_HOST,
-        'PORT': MYSQL_IP,
+        'HOST': "%s" % MYSQL_HOST,
+        'PORT': "%s" % MYSQL_PORT,
         'USER': 'fs',
         'PASSWORD': MYSQL_PASSWORD,
         'OPTIONS': {
@@ -97,7 +83,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         # "LOCATION": "redis://:密码@IP地址:端口/库编号",
-        "LOCATION": "redis://:%s@%s:%s/0" % (REDIS_PASSWORD, REDIS_HOST, REDIS_IP),
+        "LOCATION": "redis://:%s@%s:%s/0" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 100},
@@ -106,7 +92,7 @@ CACHES = {
     # 提供给admin运营站点的session存储
     "session": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://:%s@%s:%s/1" % (REDIS_PASSWORD, REDIS_HOST, REDIS_IP),
+        "LOCATION": "redis://:%s@%s:%s/1" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 100},
@@ -115,7 +101,7 @@ CACHES = {
     # 提供存储短信验证码
     "sms_code":{
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://:%s@%s:%s/2" % (REDIS_PASSWORD, REDIS_HOST, REDIS_IP),
+        "LOCATION": "redis://:%s@%s:%s/2" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 100},
@@ -146,23 +132,22 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# 地区相关
 LANGUAGE_CODE = "zh-hans"
 TIME_ZONE = "Asia/Shanghai"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+# 静态路径配置
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # 日志
 LOGGING = {
