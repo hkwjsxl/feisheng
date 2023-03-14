@@ -1,30 +1,34 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <router-view></router-view>
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+<script setup>
+
+</script>
+
+<style>
+/* 声明全局样式和项目的初始化样式 */
+body,h1,h2,h3,h4,p,table,tr,td,ul,li,a,form,input,select,option,textarea{
+  margin:0;
+  padding: 0;
+  font-size: 15px;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+a{
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+ul,li{
+  list-style: none;
+}
+table{
+  border-collapse: collapse; /* 合并边框 */
+}
+img{
+  max-width: 100%;
+  max-height: 100%;
+}
+input{
+  outline: none;
 }
 </style>
