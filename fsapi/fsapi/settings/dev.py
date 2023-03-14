@@ -2,6 +2,8 @@ import os
 import sys
 from pathlib import Path
 
+from .const import *
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # settings配置文件移动后要将这个settings添加到环境变量中
@@ -75,10 +77,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'dj_db_conn_pool.backends.mysql',
         'NAME': 'fs',
-        'HOST': '127.0.0.1',
-        'PORT': 3306,
+        'HOST': MYSQL_HOST,
+        'PORT': MYSQL_IP,
         'USER': 'fs',
-        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'PASSWORD': MYSQL_PASSWORD,
         'OPTIONS': {
             'charset': 'utf8mb4', # 连接选项配置,mysql8.0以上无需配置
         },
@@ -89,6 +91,42 @@ DATABASES = {
     }
 }
 
+# 设置redis缓存
+CACHES = {
+    # 默认缓存
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        # "LOCATION": "redis://:密码@IP地址:端口/库编号",
+        "LOCATION": "redis://:%s@%s:%s/0" % (REDIS_PASSWORD, REDIS_HOST, REDIS_IP),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    },
+    # 提供给admin运营站点的session存储
+    "session": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:%s@%s:%s/1" % (REDIS_PASSWORD, REDIS_HOST, REDIS_IP),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    },
+    # 提供存储短信验证码
+    "sms_code":{
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:%s@%s:%s/2" % (REDIS_PASSWORD, REDIS_HOST, REDIS_IP),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    }
+}
+
+# 设置用户登录admin站点时,记录登录状态的session保存到redis缓存中
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# 设置session保存的位置对应的缓存配置项
+SESSION_CACHE_ALIAS = "session"
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
