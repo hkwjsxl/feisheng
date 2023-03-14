@@ -73,21 +73,21 @@ WSGI_APPLICATION = 'fsapi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'dj_db_conn_pool.backends.mysql',
+        'NAME': 'fs',
+        'HOST': '127.0.0.1',
+        'PORT': 3306,
+        'USER': 'fs',
+        'PASSWORD': os.getenv('MYSQL_PASSWORD'),
+        'OPTIONS': {
+            'charset': 'utf8mb4', # 连接选项配置,mysql8.0以上无需配置
+        },
+        'POOL_OPTIONS' : {      # 连接池的配置信息
+            'POOL_SIZE': 10,    # 连接池默认创建的链接对象的数量
+            'MAX_OVERFLOW': 10  # 连接池默认创建的链接对象的最大数量
+        }
     }
 }
-# DATABASES = {
-#     "default": {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'luffyapi',
-#         'USER': 'luffyapi',
-#         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-#         'HOST': '%s' % MYSQL_HOST,
-#         'PORT': MYSQL_PORT
-#     }
-# }
-
 
 
 # Password validation
