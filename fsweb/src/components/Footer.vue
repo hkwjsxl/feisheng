@@ -6,7 +6,7 @@
         <router-link :to="nav.link" v-else>{{ nav.name }}</router-link>
       </li>
     </ul>
-    <p>Copyright © luffycity.com版权所有 | 京ICP备17072161号-1</p>
+    <p>Copyright © hankewei版权所有 | 京ICP备xxxxxxxxx号-x</p>
   </div>
 </template>
 
