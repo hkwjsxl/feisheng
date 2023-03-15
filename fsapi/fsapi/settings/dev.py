@@ -145,11 +145,15 @@ USE_L10N = True
 USE_TZ = True
 
 # 静态路径配置
+# 访问静态文件的url地址前缀
 STATIC_URL = "/static/"
+# 设置django的静态文件目录[手动创建]
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+# 访问上传文件的url地址前缀
 MEDIA_URL = 'media/'
+# 项目中存储上传文件的根目录[手动创建]
 MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
