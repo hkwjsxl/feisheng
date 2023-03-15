@@ -22,5 +22,7 @@ fsweb  # 前端Vue
 ~~~python
 1.项目搭建和基本配置
 日志配置，自定义response对象，自定义异常处理，mysql数据库连接池配置，redis缓存配置，vue中集成vue-router/element-plus，解决跨域问题
+2.站点首页功能完善
+自定义basemodels模型类，导航栏模型类，自定义mixins，自定义返回状态码，轮播图模型类，vue集成导航栏/轮播图，后台开放静态文件的url，缓存导航与轮播图数据
 ~~~
 
