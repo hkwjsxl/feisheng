@@ -1,292 +1,320 @@
 <template>
-   <div class="bk"></div>
-   <div class="bgfff banner-box">
+  <div class="bk"></div>
+  <div class="bgfff banner-box">
     <div class="g-banner pr" @mouseleave="state.current_menu=-1">
-     <!-- 商品课程分类信息 -->
-     <div class="submenu" v-if="state.current_menu==0">
-      <div class="inner-box">
-       <h2 class="type">前端开发</h2>
-       <div class="tag clearfix">
-       </div>
-       <div class="lore">
-        <span class="title">知识点：</span>
-        <p class="lores clearfix"><a target="_blank" href="">Vue.js</a>
-          <a target="_blank" href="">Typescript</a>
-          <a target="_blank" href="">React.JS</a>
-          <a target="_blank" href="">HTML/CSS</a>
-          <a target="_blank" href="">JavaScript</a>
-          <a target="_blank" href="">Angular</a>
-          <a target="_blank" href="">Node.js</a>
-          <a target="_blank" href="">jQuery</a>
-          <a target="_blank" href="">Bootstrap</a>
-          <a target="_blank" href="">Sass/Less</a>
-          <a target="_blank" href="">WebApp</a>
-          <a target="_blank" href="">小程序</a>
-          <a target="_blank" href="">前端工具</a>
-          <a target="_blank" href="">CSS</a>
-          <a target="_blank" href="">Html5</a>
-          <a target="_blank" href="">CSS3</a>
-        </p>
-       </div>
+      <!-- 商品课程分类信息 -->
+      <div class="submenu" v-if="state.current_menu===0">
+        <div class="inner-box">
+          <h2 class="type">前端开发</h2>
+          <div class="tag clearfix">
+          </div>
+          <div class="lore">
+            <span class="title">知识点：</span>
+            <p class="lores clearfix"><a target="_blank" href="">Vue.js</a>
+              <a target="_blank" href="">Typescript</a>
+              <a target="_blank" href="">React.JS</a>
+              <a target="_blank" href="">HTML/CSS</a>
+              <a target="_blank" href="">JavaScript</a>
+              <a target="_blank" href="">Angular</a>
+              <a target="_blank" href="">Node.js</a>
+              <a target="_blank" href="">jQuery</a>
+              <a target="_blank" href="">Bootstrap</a>
+              <a target="_blank" href="">Sass/Less</a>
+              <a target="_blank" href="">WebApp</a>
+              <a target="_blank" href="">小程序</a>
+              <a target="_blank" href="">前端工具</a>
+              <a target="_blank" href="">CSS</a>
+              <a target="_blank" href="">Html5</a>
+              <a target="_blank" href="">CSS3</a>
+            </p>
+          </div>
+        </div>
+        <div class="recomment clearfix">
+          <a href="" target="_blank" title="" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/60a7779909e3fc1206960344.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">前端工程师2021</span> <span class="tag tixi">体系</span></p>
+              </div>
+              <div class="bottom">
+                <span class="discount-name">优惠价</span>
+                <span class="price">￥4599.00</span> &middot;
+                <span class="difficulty"> 零基础 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 19322</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="前端框架及项目面试 聚焦Vue3/React/Webpack" class="recomment-item">
+            <div class="img" style="background-image: url('/src/assets/5e3cfea008e9a61b06000338-360-202.jpg')"></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">前端框架及项目面试 聚焦Vue3/React/Webpack</span> <span
+                    class="tag shizhan">实战</span></p>
+              </div>
+              <div class="bottom">
+                <span class="price">399.00</span> &middot;
+                <span class="difficulty"> 中级 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 2946</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="从0打造微前端框架，实战汽车资讯平台，系统掌握微前端架构设计与落地能力" class="recomment-item">
+            <div class="img" style="background-image: url('/src/assets/60d44ec8084b799712000676-360-202.jpg')"></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">从0打造微前端框架，实战汽车资讯平台，系统掌握微前端架构设计与落地能力</span><span class="tag shizhan">实战</span>
+                </p>
+              </div>
+              <div class="bottom">
+                <span class="discount-name">限时优惠</span>
+                <span class="price">￥328.00</span> &middot;
+                <span class="difficulty"> 高级 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 109</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/604f2bab0952610803240324-140-140.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">Vue.js 从入门到精通</span> <span class="tag lujing">路线</span></p>
+              </div>
+              <div class="bottom">
+                <span class="difficulty">4步骤</span> &middot;
+                <span class="difficulty">4门课</span> &middot;
+                <span class="num">19697人收藏</span>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
-      <div class="recomment clearfix">
-        <a href="" target="_blank" title="" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/60a7779909e3fc1206960344.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">前端工程师2021</span> <span class="tag tixi">体系</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="discount-name">优惠价</span>
-          <span class="price">￥4599.00</span> &middot;
-          <span class="difficulty"> 零基础 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 19322</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="前端框架及项目面试 聚焦Vue3/React/Webpack" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/5e3cfea008e9a61b06000338-360-202.jpg')"></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">前端框架及项目面试 聚焦Vue3/React/Webpack</span> <span class="tag shizhan">实战</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="price">399.00</span> &middot;
-          <span class="difficulty"> 中级 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 2946</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="从0打造微前端框架，实战汽车资讯平台，系统掌握微前端架构设计与落地能力" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/60d44ec8084b799712000676-360-202.jpg')"></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"><span class="text">从0打造微前端框架，实战汽车资讯平台，系统掌握微前端架构设计与落地能力</span><span class="tag shizhan">实战</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="discount-name">限时优惠</span>
-          <span class="price">￥328.00</span> &middot;
-          <span class="difficulty"> 高级 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 109</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/604f2bab0952610803240324-140-140.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">Vue.js 从入门到精通</span> <span class="tag lujing">路线</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="difficulty">4步骤</span> &middot;
-          <span class="difficulty">4门课</span> &middot;
-          <span class="num">19697人收藏</span>
-         </div>
-        </div> </a>
+      <div class="submenu" v-if="state.current_menu===1">
+        <div class="inner-box">
+          <h2 class="type">后端开发</h2>
+          <div class="tag clearfix">
+          </div>
+          <div class="lore">
+            <span class="title">知识点：</span>
+            <p class="lores clearfix">
+              <a target="_blank" href="">Java</a>
+              <a target="_blank" href="">SpringBoot</a>
+              <a target="_blank" href="">Spring Cloud</a>
+              <a target="_blank" href="">SSM</a>
+              <a target="_blank" href="">PHP</a>
+              <a target="_blank" href="">.net</a>
+              <a target="_blank" href="">Python</a>
+              <a target="_blank" href="">爬虫</a>
+              <a target="_blank" href="">Django</a>
+              <a target="_blank" href="">Flask</a>
+              <a target="_blank" href="">Tornado</a>
+              <a target="_blank" href="">Go</a>
+              <a target="_blank" href="">C</a>
+              <a target="_blank" href="">C++</a>
+              <a target="_blank" href="">C#</a>
+              <a target="_blank" href="">Ruby</a></p>
+          </div>
+        </div>
+        <div class="recomment clearfix">
+          <a href="" target="_blank" title="Java工程师2021" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/60a777ef0942d7bf06960344.png'); background-size: 100%; "></div>
+            <div class="details">
+              <div class="title-box">
+                <p class="title"><span class="text">Java工程师2021</span> <span class="tag tixi">体系</span></p>
+              </div>
+              <div class="bottom">
+                <span class="discount-name">优惠价</span>
+                <span class="price">￥4399.00</span> &middot;
+                <span class="difficulty"> 零基础 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 15052</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="Python工程师（全能型）" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/60a77721093df37606960344.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">Python工程师（全能型）</span> <span class="tag tixi">体系</span></p>
+              </div>
+              <div class="bottom">
+                <span class="discount-name">优惠价</span>
+                <span class="price">￥4366.00</span> &middot;
+                <span class="difficulty"> 零基础 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 10786</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="Java全栈工程师" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/5dd6567b09d9d01c06000338.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">Java全栈工程师</span> <span class="tag tixi">体系</span></p>
+              </div>
+              <div class="bottom">
+                <span class="discount-name">优惠价</span>
+                <span class="price">￥3380.00</span> &middot;
+                <span class="difficulty"> 进阶 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 1853</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/604f2bb6099d6a8803240324-140-140.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">SpringBoot从入门到精通</span> <span class="tag lujing">路线</span></p>
+              </div>
+              <div class="bottom">
+                <span class="difficulty">3步骤</span> &middot;
+                <span class="difficulty">5门课</span> &middot;
+                <span class="num">11092人收藏</span>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
-     </div>
-     <div class="submenu" v-if="state.current_menu==1">
-      <div class="inner-box">
-       <h2 class="type">后端开发</h2>
-       <div class="tag clearfix">
-       </div>
-       <div class="lore">
-        <span class="title">知识点：</span>
-        <p class="lores clearfix">
-          <a target="_blank" href="">Java</a>
-          <a target="_blank" href="">SpringBoot</a>
-          <a target="_blank" href="">Spring Cloud</a>
-          <a target="_blank" href="">SSM</a>
-          <a target="_blank" href="">PHP</a>
-          <a target="_blank" href="">.net</a>
-          <a target="_blank" href="">Python</a>
-          <a target="_blank" href="">爬虫</a>
-          <a target="_blank" href="">Django</a>
-          <a target="_blank" href="">Flask</a>
-          <a target="_blank" href="">Tornado</a>
-          <a target="_blank" href="">Go</a>
-          <a target="_blank" href="">C</a>
-          <a target="_blank" href="">C++</a>
-          <a target="_blank" href="">C#</a>
-          <a target="_blank" href="">Ruby</a></p>
-       </div>
+      <div class="submenu" v-if="state.current_menu===2">
+        <div class="inner-box">
+          <h2 class="type">移动开发</h2>
+          <div class="tag clearfix">
+          </div>
+          <div class="lore">
+            <span class="title">知识点：</span>
+            <p class="lores clearfix"></p>
+          </div>
+        </div>
+        <div class="recomment clearfix">
+          <a href="" target="_blank" title="移动端架构师成长体系课" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/5ec5ddf209cd2c8606000338.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">移动端架构师成长体系课</span> <span class="tag tixi">体系</span></p>
+              </div>
+              <div class="bottom">
+                <span class="discount-name">优惠价</span>
+                <span class="price">￥4888.00</span> &middot;
+                <span class="difficulty"> 进阶 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 402</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="Flutter高级进阶实战  仿哔哩哔哩APP 一次性深度掌握Flutter高阶技能" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/60497caf0971842912000676-360-202.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">Flutter高级进阶实战 仿哔哩哔哩APP 一次性深度掌握Flutter高阶技能</span> <span
+                    class="tag shizhan">实战</span></p>
+              </div>
+              <div class="bottom">
+                <span class="price">368.00</span> &middot;
+                <span class="difficulty"> 高级 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 646</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="音视频基础+ffmpeg原理+项目实战 一课完成音视频技术开发入门" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/5e5621d0092c054612000676-360-202.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">音视频基础+ffmpeg原理+项目实战 一课完成音视频技术开发入门</span> <span class="tag shizhan">实战</span>
+                </p>
+              </div>
+              <div class="bottom">
+                <span class="price">288.00</span> &middot;
+                <span class="difficulty"> 入门 </span> &middot;
+                <span class="num"><i class="imv2-set-sns"></i> 1303</span>
+              </div>
+            </div>
+          </a>
+          <a href="" target="_blank" title="" class="recomment-item">
+            <div class="img"
+                 style="background-image: url('/src/assets/604f2b52090de67603240324-140-140.png'); background-size: 100%; "></div>
+            <div class="details">
+              <!--路径单独写-->
+              <div class="title-box">
+                <p class="title"><span class="text">Android工程师高薪面试突破路线</span> <span class="tag lujing">路线</span></p>
+              </div>
+              <div class="bottom">
+                <span class="difficulty">3步骤</span> &middot;
+                <span class="difficulty">3门课</span> &middot;
+                <span class="num">1471人收藏</span>
+              </div>
+            </div>
+          </a>
+        </div>
       </div>
-      <div class="recomment clearfix">
-        <a href="" target="_blank" title="Java工程师2021" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/60a777ef0942d7bf06960344.png'); background-size: 100%; "></div>
-        <div class="details">
-         <div class="title-box">
-          <p class="title"> <span class="text">Java工程师2021</span> <span class="tag tixi">体系</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="discount-name">优惠价</span>
-          <span class="price">￥4399.00</span> &middot;
-          <span class="difficulty"> 零基础 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 15052</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="Python工程师（全能型）" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/60a77721093df37606960344.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">Python工程师（全能型）</span> <span class="tag tixi">体系</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="discount-name">优惠价</span>
-          <span class="price">￥4366.00</span> &middot;
-          <span class="difficulty"> 零基础 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 10786</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="Java全栈工程师" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/5dd6567b09d9d01c06000338.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">Java全栈工程师</span> <span class="tag tixi">体系</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="discount-name">优惠价</span>
-          <span class="price">￥3380.00</span> &middot;
-          <span class="difficulty"> 进阶 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 1853</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/604f2bb6099d6a8803240324-140-140.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">SpringBoot从入门到精通</span> <span class="tag lujing">路线</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="difficulty">3步骤</span> &middot;
-          <span class="difficulty">5门课</span> &middot;
-          <span class="num">11092人收藏</span>
-         </div>
-        </div> </a>
+      <div class="menuContent">
+        <div class="item" :class="{'js-menu-item-on': state.current_menu===0}" @mouseover="state.current_menu=0">
+          <span class="title">前端开发：</span>
+          <span class="sub-title">HTML5 / Vue.js / Node.js</span>
+          <i class="imv2-arrow1_r"></i>
+        </div>
+        <div class="item" :class="{'js-menu-item-on': state.current_menu===1}" @mouseover="state.current_menu=1">
+          <span class="title">后端开发：</span>
+          <span class="sub-title">Java / Python / Go</span>
+          <i class="imv2-arrow1_r"></i>
+        </div>
+        <div class="item" :class="{'js-menu-item-on': state.current_menu===2}" @mouseover="state.current_menu=2">
+          <span class="title">移动开发：</span>
+          <span class="sub-title">Flutter / Android / iOS </span>
+          <i class="imv2-arrow1_r"></i>
+        </div>
       </div>
-     </div>
-     <div class="submenu" v-if="state.current_menu==2">
-      <div class="inner-box">
-       <h2 class="type">移动开发</h2>
-       <div class="tag clearfix">
-       </div>
-       <div class="lore">
-        <span class="title">知识点：</span>
-        <p class="lores clearfix"></p>
-       </div>
-      </div>
-      <div class="recomment clearfix">
-       <a href="" target="_blank" title="移动端架构师成长体系课" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/5ec5ddf209cd2c8606000338.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">移动端架构师成长体系课</span> <span class="tag tixi">体系</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="discount-name">优惠价</span>
-          <span class="price">￥4888.00</span> &middot;
-          <span class="difficulty"> 进阶 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 402</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="Flutter高级进阶实战  仿哔哩哔哩APP 一次性深度掌握Flutter高阶技能" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/60497caf0971842912000676-360-202.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">Flutter高级进阶实战 仿哔哩哔哩APP 一次性深度掌握Flutter高阶技能</span> <span class="tag shizhan">实战</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="price">368.00</span> &middot;
-          <span class="difficulty"> 高级 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 646</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="音视频基础+ffmpeg原理+项目实战 一课完成音视频技术开发入门" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/5e5621d0092c054612000676-360-202.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">音视频基础+ffmpeg原理+项目实战 一课完成音视频技术开发入门</span> <span class="tag shizhan">实战</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="price">288.00</span> &middot;
-          <span class="difficulty"> 入门 </span> &middot;
-          <span class="num"><i class="imv2-set-sns"></i> 1303</span>
-         </div>
-        </div> </a>
-       <a href="" target="_blank" title="" class="recomment-item">
-        <div class="img" style="background-image: url('/src/assets/604f2b52090de67603240324-140-140.png'); background-size: 100%; "></div>
-        <div class="details">
-         <!--路径单独写-->
-         <div class="title-box">
-          <p class="title"> <span class="text">Android工程师高薪面试突破路线</span> <span class="tag lujing">路线</span> </p>
-         </div>
-         <div class="bottom">
-          <span class="difficulty">3步骤</span> &middot;
-          <span class="difficulty">3门课</span> &middot;
-          <span class="num">1471人收藏</span>
-         </div>
-        </div> </a>
-      </div>
-     </div>
-     <div class="menuContent">
-      <div class="item" :class="{'js-menu-item-on': state.current_menu==0}" @mouseover="state.current_menu=0">
-       <span class="title">前端开发：</span>
-       <span class="sub-title">HTML5 / Vue.js / Node.js</span>
-       <i class="imv2-arrow1_r"></i>
-      </div>
-      <div class="item" :class="{'js-menu-item-on': state.current_menu==1}" @mouseover="state.current_menu=1">
-       <span class="title">后端开发：</span>
-       <span class="sub-title">Java / Python / Go</span>
-       <i class="imv2-arrow1_r"></i>
-      </div>
-      <div class="item" :class="{'js-menu-item-on': state.current_menu==2}" @mouseover="state.current_menu=2">
-       <span class="title">移动开发：</span>
-       <span class="sub-title">Flutter / Android / iOS </span>
-       <i class="imv2-arrow1_r"></i>
-      </div>
-     </div>
       <!-- 轮播图-->
-      <div class="g-banner-content"  @mouseover="state.current_menu=-1">
-        <el-carousel :interval="5000" arrow="always" height="482px">
-          <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/1.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/2.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/3.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/4.jpg" alt="" style="width: 100%;height: 100%;">
-          </el-carousel-item>
-          <el-carousel-item>
-            <img src="http://fuguangapi.oss-cn-beijing.aliyuncs.com/5.jpg" alt="" style="width: 100%;height: 100%;">
+      <div class="g-banner-content" @mouseover="state.current_menu=-1">
+        <el-carousel :interval="5000" arrow="always" height="482px" v-if="banner.banner_list[0]">
+          <el-carousel-item v-for="(item, key) in banner.banner_list" :key="key">
+            <a :href="item.link" v-if="item.is_http">
+              <img :src="item.image" alt="" style="width: 100%;height: 100%;">
+            </a>
+            <router-link :to="item.link" v-else>
+              <img :src="item.image" alt="" style="width: 100%;height: 100%;">
+            </router-link>
           </el-carousel-item>
         </el-carousel>
-     </div>
+      </div>
     </div>
-   </div>
+  </div>
 </template>
 
 <script setup>
 import {reactive} from "vue"
+import banner from "../api/banner";
+
+// 获取轮播广告列表
+banner.get_banner_list().then(response => {
+  banner.banner_list = response.data.data
+})
+
 const state = reactive({
   current_menu: -1,
 })
 </script>
 
+
 <style scoped>
 .banner-box {
   padding: 32px 0;
 }
+
 .system-class-show {
   width: 1152px;
   height: 100px;
@@ -295,6 +323,7 @@ const state = reactive({
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.3);
   border-radius: 0 0 8px 8px;
 }
+
 .system-class-show .show-box {
   display: block;
   width: 192px;
@@ -303,6 +332,7 @@ const state = reactive({
   margin: 28px 0 0 16px;
   cursor: pointer;
 }
+
 .system-class-show .show-box .system-class-icon {
   float: left;
   width: 45px;
@@ -312,9 +342,11 @@ const state = reactive({
   margin-right: 8px;
   transition: all .2s;
 }
+
 .system-class-show .show-box .describe {
   float: left;
 }
+
 .system-class-show .show-box .describe h4 {
   width: 139px;
   font-family: PingFangSC-Medium;
@@ -326,6 +358,7 @@ const state = reactive({
   white-space: nowrap;
   overflow: hidden;
 }
+
 .system-class-show .show-box .describe p {
   width: 139px;
   font-family: PingFangSC-Regular;
@@ -335,12 +368,15 @@ const state = reactive({
   white-space: nowrap;
   overflow: hidden;
 }
+
 .system-class-show .show-box:hover .system-class-icon {
   transform: translateY(-2px);
 }
+
 .system-class-show .show-box:hover .describe h4 {
   color: #F01414;
 }
+
 .system-class-show .line {
   float: left;
   height: 36px;
@@ -348,6 +384,7 @@ const state = reactive({
   margin-left: 16px;
   margin-top: 33px;
 }
+
 .system-class-show .all-btn {
   position: relative;
   display: block;
@@ -355,6 +392,7 @@ const state = reactive({
   cursor: pointer;
   overflow: hidden;
 }
+
 .system-class-show .all-btn .mini-title {
   font-family: PingFangSC-Medium;
   font-size: 12px;
@@ -363,6 +401,7 @@ const state = reactive({
   line-height: 14px;
   margin-top: 40px;
 }
+
 .system-class-show .all-btn .more-btn {
   font-family: PingFangSC-Regular;
   font-size: 12px;
@@ -371,34 +410,41 @@ const state = reactive({
   margin-left: 30px;
   position: relative;
 }
+
 .system-class-show .all-btn .more-btn .icon-right2 {
   position: absolute;
   top: 1px;
   left: 28px;
   transition: all .2s;
 }
+
 .system-class-show .all-btn:hover .more-btn {
   color: #1C1F21;
 }
+
 .system-class-show .all-btn:hover .more-btn .icon-right2 {
   transform: translateX(3px);
 }
+
 .g-banner {
   position: relative;
   overflow: hidden;
-  width: 1400px;
+  width: 1440px;
   margin: auto;
   border-radius: 8px 8px 0 0;
 }
+
 .g-banner .g-banner-content {
   position: relative;
   float: left;
-  width: 1142px;
+  width: 68%;
 }
+
 .g-banner .g-banner-content .g-banner-box {
   position: relative;
   height: 316px;
 }
+
 .g-banner .g-banner-content .notice {
   position: absolute;
   top: 8px;
@@ -410,6 +456,7 @@ const state = reactive({
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
+
 .g-banner .g-banner-content .notice .imv2-vol_up {
   font-size: 16px;
   color: #FFFFFF;
@@ -419,6 +466,7 @@ const state = reactive({
   margin-right: 4px;
   vertical-align: sub;
 }
+
 .g-banner .g-banner-content .notice .notice-txt {
   display: inline-block;
   width: auto;
@@ -428,26 +476,32 @@ const state = reactive({
   z-index: 1;
   white-space: nowrap;
 }
+
 .g-banner .g-banner-content .notice .notice-close {
   font-size: 16px;
   margin: 6px 0 6px 12px;
   color: rgba(255, 255, 255, 0.6);
   line-height: 20px;
 }
+
 .g-banner .g-banner-content .notice .notice-close:hover {
   color: #fff;
 }
+
 .g-banner .g-banner-content .notice.closed {
   transition: all .3s;
   background: rgba(255, 153, 0, 0.6);
   box-shadow: 0 2px 4px 0 rgba(7, 17, 27, 0.2);
 }
+
 .g-banner .g-banner-content .notice.closed .notice-txt {
   overflow: hidden;
 }
+
 .g-banner .g-banner-content .notice.closed .notice-close {
   display: none;
 }
+
 .g-banner .banner-anchor {
   position: absolute;
   top: 50%;
@@ -459,19 +513,24 @@ const state = reactive({
   color: #FFFFFF;
   transition: all .2s;
 }
+
 .g-banner .banner-anchor:hover {
   background-color: rgba(28, 31, 33, 0.5);
 }
+
 .g-banner .next {
   right: 16px;
   transform: rotate(180deg);
 }
+
 .g-banner .prev {
   left: 16px;
 }
+
 .g-banner .g-banner-box > a:first-child .banner-slide {
   display: block;
 }
+
 .g-banner .banner-slide {
   position: absolute;
   display: none;
@@ -485,28 +544,34 @@ const state = reactive({
   background-repeat: no-repeat;
   background-position: center 0;
 }
+
 .g-banner .banner-slide .festival {
   position: absolute;
   top: 450px;
   right: 75px;
 }
+
 .g-banner .banner-slide .festival a {
   display: block;
   width: 190px;
   height: 120px;
 }
+
 .g-banner .banner-slide .festival a:hover {
   background-position: 0 0;
 }
+
 .g-banner .banner-slide img {
   width: 100%;
   height: 100%;
 }
+
 .g-banner .inner {
   position: relative;
   width: 1200px;
   margin: 0 auto;
 }
+
 .g-banner .banner-dots {
   position: absolute;
   bottom: 20px;
@@ -516,6 +581,7 @@ const state = reactive({
   padding-right: 24px;
   line-height: 12px;
 }
+
 .g-banner .banner-dots span {
   display: inline-block;
   *display: inline;
@@ -528,6 +594,7 @@ const state = reactive({
   transition: all .2s;
   cursor: pointer;
 }
+
 .g-banner .banner-dots span.active {
   width: 20px;
 }
@@ -543,11 +610,13 @@ const state = reactive({
   z-index: 33;
   box-sizing: border-box;
 }
+
 .submenu .inner-box {
   height: 188px;
   padding: 28px 36px 0;
   box-sizing: border-box;
 }
+
 .submenu .inner-box .type {
   margin-bottom: 10px;
   font-size: 16px;
@@ -555,9 +624,11 @@ const state = reactive({
   line-height: 22px;
   font-weight: bold;
 }
+
 .submenu .inner-box .tag {
   margin-bottom: 12px;
 }
+
 .submenu .inner-box .tag a {
   float: left;
   font-size: 12px;
@@ -568,9 +639,11 @@ const state = reactive({
   padding: 5px 10px;
   margin-right: 10px;
 }
+
 .submenu .inner-box .tag a:last-child {
   margin-right: 0;
 }
+
 .submenu .inner-box .lore {
   font-size: 12px;
   line-height: 24px;
@@ -581,10 +654,12 @@ const state = reactive({
   display: -webkit-flex;
   display: flex;
 }
+
 .submenu .inner-box .lore .title {
   color: #1C1F21;
   font-weight: bold;
 }
+
 .submenu .inner-box .lore .lores {
   width: 0;
   -webkit-box-flex: 1;
@@ -592,20 +667,24 @@ const state = reactive({
   -webkit-flex: 1;
   flex: 1;
 }
+
 .submenu .inner-box .lore .lores a {
   float: left;
   color: #6D7278;
   margin-right: 24px;
 }
+
 .submenu .inner-box .lore .lores a:last-child {
   margin-right: 0;
 }
+
 .submenu .recomment {
   padding: 35px 36px;
   height: 204px;
   background-color: #F3F5F6;
   box-sizing: border-box;
 }
+
 .submenu .recomment .recomment-item {
   width: 329px;
   float: left;
@@ -614,12 +693,15 @@ const state = reactive({
   display: -webkit-flex;
   display: flex;
 }
+
 .submenu .recomment .recomment-item:nth-child(2n) {
   margin-left: 30px;
 }
+
 .submenu .recomment .recomment-item:nth-child(-n+2) {
   margin-bottom: 30px;
 }
+
 .submenu .recomment .recomment-item .img {
   width: 90px;
   height: 50px;
@@ -630,13 +712,15 @@ const state = reactive({
   /* Firefox */
   image-rendering: -o-crisp-edges;
   /* Opera */
-  image-rendering: -webkit-optimize-contrast;
+  /*image-rendering: -webkit-optimize-contrast;*/
+  /*image-rendering: -webkit-crisp-edges;*/
   /*Webkit (non-standard naming) */
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
   /* IE (non-standard property) */
   box-shadow: 0 6px 10px 0 rgba(95, 101, 105, 0.15);
 }
+
 .submenu .recomment .recomment-item .details {
   height: 50px;
   font-size: 12px;
@@ -646,6 +730,7 @@ const state = reactive({
   -webkit-flex: 1;
   flex: 1;
 }
+
 .submenu .recomment .recomment-item .details .title-box {
   margin-bottom: 10px;
   display: -webkit-box;
@@ -657,12 +742,14 @@ const state = reactive({
   -webkit-align-items: center;
   align-items: center;
 }
+
 .submenu .recomment .recomment-item .details .title-box .title {
   display: flex;
   align-items: center;
   color: #1C1F21;
   width: 228px;
 }
+
 .submenu .recomment .recomment-item .details .title-box .title .text {
   display: inline-block;
   overflow: hidden;
@@ -670,6 +757,7 @@ const state = reactive({
   white-space: nowrap;
   max-width: calc(100% - 4em);
 }
+
 .submenu .recomment .recomment-item .details .title-box .title .tag {
   display: inline-block;
   width: 2em;
@@ -680,19 +768,24 @@ const state = reactive({
   padding: 2px 4px;
   margin-left: 5px;
 }
+
 .submenu .recomment .recomment-item .details .title-box .title .tag.shizhan {
   background-color: #FA6400;
 }
+
 .submenu .recomment .recomment-item .details .title-box .title .tag.tixi {
   background-color: #E02020;
 }
+
 .submenu .recomment .recomment-item .details .title-box .title .tag.lujing {
   background-color: #0091FF;
 }
+
 .submenu .recomment .recomment-item .details .bottom {
   color: #9199A1;
   line-height: 18px;
 }
+
 .submenu .recomment .recomment-item .details .bottom .discount-name,
 .submenu .recomment .recomment-item .details .bottom .tag {
   display: inline-block;
@@ -702,17 +795,20 @@ const state = reactive({
   padding: 2px 4px;
   line-height: 1;
 }
+
 .submenu .recomment .recomment-item .details .bottom .discount-name {
   background: rgba(242, 13, 13, 0.6);
 }
+
 .submenu .recomment .recomment-item .details .bottom .price:not(.free) {
   font-weight: bold;
   color: #F01414;
 }
+
 .menuContent {
   position: relative;
   float: left;
-  width: 256px;
+  width: 20%;
   height: 482px;
   z-index: 2;
   padding-top: 17px;
@@ -721,6 +817,7 @@ const state = reactive({
   border-bottom-left-radius: 4px;
   font-weight: 400;
 }
+
 .menuContent .item {
   line-height: 50px;
   cursor: pointer;
@@ -733,9 +830,11 @@ const state = reactive({
   transition: all .1s;
   font-size: 14px;
 }
+
 .menuContent .item .sub-title {
   font-size: 12px;
 }
+
 .menuContent .item i {
   position: absolute;
   right: 4px;
@@ -743,6 +842,7 @@ const state = reactive({
   color: rgba(255, 255, 255, 0.5);
   font-size: 16px;
 }
+
 .menuContent .item.js-menu-item-on {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.1);
