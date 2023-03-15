@@ -1,44 +1,34 @@
 <template>
-  <div className="header-box">
-    <div className="header">
-      <div className="content">
-        <div className="logo">
+  <div class="header-box">
+    <div class="header">
+      <div class="content">
+        <div class="logo">
           <router-link to="/"><img src="../assets/logo.png" alt=""></router-link>
         </div>
-        <ul className="nav">
-          <li>
-            <router-link to="">免费课</router-link>
-          </li>
-          <li>
-            <router-link to="">项目课</router-link>
-          </li>
-          <li>
-            <router-link to="">学位课</router-link>
-          </li>
-          <li>
-            <router-link to="">习题库</router-link>
-          </li>
-          <li>
-            <router-link to="">其他</router-link>
+        <ul class="nav">
+          <li v-for="nav in nav.header_nav_list">
+            <a :href="nav.link" v-if="nav.is_http">{{ nav.name }}</a>
+            <router-link :to="nav.link" v-else>{{ nav.name }}</router-link>
           </li>
         </ul>
-        <div className="search-warp">
-          <div className="search-area">
-            <input className="search-input" placeholder="请输入关键字..." type="text" autoComplete="off">
-            <div className="hotTags">
-              <router-link to="/search/?words=Vue" target="_blank" className="">Vue</router-link>
-              <router-link to="/search/?words=Python" target="_blank" className="last">Python</router-link>
+        <div class="search-warp">
+          <div class="search-area">
+            <input class="search-input" placeholder="请输入关键字..." type="text" autocomplete="off">
+            <div class="hotTags">
+              <router-link to="/search/?words=Vue" target="_blank" class="">Vue</router-link>
+              <router-link to="/search/?words=Python" target="_blank" class="last">Python</router-link>
             </div>
           </div>
-          <div className="showhide-search" data-show="no"><img className="imv2-search2" src="../assets/search.svg"/>
+          <div class="showhide-search" data-show="no">
+            <img class="imv2-search2" src="../assets/search.svg" alt="search"/>
           </div>
         </div>
-        <div className="login-bar">
-          <div className="shop-cart full-left">
+        <div class="login-bar">
+          <div class="shop-cart full-left">
             <img src="../assets/cart.svg" alt=""/>
             <span><router-link to="/cart">购物车</router-link></span>
           </div>
-          <div className="login-box full-left">
+          <div class="login-box full-left">
             <span>登录</span>
             &nbsp;/&nbsp;
             <span>注册</span>
@@ -51,9 +41,15 @@
 
 
 <script setup>
+import nav from "../api/nav";
+
+// 请求头部导航列表
+nav.get_header_nav().then(response => {
+  nav.header_nav_list = response.data.data
+})
+
 
 </script>
-
 <style scoped>
 .header-box {
   height: 72px;

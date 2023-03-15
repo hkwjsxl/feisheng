@@ -1,26 +1,9 @@
 <template>
   <div class="footer">
     <ul>
-      <li>
-        <router-link to="">企业服务</router-link>
-      </li>
-      <li>
-        <router-link to="">关于我们</router-link>
-      </li>
-      <li>
-        <router-link to="">联系我们</router-link>
-      </li>
-      <li>
-        <router-link to="">商务合作</router-link>
-      </li>
-      <li>
-        <router-link to="">帮助中心</router-link>
-      </li>
-      <li>
-        <router-link to="">意见反馈</router-link>
-      </li>
-      <li>
-        <router-link to="">新手指南</router-link>
+      <li v-for="nav in nav.footer_nav_list">
+        <a :href="nav.link" v-if="nav.is_http">{{ nav.name }}</a>
+        <router-link :to="nav.link" v-else>{{ nav.name }}</router-link>
       </li>
     </ul>
     <p>Copyright © luffycity.com版权所有 | 京ICP备17072161号-1</p>
@@ -28,6 +11,11 @@
 </template>
 
 <script setup>
+import nav from "../api/nav.js";
+// 获取脚部导航列表
+nav.get_footer_nav().then(response => {
+  nav.footer_nav_list = response.data.data
+})
 
 </script>
 
