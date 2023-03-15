@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, BASE_DIR)
 # 将所有app目录的根加入到环境变量中，后续无需更改app的引入方式
 sys.path.insert(1, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(1, os.path.join(BASE_DIR, 'extension'))
 
 SECRET_KEY = 'django-insecure-hzsts96!plee1awc1wli5r!z)d@7u41wyr7$ejckvb#0umb&ai'
 
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "corsheaders",
+    "home.apps.HomeConfig",
 
 ]
 
