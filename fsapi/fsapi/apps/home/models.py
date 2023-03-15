@@ -16,3 +16,15 @@ class Nav(BaseModel):
         db_table = "fs_nav"
         verbose_name = "导航菜单"
         verbose_name_plural = verbose_name
+
+
+class Banner(BaseModel):
+    image = models.ImageField(upload_to="banner/%Y/", verbose_name="图片地址")
+    link = models.CharField(max_length=500, verbose_name="链接地址")
+    note = models.CharField(max_length=150, verbose_name='备注信息')
+    is_http = models.BooleanField(default=False, verbose_name="是否外链地址")
+
+    class Meta:
+        db_table = "fs_banner"
+        verbose_name = "轮播图"
+        verbose_name_plural = verbose_name
