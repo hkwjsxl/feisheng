@@ -13,3 +13,5 @@ NAV_FOOTER_SIZE = 10
 """轮播图"""
 # 轮播广告显示的最大数量
 BANNER_SIZE = 5
+# 列表页数据的缓存周期，单位：秒
+LIST_PAGE_CACHE_TIME = 60
