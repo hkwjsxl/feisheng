@@ -38,7 +38,7 @@
                   <el-dropdown-item icon="el-icon-user">学习中心</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-edit-outline">订单列表</el-dropdown-item>
                   <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-position">注销登录</el-dropdown-item>
+                  <el-dropdown-item :icon="Position" @click="logout">注销登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -68,6 +68,7 @@
 import nav from "../api/nav";
 import Login from "./Login.vue";
 import {reactive} from "vue";
+import {UserFilled, List, Setting, Position} from '@element-plus/icons-vue'
 
 import {useStore} from "vuex"
 
@@ -81,13 +82,18 @@ const state = reactive({
 // 请求头部导航列表
 nav.get_header_nav().then(response => {
   nav.header_nav_list = response.data.data
-  console.log(response.data.data)
 })
 
 // 用户登录成功以后的处理
 const login_success = (token) => {
   state.show_login = false
 }
+
+// 登录注销的处理
+const logout = () => {
+  store.commit("logout");
+}
+
 </script>
 
 
