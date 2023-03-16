@@ -262,3 +262,6 @@ JWT_AUTH = {
     # 自定义载荷
     'JWT_PAYLOAD_HANDLER': 'fsapi.extension.authenticate.custom_jwt_payload_handler',
 }
+
+# django自定义认证
+AUTHENTICATION_BACKENDS = ['fsapi.extension.authenticate.CustomAuthBackend', ]
