@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import store from "../store";
 // 路由列表
 const routes = [
     {
@@ -9,8 +10,7 @@ const routes = [
         path: '/',
         name: "Home",
         component: () => import("../views/Home.vue")
-    },
-    {
+    }, {
         meta: {
             title: "飞升在线教育-用户登录",
             keepAlive: true
@@ -18,7 +18,15 @@ const routes = [
         path: '/login',
         name: "Login",
         component: () => import("../views/Login.vue")
-    }
+    }, {
+        meta: {
+            title: "飞升在线教育-个人中心",
+            keepAlive: true,
+        },
+        path: '/user',
+        name: "User",
+        component: () => import("../views/User.vue"),
+    },
 ]
 // 路由对象实例化
 const router = createRouter({
@@ -27,5 +35,19 @@ const router = createRouter({
     // 路由列表
     routes,
 });
+
+
+// 导航守卫
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title
+    // 登录状态验证
+    if (to.meta.authorization && !store.getters.getUserInfo) {
+        next({"name": "Login"})
+    } else {
+        next()
+    }
+})
+
+
 // 暴露路由对象
 export default router

@@ -6,9 +6,9 @@
           <router-link to="/"><img src="../assets/logo.png" alt=""></router-link>
         </div>
         <ul class="nav">
-          <li v-for="nav in nav.header_nav_list">
-            <a :href="nav.link" v-if="nav.is_http">{{ nav.name }}</a>
-            <router-link :to="nav.link" v-else>{{ nav.name }}</router-link>
+          <li v-for="item in nav.header_nav_list">
+            <a v-if="item.is_http" :href="item.link">{{ item.name }}</a>
+            <router-link v-else :to="item.link">{{ item.name }}</router-link>
           </li>
         </ul>
         <div class="search-warp">
@@ -19,13 +19,34 @@
               <router-link to="/search/?words=Python" target="_blank" class="last">Python</router-link>
             </div>
           </div>
-          <div class="showhide-search" data-show="no">
-            <img class="imv2-search2" src="../assets/search.svg" alt="search"/>
+          <div class="showhide-search" data-show="no"><img class="imv2-search2" src="../assets/search.svg"
+                                                           alt="search"/></div>
+        </div>
+        <div class="login-bar logined-bar" v-if="store.state.user.user_id">
+          <div class="shop-cart ">
+            <img src="../assets/cart.svg" alt=""/>
+            <span><router-link to="/cart">购物车</router-link></span>
+          </div>
+          <div class="login-box ">
+            <router-link to="">我的课堂</router-link>
+            <el-dropdown>
+                <span class="el-dropdown-link">
+                  <el-avatar class="avatar" size="50" src="/src/assets/avatar.jpg"></el-avatar>
+                </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item icon="el-icon-user">学习中心</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-edit-outline">订单列表</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-position">注销登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </div>
         </div>
-        <div class="login-bar">
+        <div class="login-bar" v-else>
           <div class="shop-cart full-left">
-            <img src="../assets/cart.svg" alt="cart"/>
+            <img src="../assets/cart.svg" alt=""/>
             <span><router-link to="/cart">购物车</router-link></span>
           </div>
           <div class="login-box full-left">
@@ -38,7 +59,7 @@
     </div>
   </div>
   <el-dialog :width="600" v-model="state.show_login">
-    <Login @successhandle="login_success"></Login>
+    <Login @login_success="login_success"></Login>
   </el-dialog>
 </template>
 
@@ -48,6 +69,10 @@ import nav from "../api/nav";
 import Login from "./Login.vue";
 import {reactive} from "vue";
 
+import {useStore} from "vuex"
+
+const store = useStore()
+
 const state = reactive({
   show_login: false,
 })
@@ -56,6 +81,7 @@ const state = reactive({
 // 请求头部导航列表
 nav.get_header_nav().then(response => {
   nav.header_nav_list = response.data.data
+  console.log(response.data.data)
 })
 
 // 用户登录成功以后的处理
@@ -66,6 +92,40 @@ const login_success = (token) => {
 
 
 <style scoped>
+
+/* 登陆后状态栏 */
+.logined-bar {
+  margin-top: 0;
+  height: 72px;
+  line-height: 72px;
+}
+
+.header .logined-bar .shop-cart {
+  height: 32px;
+  line-height: 32px;
+}
+
+.logined-bar .login-box {
+  height: 72px;
+  line-height: 72px;
+  position: relative;
+}
+
+.logined-bar .el-avatar {
+  float: right;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  transition: transform .5s ease-in .1s;
+}
+
+.logined-bar .el-avatar:hover {
+  transform: scale(1.3);
+}
+
+
 .header-box {
   height: 72px;
 }
