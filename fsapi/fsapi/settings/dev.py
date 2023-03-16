@@ -1,4 +1,5 @@
 import sys
+import datetime
 from pathlib import Path
 
 from .const import *
@@ -217,12 +218,6 @@ LOGGING = {
     }
 }
 
-# drf配置
-REST_FRAMEWORK = {
-    # 自定义异常处理
-    'EXCEPTION_HANDLER': 'fsapi.extension.exceptions.custom_exception_handler',
-}
-
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = [
     "DELETE",
@@ -246,4 +241,22 @@ CORS_ALLOW_HEADERS = [
     'jwt-token',
 ]
 
+# 用户模型表
 AUTH_USER_MODEL = 'user.UserInfo'
+
+# drf配置
+REST_FRAMEWORK = {
+    # 自定义异常处理
+    'EXCEPTION_HANDLER': 'fsapi.extension.exceptions.custom_exception_handler',
+    # 自定义认证（从上到下挨个认证）
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # jwt认证
+        'rest_framework.authentication.SessionAuthentication',  # session认证
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+# jwt认证相关配置项
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(weeks=1),  # 设置jwt的有效期，一周有效
+}
