@@ -25,11 +25,11 @@
         </div>
         <div class="login-bar">
           <div class="shop-cart full-left">
-            <img src="../assets/cart.svg" alt=""/>
+            <img src="../assets/cart.svg" alt="cart"/>
             <span><router-link to="/cart">购物车</router-link></span>
           </div>
           <div class="login-box full-left">
-            <span>登录</span>
+            <span @click="state.show_login=true">登录</span>
             &nbsp;/&nbsp;
             <span>注册</span>
           </div>
@@ -37,19 +37,30 @@
       </div>
     </div>
   </div>
+  <el-dialog :width="600" v-model="state.show_login">
+    <Login></Login>
+  </el-dialog>
 </template>
 
 
 <script setup>
 import nav from "../api/nav";
+import Login from "./Login.vue";
+import {reactive} from "vue";
+
+const state = reactive({
+  show_login: false,
+})
+
 
 // 请求头部导航列表
 nav.get_header_nav().then(response => {
   nav.header_nav_list = response.data.data
 })
 
-
 </script>
+
+
 <style scoped>
 .header-box {
   height: 72px;

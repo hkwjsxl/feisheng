@@ -3,19 +3,19 @@ import {createRouter, createWebHistory} from 'vue-router'
 const routes = [
     {
         meta: {
-            title: "站点首页",
+            title: "飞升在线教育-站点首页",
             keepAlive: true
         },
-        path: '/',         // uri访问地址
+        path: '/',
         name: "Home",
         component: () => import("../views/Home.vue")
     },
     {
         meta: {
-            title: "用户登录",
+            title: "飞升在线教育-用户登录",
             keepAlive: true
         },
-        path: '/login',      // uri访问地址
+        path: '/login',
         name: "Login",
         component: () => import("../views/Login.vue")
     }

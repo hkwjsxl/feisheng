@@ -314,7 +314,6 @@ const state = reactive({
 .banner-box {
   padding: 32px 0;
 }
-
 .system-class-show {
   width: 1152px;
   height: 100px;
@@ -323,7 +322,6 @@ const state = reactive({
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.3);
   border-radius: 0 0 8px 8px;
 }
-
 .system-class-show .show-box {
   display: block;
   width: 192px;
@@ -332,7 +330,6 @@ const state = reactive({
   margin: 28px 0 0 16px;
   cursor: pointer;
 }
-
 .system-class-show .show-box .system-class-icon {
   float: left;
   width: 45px;
@@ -342,11 +339,9 @@ const state = reactive({
   margin-right: 8px;
   transition: all .2s;
 }
-
 .system-class-show .show-box .describe {
   float: left;
 }
-
 .system-class-show .show-box .describe h4 {
   width: 139px;
   font-family: PingFangSC-Medium;
@@ -358,7 +353,6 @@ const state = reactive({
   white-space: nowrap;
   overflow: hidden;
 }
-
 .system-class-show .show-box .describe p {
   width: 139px;
   font-family: PingFangSC-Regular;
@@ -368,15 +362,12 @@ const state = reactive({
   white-space: nowrap;
   overflow: hidden;
 }
-
 .system-class-show .show-box:hover .system-class-icon {
   transform: translateY(-2px);
 }
-
 .system-class-show .show-box:hover .describe h4 {
   color: #F01414;
 }
-
 .system-class-show .line {
   float: left;
   height: 36px;
@@ -384,7 +375,6 @@ const state = reactive({
   margin-left: 16px;
   margin-top: 33px;
 }
-
 .system-class-show .all-btn {
   position: relative;
   display: block;
@@ -392,7 +382,6 @@ const state = reactive({
   cursor: pointer;
   overflow: hidden;
 }
-
 .system-class-show .all-btn .mini-title {
   font-family: PingFangSC-Medium;
   font-size: 12px;
@@ -401,7 +390,6 @@ const state = reactive({
   line-height: 14px;
   margin-top: 40px;
 }
-
 .system-class-show .all-btn .more-btn {
   font-family: PingFangSC-Regular;
   font-size: 12px;
@@ -410,41 +398,34 @@ const state = reactive({
   margin-left: 30px;
   position: relative;
 }
-
 .system-class-show .all-btn .more-btn .icon-right2 {
   position: absolute;
   top: 1px;
   left: 28px;
   transition: all .2s;
 }
-
 .system-class-show .all-btn:hover .more-btn {
   color: #1C1F21;
 }
-
 .system-class-show .all-btn:hover .more-btn .icon-right2 {
   transform: translateX(3px);
 }
-
 .g-banner {
   position: relative;
   overflow: hidden;
-  width: 1440px;
+  width: 1400px;
   margin: auto;
   border-radius: 8px 8px 0 0;
 }
-
 .g-banner .g-banner-content {
   position: relative;
   float: left;
-  width: 68%;
+  width: 1142px;
 }
-
 .g-banner .g-banner-content .g-banner-box {
   position: relative;
   height: 316px;
 }
-
 .g-banner .g-banner-content .notice {
   position: absolute;
   top: 8px;
@@ -456,7 +437,6 @@ const state = reactive({
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 }
-
 .g-banner .g-banner-content .notice .imv2-vol_up {
   font-size: 16px;
   color: #FFFFFF;
@@ -466,7 +446,6 @@ const state = reactive({
   margin-right: 4px;
   vertical-align: sub;
 }
-
 .g-banner .g-banner-content .notice .notice-txt {
   display: inline-block;
   width: auto;
@@ -476,32 +455,26 @@ const state = reactive({
   z-index: 1;
   white-space: nowrap;
 }
-
 .g-banner .g-banner-content .notice .notice-close {
   font-size: 16px;
   margin: 6px 0 6px 12px;
   color: rgba(255, 255, 255, 0.6);
   line-height: 20px;
 }
-
 .g-banner .g-banner-content .notice .notice-close:hover {
   color: #fff;
 }
-
 .g-banner .g-banner-content .notice.closed {
   transition: all .3s;
   background: rgba(255, 153, 0, 0.6);
   box-shadow: 0 2px 4px 0 rgba(7, 17, 27, 0.2);
 }
-
 .g-banner .g-banner-content .notice.closed .notice-txt {
   overflow: hidden;
 }
-
 .g-banner .g-banner-content .notice.closed .notice-close {
   display: none;
 }
-
 .g-banner .banner-anchor {
   position: absolute;
   top: 50%;
@@ -513,24 +486,19 @@ const state = reactive({
   color: #FFFFFF;
   transition: all .2s;
 }
-
 .g-banner .banner-anchor:hover {
   background-color: rgba(28, 31, 33, 0.5);
 }
-
 .g-banner .next {
   right: 16px;
   transform: rotate(180deg);
 }
-
 .g-banner .prev {
   left: 16px;
 }
-
 .g-banner .g-banner-box > a:first-child .banner-slide {
   display: block;
 }
-
 .g-banner .banner-slide {
   position: absolute;
   display: none;
@@ -544,34 +512,28 @@ const state = reactive({
   background-repeat: no-repeat;
   background-position: center 0;
 }
-
 .g-banner .banner-slide .festival {
   position: absolute;
   top: 450px;
   right: 75px;
 }
-
 .g-banner .banner-slide .festival a {
   display: block;
   width: 190px;
   height: 120px;
 }
-
 .g-banner .banner-slide .festival a:hover {
   background-position: 0 0;
 }
-
 .g-banner .banner-slide img {
   width: 100%;
   height: 100%;
 }
-
 .g-banner .inner {
   position: relative;
   width: 1200px;
   margin: 0 auto;
 }
-
 .g-banner .banner-dots {
   position: absolute;
   bottom: 20px;
@@ -581,7 +543,6 @@ const state = reactive({
   padding-right: 24px;
   line-height: 12px;
 }
-
 .g-banner .banner-dots span {
   display: inline-block;
   *display: inline;
@@ -594,7 +555,6 @@ const state = reactive({
   transition: all .2s;
   cursor: pointer;
 }
-
 .g-banner .banner-dots span.active {
   width: 20px;
 }
@@ -610,13 +570,11 @@ const state = reactive({
   z-index: 33;
   box-sizing: border-box;
 }
-
 .submenu .inner-box {
   height: 188px;
   padding: 28px 36px 0;
   box-sizing: border-box;
 }
-
 .submenu .inner-box .type {
   margin-bottom: 10px;
   font-size: 16px;
@@ -624,11 +582,9 @@ const state = reactive({
   line-height: 22px;
   font-weight: bold;
 }
-
 .submenu .inner-box .tag {
   margin-bottom: 12px;
 }
-
 .submenu .inner-box .tag a {
   float: left;
   font-size: 12px;
@@ -639,11 +595,9 @@ const state = reactive({
   padding: 5px 10px;
   margin-right: 10px;
 }
-
 .submenu .inner-box .tag a:last-child {
   margin-right: 0;
 }
-
 .submenu .inner-box .lore {
   font-size: 12px;
   line-height: 24px;
@@ -654,12 +608,10 @@ const state = reactive({
   display: -webkit-flex;
   display: flex;
 }
-
 .submenu .inner-box .lore .title {
   color: #1C1F21;
   font-weight: bold;
 }
-
 .submenu .inner-box .lore .lores {
   width: 0;
   -webkit-box-flex: 1;
@@ -667,24 +619,20 @@ const state = reactive({
   -webkit-flex: 1;
   flex: 1;
 }
-
 .submenu .inner-box .lore .lores a {
   float: left;
   color: #6D7278;
   margin-right: 24px;
 }
-
 .submenu .inner-box .lore .lores a:last-child {
   margin-right: 0;
 }
-
 .submenu .recomment {
   padding: 35px 36px;
   height: 204px;
   background-color: #F3F5F6;
   box-sizing: border-box;
 }
-
 .submenu .recomment .recomment-item {
   width: 329px;
   float: left;
@@ -693,15 +641,12 @@ const state = reactive({
   display: -webkit-flex;
   display: flex;
 }
-
 .submenu .recomment .recomment-item:nth-child(2n) {
   margin-left: 30px;
 }
-
 .submenu .recomment .recomment-item:nth-child(-n+2) {
   margin-bottom: 30px;
 }
-
 .submenu .recomment .recomment-item .img {
   width: 90px;
   height: 50px;
@@ -713,14 +658,12 @@ const state = reactive({
   image-rendering: -o-crisp-edges;
   /* Opera */
   /*image-rendering: -webkit-optimize-contrast;*/
-  /*image-rendering: -webkit-crisp-edges;*/
   /*Webkit (non-standard naming) */
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
   /* IE (non-standard property) */
   box-shadow: 0 6px 10px 0 rgba(95, 101, 105, 0.15);
 }
-
 .submenu .recomment .recomment-item .details {
   height: 50px;
   font-size: 12px;
@@ -730,7 +673,6 @@ const state = reactive({
   -webkit-flex: 1;
   flex: 1;
 }
-
 .submenu .recomment .recomment-item .details .title-box {
   margin-bottom: 10px;
   display: -webkit-box;
@@ -742,14 +684,12 @@ const state = reactive({
   -webkit-align-items: center;
   align-items: center;
 }
-
 .submenu .recomment .recomment-item .details .title-box .title {
   display: flex;
   align-items: center;
   color: #1C1F21;
   width: 228px;
 }
-
 .submenu .recomment .recomment-item .details .title-box .title .text {
   display: inline-block;
   overflow: hidden;
@@ -757,7 +697,6 @@ const state = reactive({
   white-space: nowrap;
   max-width: calc(100% - 4em);
 }
-
 .submenu .recomment .recomment-item .details .title-box .title .tag {
   display: inline-block;
   width: 2em;
@@ -768,24 +707,19 @@ const state = reactive({
   padding: 2px 4px;
   margin-left: 5px;
 }
-
 .submenu .recomment .recomment-item .details .title-box .title .tag.shizhan {
   background-color: #FA6400;
 }
-
 .submenu .recomment .recomment-item .details .title-box .title .tag.tixi {
   background-color: #E02020;
 }
-
 .submenu .recomment .recomment-item .details .title-box .title .tag.lujing {
   background-color: #0091FF;
 }
-
 .submenu .recomment .recomment-item .details .bottom {
   color: #9199A1;
   line-height: 18px;
 }
-
 .submenu .recomment .recomment-item .details .bottom .discount-name,
 .submenu .recomment .recomment-item .details .bottom .tag {
   display: inline-block;
@@ -795,20 +729,17 @@ const state = reactive({
   padding: 2px 4px;
   line-height: 1;
 }
-
 .submenu .recomment .recomment-item .details .bottom .discount-name {
   background: rgba(242, 13, 13, 0.6);
 }
-
 .submenu .recomment .recomment-item .details .bottom .price:not(.free) {
   font-weight: bold;
   color: #F01414;
 }
-
 .menuContent {
   position: relative;
   float: left;
-  width: 20%;
+  width: 256px;
   height: 482px;
   z-index: 2;
   padding-top: 17px;
@@ -817,7 +748,6 @@ const state = reactive({
   border-bottom-left-radius: 4px;
   font-weight: 400;
 }
-
 .menuContent .item {
   line-height: 50px;
   cursor: pointer;
@@ -830,11 +760,9 @@ const state = reactive({
   transition: all .1s;
   font-size: 14px;
 }
-
 .menuContent .item .sub-title {
   font-size: 12px;
 }
-
 .menuContent .item i {
   position: absolute;
   right: 4px;
@@ -842,7 +770,6 @@ const state = reactive({
   color: rgba(255, 255, 255, 0.5);
   font-size: 16px;
 }
-
 .menuContent .item.js-menu-item-on {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.1);

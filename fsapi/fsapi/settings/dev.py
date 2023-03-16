@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "home.apps.HomeConfig",
+    "user.apps.UserConfig",
 
 ]
 
@@ -62,7 +63,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'fsapi.wsgi.application'
 
-
 # mysql配置
 DATABASES = {
     'default': {
@@ -73,10 +73,10 @@ DATABASES = {
         'USER': 'fs',
         'PASSWORD': MYSQL_PASSWORD,
         'OPTIONS': {
-            'charset': 'utf8mb4', # 连接选项配置,mysql8.0以上无需配置
+            'charset': 'utf8mb4',  # 连接选项配置,mysql8.0以上无需配置
         },
-        'POOL_OPTIONS' : {      # 连接池的配置信息
-            'POOL_SIZE': 10,    # 连接池默认创建的链接对象的数量
+        'POOL_OPTIONS': {  # 连接池的配置信息
+            'POOL_SIZE': 10,  # 连接池默认创建的链接对象的数量
             'MAX_OVERFLOW': 10  # 连接池默认创建的链接对象的最大数量
         }
     }
@@ -104,7 +104,7 @@ CACHES = {
         }
     },
     # 提供存储短信验证码
-    "sms_code":{
+    "sms_code": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://:%s@%s:%s/2" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
@@ -160,10 +160,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 日志
 LOGGING = {
-    'version': 1, # 使用的日志模块的版本，目前官方提供的只有版本1，但是官方有可能会升级，为了避免升级出现的版本问题，所以这里固定为1
-    'disable_existing_loggers': False, # 是否禁用其他的已经存在的日志功能？肯定不能，有可能有些第三方模块在调用，所以禁用了以后，第三方模块无法捕获自身出现的异常了。
-    'formatters': { # 日志格式设置，verbose或者simple都是自定义的
-        'verbose': { # 详细格式，适合用于开发人员不在场的情况下的日志记录。
+    'version': 1,  # 使用的日志模块的版本，目前官方提供的只有版本1，但是官方有可能会升级，为了避免升级出现的版本问题，所以这里固定为1
+    'disable_existing_loggers': False,  # 是否禁用其他的已经存在的日志功能？肯定不能，有可能有些第三方模块在调用，所以禁用了以后，第三方模块无法捕获自身出现的异常了。
+    'formatters': {  # 日志格式设置，verbose或者simple都是自定义的
+        'verbose': {  # 详细格式，适合用于开发人员不在场的情况下的日志记录。
             # 格式定义：https://docs.python.org/3/library/logging.html#logrecord-attributes
             # levelname 日志等级
             # asctime   发生时间
@@ -172,9 +172,9 @@ LOGGING = {
             # thread    线程ID
             # message   异常信息
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{', # 变量格式分隔符
+            'style': '{',  # 变量格式分隔符
         },
-        'simple': { # 简单格式，适合用于开发人员在场的情况下的终端输出
+        'simple': {  # 简单格式，适合用于开发人员在场的情况下的终端输出
             'format': '{levelname} {message}',
             'style': '{',
         },
@@ -184,12 +184,12 @@ LOGGING = {
             '()': 'django.utils.log.RequireDebugTrue',
         },
     },
-    'handlers': { # 日志处理流程，console或者mail_admins都是自定义的。
+    'handlers': {  # 日志处理流程，console或者mail_admins都是自定义的。
         'console': {
-            'level': 'DEBUG', # 设置当前日志处理流程中的日志最低等级
-            'filters': ['require_debug_true'], # 当前日志处理流程的日志过滤
+            'level': 'DEBUG',  # 设置当前日志处理流程中的日志最低等级
+            'filters': ['require_debug_true'],  # 当前日志处理流程的日志过滤
             'class': 'logging.StreamHandler',  # 当前日志处理流程的核心类，StreamHandler可以帮我们把日志信息输出到终端下
-            'formatter': 'simple'              # 当前日志处理流程的日志格式
+            'formatter': 'simple'  # 当前日志处理流程的日志格式
         },
         # 'mail_admins': {
         #     'level': 'ERROR',                  # 设置当前日志处理流程中的日志最低等级
@@ -211,8 +211,8 @@ LOGGING = {
     },
     'loggers': {  # 日志处理的命名空间
         'django': {
-            'handlers': ['console','file'], # 当基于django命名空间写入日志时，调用那几个日志处理流程
-            'propagate': True,   # 是否在django命名空间对应的日志处理流程结束以后，冒泡通知其他的日志功能。True表示允许
+            'handlers': ['console', 'file'],  # 当基于django命名空间写入日志时，调用那几个日志处理流程
+            'propagate': True,  # 是否在django命名空间对应的日志处理流程结束以后，冒泡通知其他的日志功能。True表示允许
         },
     }
 }
@@ -222,7 +222,6 @@ REST_FRAMEWORK = {
     # 自定义异常处理
     'EXCEPTION_HANDLER': 'fsapi.extension.exceptions.custom_exception_handler',
 }
-
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_METHODS = [
@@ -247,4 +246,4 @@ CORS_ALLOW_HEADERS = [
     'jwt-token',
 ]
 
-
+AUTH_USER_MODEL = 'user.UserInfo'
