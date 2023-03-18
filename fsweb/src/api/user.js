@@ -34,7 +34,14 @@ const user = reactive({
     },
     get_sms_code() {
         return http.get(`/user/sms/${this.mobile}/`)
-    }
+    },
+    login_mobile() {
+        // 用户登录
+        return http.post("/user/login/sms/", {
+            "mobile": this.mobile,
+            "sms_code": this.code,
+        })
+    },
 })
 
 export default user;

@@ -6,7 +6,6 @@ from . import views
 
 router = SimpleRouter()
 router.register('register', views.UserRegisterGenericAPIView)
-# router.register('login/sms', views.UserLoginSMSGenericAPIView)
 
 urlpatterns = [
     path("login/", obtain_jwt_token, name="login"),
