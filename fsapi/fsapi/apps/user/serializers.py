@@ -1,6 +1,7 @@
 import re
 
 from django.conf import settings
+from django_redis import get_redis_connection
 
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -46,7 +47,18 @@ class UserRegisterModelSerializer(serializers.ModelSerializer):
         if models.UserInfo.objects.filter(mobile=mobile).exists():
             raise ValidationError("手机号已注册.")
 
-        # todo 短信验证码
+        # 从redis中提取短信
+        redis = get_redis_connection("sms_code")
+        code = redis.get(f"sms_{mobile}")
+        if code is None:
+            # 获取不到验证码，则表示验证码已经过期了或未发送验证码
+            raise ValidationError(detail="验证码不存在或已过期.", code="sms_code")
+        # 从redis提取的数据，字符串都是bytes类型，所以decode
+        if code.decode() != attrs.get("sms_code"):
+            raise ValidationError(detail="短信验证码错误.", code="sms_code")
+        # 删除掉redis中的短信和短信失效时间
+        redis.delete(f"sms_{mobile}")
+        redis.delete(f"interval_{mobile}")
 
         return attrs
 
