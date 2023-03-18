@@ -1,10 +1,14 @@
 import re
 
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
+
+from . import models
+from .serializers import UserRegisterModelSerializer
 
 from response import APIResponse
 from return_code import SUCCESS, AUTH_FAILED
-from . import models
+from mixins import ReCreateModelMixin
 
 
 class MobileAPIView(APIView):
@@ -22,4 +26,9 @@ class MobileAPIView(APIView):
         if models.UserInfo.objects.filter(mobile=mobile).exists():
             return APIResponse(AUTH_FAILED, "手机号已注册.")
         else:
-            return APIResponse(SUCCESS, "注册成功.")
+            return APIResponse(SUCCESS, "手机号尚未注册.")
+
+
+class UserRegisterGenericAPIView(GenericViewSet, ReCreateModelMixin):
+    queryset = models.UserInfo.objects.filter(is_deleted=False)
+    serializer_class = UserRegisterModelSerializer

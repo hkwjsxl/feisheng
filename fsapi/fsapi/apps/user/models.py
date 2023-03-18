@@ -9,6 +9,8 @@ class UserInfo(AbstractUser):
     avatar = models.ImageField(upload_to="avatar/%Y", default="", null=True, blank=True, verbose_name="个人头像")
     nickname = models.CharField(max_length=64, default="", null=True, blank=True, verbose_name="用户昵称")
 
+    is_deleted = models.BooleanField(default=False, verbose_name="是否删除")
+
     class Meta:
         db_table = 'fs_user'
         verbose_name = '用户信息'
