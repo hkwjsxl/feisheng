@@ -48,8 +48,7 @@ const login_success = () => {
   margin: auto;
   right: 0;
   bottom: 0;
-  /*top: -438px;*/
-  top: -250px;
+  top: -438px;
 }
 
 .login-title {
