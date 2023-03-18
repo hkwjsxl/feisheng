@@ -9,6 +9,7 @@ router = SimpleRouter()
 
 urlpatterns = [
     path("login/", obtain_jwt_token, name="login"),
+    path('mobile/<str:mobile>/', views.MobileAPIView.as_view(), name='mobile'),
 ]
 
 urlpatterns += router.urls

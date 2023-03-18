@@ -3,7 +3,7 @@
     <img src="../assets/Loginbg.3377d0c.jpg" alt="">
     <div class="login">
       <div class="login-title">
-        <img src="../assets/logo.png" alt="">
+        <img src="../assets/logo.png" alt="logo">
         <p>帮助有志向的年轻人通过努力学习获得体面的工作和生活!</p>
       </div>
       <div class="login_box">
@@ -11,10 +11,10 @@
           <span class="active">用户注册</span>
         </div>
         <div class="inp">
-          <input v-model="state.mobile" type="text" placeholder="手机号码" class="user">
-          <input v-model="state.password" type="password" placeholder="登录密码" class="user">
-          <input v-model="state.re_password" type="password" placeholder="确认密码" class="user">
-          <input v-model="state.code" type="text" class="code" placeholder="短信验证码">
+          <input v-model="user.mobile" type="text" placeholder="手机号码" class="user">
+          <input v-model="user.password" type="password" placeholder="登录密码" class="user">
+          <input v-model="user.re_password" type="password" placeholder="确认密码" class="user">
+          <input v-model="user.code" type="text" class="code" placeholder="短信验证码">
           <el-button id="get_code" type="primary">获取验证码</el-button>
           <button class="login_btn">注册</button>
           <p class="go_login">已有账号
@@ -27,19 +27,23 @@
 </template>
 
 <script setup>
-import {reactive, defineEmits} from "vue"
+import {reactive, defineEmits, watch} from "vue"
 import {ElMessage} from 'element-plus'
 import {useStore} from "vuex"
-// import "../utils/TCaptcha"
+import user from "../api/user";
 
 const store = useStore()
 
-const state = reactive({
-  password: "",    // 密码
-  re_password: "",// 确认密码
-  mobile: "",     // 手机号
-  code: "",       // 验证码
+// 监听数据mobile是否发生变化
+watch(() => user.mobile, (mobile, prevMobile) => {
+  if (/1[3-9]\d{9}/.test(user.mobile)) {
+    // 发送ajax验证手机号是否已经注册
+    user.check_mobile().then(response => {
+      ElMessage.success(response.data.message);
+    })
+  }
 })
+
 </script>
 
 <style scoped>
