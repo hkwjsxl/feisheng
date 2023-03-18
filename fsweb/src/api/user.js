@@ -19,6 +19,14 @@ const user = reactive({
     check_mobile() {
         // 验证手机号
         return http.get(`/user/mobile/${this.mobile}/`)
+    },
+    register(data) {
+        data.mobile = this.mobile
+        data.re_password = this.re_password
+        data.password = this.password
+        data.sms_code = this.code
+        // 用户注册请求
+        return http.post("/user/register/", data)
     }
 })
 

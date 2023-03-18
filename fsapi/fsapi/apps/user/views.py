@@ -26,7 +26,7 @@ class MobileAPIView(APIView):
         if models.UserInfo.objects.filter(mobile=mobile).exists():
             return APIResponse(AUTH_FAILED, "手机号已注册.")
         else:
-            return APIResponse(SUCCESS, "手机号尚未注册.")
+            return APIResponse(SUCCESS, "手机号尚未注册,请安全注册.")
 
 
 class UserRegisterGenericAPIView(GenericViewSet, ReCreateModelMixin):

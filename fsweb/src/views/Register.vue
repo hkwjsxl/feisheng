@@ -16,7 +16,7 @@
           <input v-model="user.re_password" type="password" placeholder="确认密码" class="user">
           <input v-model="user.code" type="text" class="code" placeholder="短信验证码">
           <el-button id="get_code" type="primary">获取验证码</el-button>
-          <button class="login_btn">注册</button>
+          <button class="login_btn" @click="registerhandler">注册</button>
           <p class="go_login">已有账号
             <router-link to="/login">立即登录</router-link>
           </p>
@@ -31,8 +31,11 @@ import {reactive, defineEmits, watch} from "vue"
 import {ElMessage} from 'element-plus'
 import {useStore} from "vuex"
 import user from "../api/user";
+import {useRouter} from "vue-router"
 
+const router = useRouter()
 const store = useStore()
+
 
 // 监听数据mobile是否发生变化
 watch(() => user.mobile, (mobile, prevMobile) => {
@@ -43,6 +46,55 @@ watch(() => user.mobile, (mobile, prevMobile) => {
     })
   }
 })
+
+const registerhandler = (res) => {
+  // 注册处理
+  if (!/^1[3-9]\d{9}$/.test(user.mobile)) {
+    // 错误提示
+    ElMessage.error('手机号格式不正确.');
+    return false // 阻止代码继续往下执行
+  }
+  if (user.password.length < 8 || user.password.length > 18) {
+    ElMessage.error('密码必须在8~18个字符之间.');
+    return false
+  }
+
+  if (user.password !== user.re_password) {
+    ElMessage.error('密码和确认密码不一致.');
+    return false
+  }
+
+  if (!user.code) {
+    ElMessage.error('请输入验证码.');
+    return false
+  }
+
+  // 发送请求
+  user.register({}).then(response => {
+    // 保存token，并根据用户的选择，是否记住密码
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+
+    // 默认不需要记住登录
+    sessionStorage.token = response.data.data.token;
+
+    // vuex存储用户登录信息
+    let payload = response.data.data.token.split(".")[1]  // 载荷
+    let payload_data = JSON.parse(atob(payload)) // 用户信息
+    store.commit("login", payload_data)
+    // 清空表单信息
+    user.mobile = ""
+    user.password = ""
+    user.re_password = ""
+    user.code = ""
+    user.remember = false
+    //  成功提示
+    ElMessage.success("注册成功.");
+    // 路由跳转到首页
+    router.push("/");
+  })
+}
+
 
 </script>
 
