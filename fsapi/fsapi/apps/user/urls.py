@@ -6,11 +6,13 @@ from . import views
 
 router = SimpleRouter()
 router.register('register', views.UserRegisterGenericAPIView)
+# router.register('login/sms', views.UserLoginSMSGenericAPIView)
 
 urlpatterns = [
     path("login/", obtain_jwt_token, name="login"),
     path('mobile/<str:mobile>/', views.MobileAPIView.as_view(), name='mobile'),
     path('sms/<str:mobile>/', views.SMSAPIView.as_view(), name='sms'),
+    path('login/sms/', views.UserLoginSMSGenericAPIView.as_view(), name='login_sms'),
 ]
 
 urlpatterns += router.urls

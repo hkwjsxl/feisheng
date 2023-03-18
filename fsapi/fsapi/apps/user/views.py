@@ -8,10 +8,10 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from . import models
-from .serializers import UserRegisterModelSerializer
+from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerializer
 
 from response import APIResponse
-from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR
+from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR
 from mixins import ReCreateModelMixin
 from sms.ronglianyunapi import send_sms
 
@@ -50,9 +50,6 @@ class SMSAPIView(APIView):
         # 验证手机号格式
         if not re.match(r'^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$', mobile):
             return APIResponse(AUTH_FAILED, "手机号格式错误.")
-        # 查看验证码是否注册
-        if models.UserInfo.objects.filter(mobile=mobile).exists():
-            return APIResponse(AUTH_FAILED, "手机号已注册.")
 
         redis = get_redis_connection("sms_code")
         # 判断手机短信是否处于发送冷却中[60秒只能发送一条]
@@ -81,3 +78,15 @@ class SMSAPIView(APIView):
         pipe.execute()  # 提交事务，同时把暂存在pipeline的数据一次性提交给redis
 
         return APIResponse(message="验证码发送成功.")
+
+
+class UserLoginSMSGenericAPIView(APIView):
+    """手机号短信验证码登录"""
+    authentication_classes = ()
+    permission_classes = ()
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserLoginSMSModelSerializer(data=request.data)
+        if not serializer.is_valid():
+            return APIResponse(VALIDATE_ERROR, serializer.errors)
+        return APIResponse(data=serializer.data)
