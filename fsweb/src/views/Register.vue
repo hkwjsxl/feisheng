@@ -71,6 +71,13 @@ const registerhandler = (res) => {
 
   // 发送请求
   user.register({}).then(response => {
+
+    let return_code = response.data.code;
+    if (return_code !== 200) {
+      ElMessage.error("注册失败.");
+      return false;
+    }
+
     // 保存token，并根据用户的选择，是否记住密码
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
