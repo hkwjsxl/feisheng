@@ -10,6 +10,7 @@ router.register('register', views.UserRegisterGenericAPIView)
 urlpatterns = [
     path("login/", obtain_jwt_token, name="login"),
     path('mobile/<str:mobile>/', views.MobileAPIView.as_view(), name='mobile'),
+    path('sms/<str:mobile>/', views.SMSAPIView.as_view(), name='sms'),
 ]
 
 urlpatterns += router.urls
