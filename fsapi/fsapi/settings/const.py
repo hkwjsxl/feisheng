@@ -8,11 +8,10 @@ MYSQL_PORT = 3306
 REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 REDIS_HOST = "127.0.0.1"
 REDIS_PORT = 6379
-
 # 容联云短信
 RONGLIANYUN = {
     "accId": '2c94811c86c00e9b0186f2873a040afa',
-    "accToken": os.getenv("RONGLIANYUNACCTOKEN"),
+    "accToken": os.environ.get("RONGLIANYUNACCTOKEN"),
     "appId": '2c94811c86c00e9b0186f2873b0d0b01',
     "reg_tid": 1,  # 注册短信验证码的模板ID
     "sms_expire": 300,  # 短信有效期，单位：秒(s)

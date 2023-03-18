@@ -15,7 +15,7 @@
           <input v-model="user.password" type="password" placeholder="登录密码" class="user">
           <input v-model="user.re_password" type="password" placeholder="确认密码" class="user">
           <input v-model="user.code" type="text" class="code" placeholder="短信验证码">
-          <el-button id="get_code" type="primary">获取验证码</el-button>
+          <el-button id="get_code" type="primary" @click="send_sms">{{ user.sms_btn_text }}</el-button>
           <button class="login_btn" @click="registerhandler">注册</button>
           <p class="go_login">已有账号
             <router-link to="/login">立即登录</router-link>
@@ -92,6 +92,57 @@ const registerhandler = (res) => {
     ElMessage.success("注册成功.");
     // 路由跳转到首页
     router.push("/");
+  })
+}
+
+
+// 发送短信
+const send_sms = () => {
+  if (!/1[3-9]\d{9}/.test(user.mobile)) {
+    ElMessage.error("手机号格式有误！")
+    return false
+  }
+
+  // 判断是否处于短信发送的冷却状态
+  if (user.is_send) {
+    ElMessage.error("短信发送过于频繁！")
+    return false
+  }
+
+  let time = user.sms_interval;
+  // 发送短信请求
+  user.get_sms_code().then(response => {
+    ElMessage.success("短信发送中，请留意您的手机！");
+    // 发送短信后进入冷却状态
+    user.is_send = true;
+    // 冷却倒计时
+    clearInterval(user.interval);
+    user.interval = setInterval(() => {
+      if (time < 1) {
+        // 退出短信发送的冷却状态
+        user.is_send = false
+        user.sms_btn_text = "点击获取验证码"
+      } else {
+        time -= 1;
+        user.sms_btn_text = `${time}秒后重新获取`;
+      }
+    }, 1000)
+  }).catch(error => {
+    ElMessage.error(error?.response?.data?.message);
+    time = error?.response?.data?.interval;
+    // 冷却倒计时
+    clearInterval(user.interval);
+    user.interval = setInterval(() => {
+      if (time < 1) {
+        // 退出短信发送的冷却状态
+        user.is_send = false
+        user.sms_btn_text = "点击获取验证码"
+      } else {
+        time -= 1;
+        user.sms_btn_text = `${time}秒后重新获取`;
+      }
+    }, 1000)
+
   })
 }
 
@@ -174,7 +225,7 @@ const registerhandler = (res) => {
 
 .inp .code {
   width: 190px;
-  margin-right: 56px;
+  margin-right: 16px;
 }
 
 #get_code {

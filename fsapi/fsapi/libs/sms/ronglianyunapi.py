@@ -8,7 +8,7 @@ def send_sms(tid, mobile, datas):
     """
     发送短信
     @params tid: 模板ID，默认测试使用1
-    @params mobile: 接收短信的手机号，多个手机号使用都逗号隔开
+    @params mobile: 接收短信的手机号，多个手机号使用逗号隔开
             单个号码： mobile="13312345678"
             多个号码： mobile="13312345678,13312345679,...."
     @params datas: 短信模板的参数列表

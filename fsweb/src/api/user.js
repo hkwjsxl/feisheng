@@ -9,6 +9,10 @@ const user = reactive({
     remember: false, // 是否记住登录状态
     mobile: "",      // 登录手机号码
     code: "",        // 短信验证码
+    sms_btn_text: "点击获取验证码",  // 短信按钮提示信息
+    is_send: false,  // 短信发送的标记
+    sms_interval: 60,// 间隔时间
+    interval: null,  // 定时器的标记
     login() {
         // 用户登录
         return http.post("/user/login/", {
@@ -27,6 +31,9 @@ const user = reactive({
         data.sms_code = this.code
         // 用户注册请求
         return http.post("/user/register/", data)
+    },
+    get_sms_code() {
+        return http.get(`/user/sms/${this.mobile}/`)
     }
 })
 

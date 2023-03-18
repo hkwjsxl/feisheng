@@ -22,7 +22,7 @@
   <div class="inp" v-show="user.login_type===1">
     <input v-model="user.mobile" type="text" placeholder="手机号码" class="user">
     <input v-model="user.code" type="text" class="code" placeholder="短信验证码">
-    <el-button id="get_code" type="primary">获取验证码</el-button>
+    <el-button id="get_code" type="primary">点击获取验证码</el-button>
     <button class="login_btn">登录</button>
     <p class="go_login">没有账号 <span>立即注册</span></p>
   </div>
@@ -108,8 +108,8 @@ const loginhandler = () => {
 }
 
 .inp .code {
-  width: 220px;
-  margin-right: 26px;
+  width: 190px;
+  margin-right: 16px;
 }
 
 #get_code {
