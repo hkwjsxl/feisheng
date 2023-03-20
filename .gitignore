@@ -127,6 +127,8 @@ cython_debug/
 # add
 .idea/
 scripts/
+# celery
+celerybeat-schedule.*
 
 # vue ignore
 .DS_Store
