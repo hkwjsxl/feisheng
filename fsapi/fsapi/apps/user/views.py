@@ -13,7 +13,7 @@ from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerialize
 from response import APIResponse
 from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR
 from mixins import ReCreateModelMixin
-from celeryapp.sms.tasks import send_sms
+from .tasks import send_sms
 
 
 class MobileAPIView(APIView):
