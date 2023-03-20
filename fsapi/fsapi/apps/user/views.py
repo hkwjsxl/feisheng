@@ -13,7 +13,7 @@ from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerialize
 from response import APIResponse
 from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR
 from mixins import ReCreateModelMixin
-from sms.ronglianyunapi import send_sms
+from celeryapp.sms.tasks import send_sms
 
 
 class MobileAPIView(APIView):
@@ -63,8 +63,10 @@ class SMSAPIView(APIView):
         time = settings.RONGLIANYUN.get("sms_expire")
         # 短信发送间隔时间
         sms_interval = settings.RONGLIANYUN["sms_interval"]
-        # 调用第三方sdk发送短信
-        is_ok = send_sms(settings.RONGLIANYUN.get("reg_tid"), mobile, datas=(code, time // 60))
+
+        # 调用第三方sdk异步发送短信
+        is_ok = send_sms.delay(settings.RONGLIANYUN.get("reg_tid"), mobile, datas=(code, time // 60))
+
         # 判断验证码是否接入成功
         if not is_ok:
             return APIResponse(SERVER_ERROR, "验证码接入错误.")
