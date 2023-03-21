@@ -63,7 +63,6 @@ const loginhandler = () => {
     // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
     let payload = response.data.token.split(".")[1]  // 载荷
     let payload_data = JSON.parse(atob(payload)) // 用户信息
-    console.log(payload_data)
     store.commit("login", payload_data)
 
     // 成功提示
@@ -110,7 +109,6 @@ const login_mobile_handler = () => {
     // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
     let payload = response.data.token.split(".")[1]  // 载荷
     let payload_data = JSON.parse(atob(payload)) // 用户信息
-    console.log(payload_data)
     store.commit("login", payload_data)
 
     // 成功提示
