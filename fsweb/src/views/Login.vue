@@ -3,7 +3,7 @@
     <img src="../assets/Loginbg.3377d0c.jpg" alt="login_background">
     <div class="login">
       <div class="login-title">
-        <img src="../assets/logo.png" alt="">
+        <img src="../assets/logo.png" alt="logo">
         <p>帮助有志向的年轻人通过努力学习获得体面的工作和生活!</p>
       </div>
       <div class="login_box">
@@ -15,10 +15,12 @@
 
 <script setup>
 import Login from "../components/Login.vue"
-import router from "../router";
+import {useRouter} from "vue-router"
 
+const router = useRouter()
 // 用户登录成功以后的处理
 const login_success = () => {
+  console.log(123)
   // 跳转到首页
   router.push("/");
 }
