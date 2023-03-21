@@ -1,9 +1,14 @@
 from models import models, BaseModel
 
+# 不支持上传文件
+# from ckeditor.fields import RichTextField
+# 支持上传文件
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 class CourseDirection(BaseModel):
     name = models.CharField(max_length=255, unique=True, verbose_name="方向名称")
-    remark = models.TextField(default="", blank=True, null=True, verbose_name="方向描述")
+    remark = RichTextUploadingField(default="", blank=True, null=True, verbose_name="方向描述")
     recomment_home_hot = models.BooleanField(default=False, verbose_name="是否推荐到首页新课栏目")
     recomment_home_top = models.BooleanField(default=False, verbose_name="是否推荐到首页必学栏目")
 
@@ -18,7 +23,7 @@ class CourseDirection(BaseModel):
 
 class CourseCategory(BaseModel):
     name = models.CharField(max_length=255, unique=True, verbose_name="分类名称")
-    remark = models.TextField(default="", blank=True, null=True, verbose_name="分类描述")
+    remark = RichTextUploadingField(default="", blank=True, null=True, verbose_name="分类描述")
 
     direction = models.ForeignKey(
         "CourseDirection",
@@ -60,7 +65,7 @@ class Course(BaseModel):
     level = models.SmallIntegerField(choices=level_choices, default=1, verbose_name="难度等级")
     status = models.SmallIntegerField(choices=status_choices, default=0, verbose_name="课程状态")
 
-    description = models.TextField(null=True, blank=True, verbose_name="详情介绍")
+    description = RichTextUploadingField(null=True, blank=True, verbose_name="详情介绍")
     pub_date = models.DateField(auto_now_add=True, verbose_name="发布日期")
     period = models.IntegerField(default=7, verbose_name="建议学习周期(day)")
     attachment_path = models.FileField(max_length=1000, blank=True, null=True, verbose_name="课件路径")
@@ -107,7 +112,7 @@ class Teacher(BaseModel):
     title = models.CharField(max_length=64, verbose_name="职位、职称")
     signature = models.CharField(max_length=255, null=True, blank=True, verbose_name="导师签名")
     avatar = models.ImageField(upload_to="teacher", null=True, blank=True, verbose_name="讲师头像")
-    brief = models.TextField(max_length=1024, verbose_name="讲师描述")
+    brief = RichTextUploadingField(max_length=1024, verbose_name="讲师描述")
 
     class Meta:
         db_table = "fs_teacher"
@@ -121,7 +126,7 @@ class Teacher(BaseModel):
 class CourseChapter(BaseModel):
     """课程章节"""
     orders = models.SmallIntegerField(default=1, verbose_name="第几章")
-    summary = models.TextField(blank=True, null=True, verbose_name="章节介绍")
+    summary = RichTextUploadingField(blank=True, null=True, verbose_name="章节介绍")
     pub_date = models.DateField(auto_now_add=True, verbose_name="发布日期")
 
     course = models.ForeignKey(
@@ -136,6 +141,14 @@ class CourseChapter(BaseModel):
 
     def __str__(self):
         return "%s-第%s章-%s" % (self.course.name, self.orders, self.name)
+
+    def text(self):
+        return self.__str__()
+
+    # admin站点配置排序规则和显示的字段文本提示
+    text.short_description = "章节名称"
+    text.allow_tags = True
+    text.admin_order_field = "orders"
 
 
 class CourseLesson(BaseModel):
@@ -172,3 +185,11 @@ class CourseLesson(BaseModel):
 
     def __str__(self):
         return "%s-%s" % (self.chapter, self.name)
+
+    def text(self, obj):
+        return obj.__str__()
+
+    # admin站点配置排序规则和显示的字段文本提示
+    text.short_description = "课时名称"
+    text.allow_tags = True
+    text.admin_order_field = "orders"
