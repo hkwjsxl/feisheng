@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
+    "course.apps.CourseConfig",
 
 ]
 
