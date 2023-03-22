@@ -6,6 +6,7 @@ from . import views
 
 router = SimpleRouter()
 router.register('direction', views.CourseDirectionGenericAPIView)
+router.register('category', views.CourseCategoryGenericAPIView)
 
 urlpatterns = [
 
