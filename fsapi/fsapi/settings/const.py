@@ -1,6 +1,8 @@
 import os
 
 from django.conf import settings
+# admin站点公共配置
+from django.contrib import admin
 
 # mysql相关
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")
@@ -65,3 +67,21 @@ CELERY_DISABLE_RATE_LIMITS = True
 #         # "schedule": crontab(hour=7, minute=30, day_of_week=1),  # 定时任务的调用时间，每周一早上7点30分调用一次add任务
 #     }
 # }
+
+
+admin.AdminSite.site_header = '飞升在线'
+admin.AdminSite.site_title = '飞升在线教育站点管理'
+
+# 登录界面logo
+SIMPLEUI_LOGO = '/media/backends/logo.png'
+# 快速操作
+SIMPLEUI_HOME_QUICK = True
+# 服务器信息
+SIMPLEUI_HOME_INFO = True
+
+# 关闭simpleui内置的使用分析
+SIMPLEUI_ANALYSIS = False
+# 离线模式
+SIMPLEUI_STATIC_OFFLINE = True
+# 首页图标地址
+SIMPLEUI_INDEX = 'http://127.0.0.1:5173/'
