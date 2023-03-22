@@ -37,8 +37,7 @@
                 <li :class="{cur:course.current_direction===direction.id}"
                     @click.prevent.stop="course.current_direction=direction.id"
                     v-for="direction in course.direction_list">
-                  <a href="">{{ direction.name }}
-                  </a>
+                  <a href="">{{ direction.name }} </a>
                 </li>
               </ul>
             </div>
@@ -163,14 +162,37 @@
 import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import course from "../api/course";
+
+import {watch} from "vue";
+
 // 获取课程学习方向
-course.get_course_direction().then(response => {
-  course.direction_list = response.data.data;
-})
+const get_direction = () => {
+  course.get_course_direction().then(response => {
+    course.direction_list = response.data.data;
+  })
+}
+get_direction();
+
 // 获取课程分类
-course.get_course_category().then(response => {
-  course.category_list = response.data.data;
-})
+const get_category = () => {
+  // 重置当前选中的课程分类
+  course.current_category = 0;
+  // 获取课程分类
+  course.get_course_category().then(response => {
+    course.category_list = response.data.data;
+  })
+}
+get_category();
+
+watch(
+    // 监听当前学习方向，在改变时，更新对应方向下的课程分类
+    () => course.current_direction,
+    () => {
+      get_direction();
+      get_category();
+    }
+)
+
 </script>
 
 <style scoped>

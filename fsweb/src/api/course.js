@@ -13,8 +13,12 @@ const course = reactive({
     },
     get_course_category() {
         // 获取课程分类信息
-        return http.get('/course/category/')
-    }
+        if (this.current_direction === 0) {
+            return http.get('/course/category/')
+        } else {
+            return http.get(`/course/category/?direction=${this.current_direction}`)
+        }
+    },
 })
 
 export default course;
