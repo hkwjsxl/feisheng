@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import CourseDirection, CourseCategory
+from .models import CourseDirection, CourseCategory, Course
 
 
 class CourseDirectionModelSerializer(serializers.ModelSerializer):
@@ -17,3 +17,15 @@ class CourseCategoryModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseCategory
         fields = ("id", "name")
+
+
+class CourseInfoModelSerializer(serializers.ModelSerializer):
+    """课程信息的序列化器"""
+
+    class Meta:
+        model = Course
+        fields = (
+            "id", "name", "course_cover", "level", "get_level_display",
+            "students", "status", "get_status_display",
+            "lessons", "pub_lessons", "price", "discount"
+        )
