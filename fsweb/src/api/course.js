@@ -41,6 +41,12 @@ const course = reactive({
                 params
             })
         }
+        // 方向未动，直接点击分类时发出请求
+        if (this.current_direction === 0 && this.current_category !== 0) {
+            return http.get(`/course/?category=${this.current_category}`, {
+                params
+            })
+        }
         // 分类为全部时发出请求
         if (this.current_category === 0) {
             return http.get(`/course/?direction=${this.current_direction}`, {
@@ -51,6 +57,19 @@ const course = reactive({
         return http.get(`/course/?direction=${this.current_direction}&category=${this.current_category}`, {
             params
         })
+    },
+    start_timer() {
+        // 课程相关的优惠活动倒计时
+        clearInterval(this.timer); // 保证整个页面只有一个倒计时对优惠活动的倒计时进行时间
+        this.timer = setInterval(() => {
+            this.course_list.forEach((course) => {
+                // js的对象和python里面的字典/列表一样， 是属于引用类型的。所以修改了成员的值也会影响自身的。
+                if (course.discount.expire && course.discount.expire > 0) {
+                    // 时间不断自减
+                    course.discount.expire--
+                }
+            })
+        }, 1000)
     }
 })
 

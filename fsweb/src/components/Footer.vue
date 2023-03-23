@@ -35,7 +35,7 @@ nav.get_footer_nav().then(response => {
 .footer ul li {
   float: left;
   width: 112px;
-  margin: 0 10px;
+  margin: 0 35px;
   text-align: center;
   font-size: 14px;
 }

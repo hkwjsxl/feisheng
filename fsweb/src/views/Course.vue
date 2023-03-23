@@ -156,6 +156,7 @@ watch(
     () => {
       // 重置排序条件
       course.ordering = "-id";
+      course.page=1;
       get_direction();
       get_category();
       get_course_list();
@@ -168,8 +169,11 @@ const get_course_list = () => {
   course.get_course_list().then(response => {
     course.course_list = response.data.data.results;
     course.count = response.data.data.count;
-    course.has_next = response.data.data.next;
-    course.has_perv = response.data.data.previous;
+    // 2个! 表示把数据转换成布尔值
+    course.has_next = !!response.data.data.next;
+    course.has_perv = !!response.data.data.previous;
+    // 优惠活动的倒计时
+    course.start_timer();
   })
 }
 
@@ -181,6 +185,7 @@ watch(
     () => {
       // 重置排序条件
       course.ordering = "-id";
+      course.page=1;
       get_course_list();
     }
 )
@@ -189,6 +194,7 @@ watch(
     // 监听课程切换不同的排序条件
     () => course.ordering,
     () => {
+      course.page=1;
       get_course_list();
     }
 )
