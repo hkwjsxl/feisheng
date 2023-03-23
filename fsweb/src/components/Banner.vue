@@ -301,7 +301,7 @@ import banner from "../api/banner";
 
 // 获取轮播广告列表
 banner.get_banner_list().then(response => {
-  banner.banner_list = response.data.data
+  banner.banner_list = response.data.data.results;
 })
 
 const state = reactive({

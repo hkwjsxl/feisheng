@@ -262,6 +262,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',  # session认证
         'rest_framework.authentication.BasicAuthentication',
     ),
+    # 默认分页
+    "DEFAULT_PAGINATION_CLASS": "fsapi.extension.paginations.RePageNumberPagination",
 }
 
 # jwt认证相关配置项

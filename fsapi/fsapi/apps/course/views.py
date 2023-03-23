@@ -8,12 +8,14 @@ from .models import CourseDirection, CourseCategory, Course
 from .serializers import CourseDirectionModelSerializer, CourseCategoryModelSerializer, CourseInfoModelSerializer
 
 from mixins import ReListModelMixin
+from paginations import RePageNumberPagination, ReLimitOffsetPagination
 
 
 class CourseDirectionGenericAPIView(GenericViewSet, ReListModelMixin):
     """学习方向"""
     queryset = CourseDirection.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
     serializer_class = CourseDirectionModelSerializer
+    pagination_class = None
 
 
 class CourseCategoryFilterSet(FilterSet):
@@ -32,6 +34,7 @@ class CourseCategoryGenericAPIView(GenericViewSet, ReListModelMixin):
     """课程分类"""
     filter_backends = (DjangoFilterBackend,)
     filterset_class = CourseCategoryFilterSet
+    pagination_class = None
 
     queryset = CourseCategory.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
     serializer_class = CourseCategoryModelSerializer
@@ -55,10 +58,12 @@ class CourseInfoGenericAPIView(GenericViewSet, ReListModelMixin):
     """
     课程列表接口
     排序：http://127.0.0.1:8000/course/?ordering=-students
+    分页：http://127.0.0.1:8000/course/?page=2&size=2
     """
     filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = CourseInfoFilterSet
     ordering_fields = ('id', 'students', 'orders')
+    pagination_class = RePageNumberPagination
 
     queryset = Course.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
     serializer_class = CourseInfoModelSerializer

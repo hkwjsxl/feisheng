@@ -101,15 +101,19 @@
               </a>
             </li>
           </ul>
-          <div class="page">
-            <span class="disabled_page">首页</span>
-            <span class="disabled_page">上一页</span>
-            <a href="" class="active">1</a>
-            <a href="">2</a>
-            <a href="">3</a>
-            <a href="">4</a>
-            <a href="">下一页</a>
-            <a href="">尾页</a>
+          <div class="page" v-if="course.count > course.size">
+            <a href="" v-if="course.has_perv" @click.prevent.stop="course.page=1">首页</a>
+            <span v-else>首页</span>
+            <a href="" v-if="course.has_perv" @click.prevent.stop="course.page--">上一页</a>
+            <span v-else>上一页</span>
+            <a href="" v-if="course.has_perv" @click.prevent.stop="course.page--">{{ course.page - 1 }}</a>
+            <a class="active">{{ course.page }}</a>
+            <a href="" v-if="course.has_next" @click.prevent.stop="course.page++">{{ course.page + 1 }}</a>
+            <a href="" v-if="course.has_next" @click.prevent.stop="course.page++">下一页</a>
+            <span v-else>下一页</span>
+            <a href="" v-if="course.has_next"
+               @click.prevent.stop="course.page=Math.ceil(course.count/course.size)">尾页</a>
+            <span v-else>尾页</span>
           </div>
         </div>
       </div>
@@ -162,7 +166,10 @@ watch(
 const get_course_list = () => {
   // 获取课程列表
   course.get_course_list().then(response => {
-    course.course_list = response.data.data;
+    course.course_list = response.data.data.results;
+    course.count = response.data.data.count;
+    course.has_next = response.data.data.next;
+    course.has_perv = response.data.data.previous;
   })
 }
 
@@ -182,7 +189,13 @@ watch(
     // 监听课程切换不同的排序条件
     () => course.ordering,
     () => {
-      console.log(course.ordering)
+      get_course_list();
+    }
+)
+watch(
+    // 监听分页后更新课程数据
+    () => course.page,
+    () => {
       get_course_list();
     }
 )

@@ -5,6 +5,7 @@ from return_code import (
     VALIDATE_ERROR, AUTH_FAILED
 )
 
+
 class ReCreateModelMixin(mixins.CreateModelMixin):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -20,7 +21,10 @@ class ReListModelMixin(mixins.ListModelMixin):
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            return APIResponse(data=serializer.data)
+            # return self.get_paginated_response(serializer.data)
+            # self.get_paginated_response(serializer.data)
+            # 分页类要重写def get_paginated_response(self, data):返回字典
+            return APIResponse(data=self.get_paginated_response(serializer.data))
         serializer = self.get_serializer(queryset, many=True)
         return APIResponse(data=serializer.data)
 
