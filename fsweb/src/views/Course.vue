@@ -59,9 +59,12 @@
         <div class="main-wrap">
           <div class="filter clearfix">
             <div class="sort l">
-              <a href="" class="on">最新</a>
-              <a href="">销量</a>
-              <a href="">升级</a>
+              <a href="" :class="{on:course.ordering==='-id'}"
+                 @click.prevent.stop="course.ordering=(course.ordering==='-id'?'id':'-id')">最新</a>
+              <a href="" :class="{on:course.ordering==='-students'}"
+                 @click.prevent.stop="course.ordering=(course.ordering==='-students'?'sutdent':'-students')">销量</a>
+              <a href="" :class="{on:course.ordering==='-orders'}"
+                 @click.prevent.stop="course.ordering=(course.ordering==='-orders'?'orders':'-orders')">推荐</a>
             </div>
             <div class="other r clearfix"><a class="course-line l" href="" target="_blank">学习路线</a></div>
           </div>
@@ -77,13 +80,19 @@
                           <i class="countdown"
                              v-if="course_info.discount.expire">{{ parseInt(course_info.discount.expire / 86400) }}
                             <span class="day">天</span>
-                            {{ fill0(parseInt(course_info.discount.expire / 3600 % 24)) }}:{{ fill0(parseInt(course_info.discount.expire / 60 % 60)) }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}
+                            {{
+                              fill0(parseInt(course_info.discount.expire / 3600 % 24))
+                            }}:{{
+                              fill0(parseInt(course_info.discount.expire / 60 % 60))
+                            }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}
                           </i>
                         </span>
                 </p>
                 <p class="two clearfix">
                   <span class="price l red bold"
-                        v-if="course_info.discount.price">￥{{ parseFloat(course_info.discount.price).toFixed(2) }}</span>
+                        v-if="course_info.discount.price">￥{{
+                      parseFloat(course_info.discount.price).toFixed(2)
+                    }}</span>
                   <span class="price l red bold" v-else>￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
                   <span class="origin-price l delete-line"
                         v-if="course_info.discount.price">￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
@@ -141,6 +150,8 @@ watch(
     // 监听当前学习方向，在改变时，更新对应方向下的课程分类
     () => course.current_direction,
     () => {
+      // 重置排序条件
+      course.ordering = "-id";
       get_direction();
       get_category();
       get_course_list();
@@ -161,11 +172,20 @@ watch(
     // 监听切换不同的课程分类，在改变时，更新对应分类下的课程信息
     () => course.current_category,
     () => {
+      // 重置排序条件
+      course.ordering = "-id";
       get_course_list();
     }
 )
 
-
+watch(
+    // 监听课程切换不同的排序条件
+    () => course.ordering,
+    () => {
+      console.log(course.ordering)
+      get_course_list();
+    }
+)
 </script>
 
 <style scoped>

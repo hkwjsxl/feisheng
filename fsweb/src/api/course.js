@@ -8,6 +8,7 @@ const course = reactive({
     direction_list: [],    // 学习方向列表
     category_list: [],    // 课程分类列表
     course_list: [],       // 课程列表数据
+    ordering: "-id",       // 课程排序条件
     get_course_direction() {
         // 获取学习方向信息
         return http.get("/course/direction/")
@@ -21,16 +22,26 @@ const course = reactive({
         }
     },
     get_course_list() {
+        let params = {}
+        if (this.ordering) {
+            params.ordering = this.ordering;
+        }
         // 方向和分类都为全部时获取全部的课程列表
         if (this.current_direction === 0 && this.current_category === 0) {
-            return http.get(`/course/`)
+            return http.get(`/course/`, {
+                params
+            })
         }
         // 分类为全部时发出请求
         if (this.current_category === 0) {
-            return http.get(`/course/?direction=${this.current_direction}`)
+            return http.get(`/course/?direction=${this.current_direction}`, {
+                params
+            })
         }
         // 获取课程列表信息
-        return http.get(`/course/?direction=${this.current_direction}&category=${this.current_category}`)
+        return http.get(`/course/?direction=${this.current_direction}&category=${this.current_category}`, {
+            params
+        })
     }
 })
 

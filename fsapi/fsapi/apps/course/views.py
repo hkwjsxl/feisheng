@@ -1,4 +1,5 @@
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.filters import OrderingFilter
 
 from django_filters import FilterSet, filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -7,6 +8,12 @@ from .models import CourseDirection, CourseCategory, Course
 from .serializers import CourseDirectionModelSerializer, CourseCategoryModelSerializer, CourseInfoModelSerializer
 
 from mixins import ReListModelMixin
+
+
+class CourseDirectionGenericAPIView(GenericViewSet, ReListModelMixin):
+    """学习方向"""
+    queryset = CourseDirection.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
+    serializer_class = CourseDirectionModelSerializer
 
 
 class CourseCategoryFilterSet(FilterSet):
@@ -19,12 +26,6 @@ class CourseCategoryFilterSet(FilterSet):
     class Meta:
         model = CourseCategory
         fields = ('direction',)
-
-
-class CourseDirectionGenericAPIView(GenericViewSet, ReListModelMixin):
-    """学习方向"""
-    queryset = CourseDirection.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
-    serializer_class = CourseDirectionModelSerializer
 
 
 class CourseCategoryGenericAPIView(GenericViewSet, ReListModelMixin):
@@ -51,9 +52,13 @@ class CourseInfoFilterSet(FilterSet):
 
 
 class CourseInfoGenericAPIView(GenericViewSet, ReListModelMixin):
-    """课程列表接口"""
-    filter_backends = (DjangoFilterBackend,)
+    """
+    课程列表接口
+    排序：http://127.0.0.1:8000/course/?ordering=-students
+    """
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filterset_class = CourseInfoFilterSet
+    ordering_fields = ('id', 'students', 'orders')
 
     queryset = Course.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
     serializer_class = CourseInfoModelSerializer
