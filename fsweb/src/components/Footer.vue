@@ -14,7 +14,7 @@
 import nav from "../api/nav.js";
 // 获取脚部导航列表
 nav.get_footer_nav().then(response => {
-  nav.footer_nav_list = response.data.data
+  nav.footer_nav_list = response.data.data.results;
 })
 
 </script>
@@ -35,7 +35,7 @@ nav.get_footer_nav().then(response => {
 .footer ul li {
   float: left;
   width: 112px;
-  margin: 0 10px;
+  margin: 0 35px;
   text-align: center;
   font-size: 14px;
 }

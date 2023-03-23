@@ -81,7 +81,7 @@ const state = reactive({
 
 // 请求头部导航列表
 nav.get_header_nav().then(response => {
-  nav.header_nav_list = response.data.data
+  nav.header_nav_list = response.data.data.results;
 })
 
 // 用户登录成功以后的处理

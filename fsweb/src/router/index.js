@@ -30,10 +30,19 @@ const routes = [
         meta: {
             title: "飞升在线教育-个人中心",
             keepAlive: true,
+            authorization: true,
         },
         path: '/user',
         name: "User",
         component: () => import("../views/User.vue"),
+    }, {
+        meta: {
+            title: "飞升在线教育-课程列表",
+            keepAlive: true,
+        },
+        path: '/project',
+        name: "Course",
+        component: () => import("../views/Course.vue"),
     },
 ]
 // 路由对象实例化

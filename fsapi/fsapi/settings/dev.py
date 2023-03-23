@@ -19,6 +19,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
+    "simpleui",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,8 +30,13 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "corsheaders",
+    "ckeditor",
+    "ckeditor_uploader",
+    "stdimage",
+
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
+    "course.apps.CourseConfig",
 
 ]
 
@@ -255,6 +262,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',  # session认证
         'rest_framework.authentication.BasicAuthentication',
     ),
+    # 默认分页
+    "DEFAULT_PAGINATION_CLASS": "fsapi.extension.paginations.RePageNumberPagination",
 }
 
 # jwt认证相关配置项
@@ -266,3 +275,23 @@ JWT_AUTH = {
 
 # django自定义认证
 AUTHENTICATION_BACKENDS = ['fsapi.extension.authenticate.CustomAuthBackend', ]
+
+# ckeditor上传文件路径
+CKEDITOR_UPLOAD_PATH = "ckeditor/"
+# ckeditor工具条配置
+CKEDITOR_CONFIGS = {
+    'default': {
+        # 'toolbar': 'full', # full 显示全部工具
+        # 'toolbar': 'Basic', # Basic 显示基本工具
+        'toolbar': 'Custom',  # 自定义工具条的显示数量
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'Image', 'Styles', 'Format', 'Font', 'Fontsize'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter',
+             'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink', 'Table'],
+            ['RemoveFormat', 'Source']
+        ],
+        # 设置编辑器的高度
+        'height': 130,
+    },
+}
