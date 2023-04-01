@@ -15,6 +15,7 @@ const course = reactive({
     has_perv: false,  // 是否有上一页
     has_next: false,  // 是否有下一页
     timer: null,      // 课程相关数据的定时器
+    text: "",         // 搜索文本框内容
     get_course_direction() {
         // 获取学习方向信息
         return http.get("/course/direction/")
@@ -70,6 +71,20 @@ const course = reactive({
                 }
             })
         }, 1000)
+    },
+    search_course() {
+        // 课程搜索
+        let params = {
+            page: this.page,
+            size: this.size,
+            text: this.text,
+        }
+        if (this.ordering) {
+            params['ordering'] = this.ordering
+        }
+        return http.get(`/course/search/`, {
+            params,
+        })
     }
 })
 
