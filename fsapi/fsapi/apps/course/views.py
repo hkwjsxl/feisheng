@@ -1,14 +1,18 @@
-from rest_framework.viewsets import GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ViewSetMixin
 from rest_framework.filters import OrderingFilter
-
 from django_filters import FilterSet, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_haystack.filters import HaystackFilter
+from drf_haystack.generics import HaystackGenericAPIView
 
 from .models import CourseDirection, CourseCategory, Course
-from .serializers import CourseDirectionModelSerializer, CourseCategoryModelSerializer, CourseInfoModelSerializer
+from .serializers import (
+    CourseDirectionModelSerializer, CourseCategoryModelSerializer, CourseInfoModelSerializer,
+    CourseIndexHaystackSerializer
+)
 
-from mixins import ReListModelMixin
-from paginations import RePageNumberPagination, ReLimitOffsetPagination
+from mixins import ReListModelMixin, ReRetrieveModelMixin
+from paginations import RePageNumberPagination
 
 
 class CourseDirectionGenericAPIView(GenericViewSet, ReListModelMixin):
@@ -67,3 +71,13 @@ class CourseInfoGenericAPIView(GenericViewSet, ReListModelMixin):
 
     queryset = Course.objects.filter(is_show=True, is_deleted=False).order_by("orders", "-id")
     serializer_class = CourseInfoModelSerializer
+
+
+class CourseSearchViewSet(ReRetrieveModelMixin, ReListModelMixin, ViewSetMixin, HaystackGenericAPIView):
+    """课程信息全文搜索视图类"""
+    # 指定本次搜索的最终真实数据的保存模型
+    index_models = [Course]
+    serializer_class = CourseIndexHaystackSerializer
+    filter_backends = [OrderingFilter, HaystackFilter]
+    ordering_fields = ('id', 'students', 'orders')
+    pagination_class = RePageNumberPagination
