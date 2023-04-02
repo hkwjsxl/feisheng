@@ -8,8 +8,11 @@ router = SimpleRouter()
 router.register('direction', views.CourseDirectionGenericAPIView)
 router.register('category', views.CourseCategoryGenericAPIView)
 router.register('', views.CourseInfoGenericAPIView)
+router.register("search", views.CourseSearchViewSet, basename="course-search")
 
 urlpatterns = [
-
+    path("search/hot/", views.HotWordAPIView.as_view()),
+    path("<int:pk>/", views.CourseRetrieveAPIView.as_view()),
+    path("<int:course>/chapter/", views.CourseChapterListAPIView.as_view()),
 ]
 urlpatterns += router.urls

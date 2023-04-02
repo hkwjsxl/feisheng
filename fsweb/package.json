@@ -14,6 +14,7 @@
     "element-plus": "^2.3.0",
     "unplugin-vue-components": "^0.24.1",
     "vue": "^3.2.45",
+    "vue-aliplayer-v3": "^1.0.3",
     "vue-router": "^4.0.13",
     "vuex": "^4.0.2",
     "vuex-persistedstate": "^4.1.0"

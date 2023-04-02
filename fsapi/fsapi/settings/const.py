@@ -85,3 +85,6 @@ SIMPLEUI_ANALYSIS = False
 SIMPLEUI_STATIC_OFFLINE = True
 # 首页图标地址
 SIMPLEUI_INDEX = 'http://127.0.0.1:5173/'
+
+# 后台访问地址
+BACKEND_URL = "http://127.0.0.1:8000"

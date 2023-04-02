@@ -1,3 +1,5 @@
+import json
+
 from django.utils.safestring import mark_safe
 
 from models import models, BaseModel
@@ -142,8 +144,18 @@ class Course(BaseModel):
         return {
             "type": ["限时优惠", "限时减免"].pop(random.randint(0, 1)),  # 优惠类型
             "expire": random.randint(100000, 1200000),  # 优惠倒计时
-            "price": self.price - random.randint(1, 10) * 10,  # 优惠价格
+            "price": float(self.price - random.randint(1, 10) * 10),  # 优惠价格
         }
+
+    def discount_json(self):
+        # 必须转成字符串才能保存到es中。所以该方法提供给es使用的。
+        return json.dumps(self.discount)
+
+    @property
+    def can_free_study(self):
+        """是否允许试学"""
+        lesson_list = self.lesson_list.filter(is_deleted=False, is_show=True).order_by("orders").all()
+        return len(lesson_list) > 0
 
 
 class Teacher(BaseModel):
@@ -224,6 +236,19 @@ class CourseChapter(BaseModel):
     text.short_description = "章节名称"
     text.allow_tags = True
     text.admin_order_field = "orders"
+
+    def get_lesson_list(self):
+        """返回当前章节的课时列表"""
+        lesson_list = self.lesson_list.filter(is_deleted=False, is_show=True).order_by("orders").all()
+        return [{
+            "id": lesson.id,
+            "name": lesson.name,
+            "orders": lesson.orders,
+            "duration": lesson.duration,
+            "lesson_type": lesson.lesson_type,
+            "lesson_link": lesson.lesson_link,
+            "free_trail": lesson.free_trail
+        } for lesson in lesson_list]
 
 
 class CourseLesson(BaseModel):

@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "ckeditor",
     "ckeditor_uploader",
     "stdimage",
+    "haystack",
 
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
@@ -120,13 +121,35 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 100},
         }
-    }
+    },
+    # 提供存储搜索热门关键字
+    "hot_word": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:%s@%s:%s/3" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 }
 
 # 设置用户登录admin站点时,记录登录状态的session保存到redis缓存中
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # 设置session保存的位置对应的缓存配置项
 SESSION_CACHE_ALIAS = "session"
+
+# haystack连接elasticsearch的配置信息
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # haystack操作es的核心模块
+        'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
+        # es服务端地址
+        'URL': 'http://127.0.0.1:9200/',
+        # es索引仓库
+        'INDEX_NAME': 'haystack',
+    },
+}
+# 当mysqlORM操作数据库改变时，自动更新es的索引，否则es的索引会找不到新增的数据
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

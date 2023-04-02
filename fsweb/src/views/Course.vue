@@ -13,15 +13,17 @@
             </div>
             <div class="actual-header-search">
               <div class="search-inner">
-                <input class="actual-search-input" placeholder="搜索感兴趣的实战课程内容" type="text" autocomplete="off">
-                <img class="actual-search-button" src="../assets/search.svg" alt="search"/>
+                <input class="actual-search-input" v-model="course.text" placeholder="搜索感兴趣的实战课程内容" type="text"
+                       autocomplete="off">
+                <img class="actual-search-button" src="../assets/search.svg" @click.prevent.stop="get_course_list"
+                     alt="search"/>
               </div>
               <div class="actual-searchtags">
               </div>
               <div class="search-hot">
                 <span>热搜：</span>
-                <a href="">Java工程师</a>
-                <a href="">Vue</a>
+                <a href="" @click.stop.prevent="search_by_hotword(hot_word)"
+                   v-for="hot_word in course.hot_word_list">{{ hot_word }}</a>
               </div>
             </div>
           </div>
@@ -70,7 +72,7 @@
           </div>
           <ul class="course-list clearfix">
             <li class="course-card" v-for="course_info in course.course_list">
-              <a target="_blank" href="">
+              <router-link :to="`/project/${course_info.id}`">
                 <div class="img"><img :src="course_info.course_cover" alt=""></div>
                 <p class="title ellipsis2">{{ course_info.name }}</p>
                 <p class="one">
@@ -78,27 +80,20 @@
                   <span class="discount r">
                           <i class="name" v-if="course_info.discount.type">{{ course_info.discount.type }}</i>
                           <i class="countdown"
-                             v-if="course_info.discount.expire">{{ parseInt(course_info.discount.expire / 86400) }}
-                            <span class="day">天</span>
-                            {{
-                              fill0(parseInt(course_info.discount.expire / 3600 % 24))
-                            }}:{{
-                              fill0(parseInt(course_info.discount.expire / 60 % 60))
-                            }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}
-                          </i>
+                             v-if="course_info.discount.expire">{{ parseInt(course_info.discount.expire / 86400) }}<span
+                              class="day">天</span>{{ fill0(parseInt(course_info.discount.expire / 3600 % 24)) }}:{{ fill0(parseInt(course_info.discount.expire / 60 % 60)) }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}</i>
                         </span>
                 </p>
                 <p class="two clearfix">
                   <span class="price l red bold"
-                        v-if="course_info.discount.price">￥{{
-                      parseFloat(course_info.discount.price).toFixed(2)
-                    }}</span>
+                        v-if="course_info.discount.price">￥{{ parseFloat(course_info.discount.price).toFixed(2) }}</span>
                   <span class="price l red bold" v-else>￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
                   <span class="origin-price l delete-line"
                         v-if="course_info.discount.price">￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
-                  <span class="add-shop-cart r"><img class="icon imv2-shopping-cart" src="../assets/cart2.svg" alt="">加购物车</span>
+                  <span class="add-shop-cart r"><img class="icon imv2-shopping-cart"
+                                                     src="../assets/cart2.svg" alt="">加购物车</span>
                 </p>
-              </a>
+              </router-link>
             </li>
           </ul>
           <div class="page" v-if="course.count > course.size">
@@ -154,19 +149,33 @@ watch(
     // 监听当前学习方向，在改变时，更新对应方向下的课程分类
     () => course.current_direction,
     () => {
+      // 重置搜索文本框
+      course.text = "";
       // 重置排序条件
       course.ordering = "-id";
-      course.page=1;
+      course.page = 1;
       get_direction();
       get_category();
       get_course_list();
     }
 )
 
+const get_hot_word = () => {
+  // 搜索热门关键字列表
+  course.get_hot_word().then(response => {
+    course.hot_word_list = response.data.data;
+  })
+}
 
 const get_course_list = () => {
   // 获取课程列表
-  course.get_course_list().then(response => {
+  let ret = null; // 预设一个用于保存服务端返回的数据
+  if (course.text) {
+    ret = course.search_course()
+  } else {
+    ret = course.get_course_list()
+  }
+  ret.then(response => {
     course.course_list = response.data.data.results;
     course.count = response.data.data.count;
     // 2个! 表示把数据转换成布尔值
@@ -175,17 +184,27 @@ const get_course_list = () => {
     // 优惠活动的倒计时
     course.start_timer();
   })
+  // 每次获取课程的同时获取一次热搜词列表
+  get_hot_word();
 }
 
 get_course_list();
+
+// 当热搜词被点击，进行搜索
+const search_by_hotword = (hot_word) => {
+  course.text = hot_word;
+  get_course_list();
+}
 
 watch(
     // 监听切换不同的课程分类，在改变时，更新对应分类下的课程信息
     () => course.current_category,
     () => {
+      // 重置搜索文本框
+      course.text = "";
       // 重置排序条件
       course.ordering = "-id";
-      course.page=1;
+      course.page = 1;
       get_course_list();
     }
 )
@@ -194,7 +213,7 @@ watch(
     // 监听课程切换不同的排序条件
     () => course.ordering,
     () => {
-      course.page=1;
+      course.page = 1;
       get_course_list();
     }
 )
