@@ -9,23 +9,37 @@
               ref="player"
               class="h-64 md:h-96 w-full rounded-lg"
               style="height: 100%; width: 100%;"
+              :source="course.info.course_video"
+              :cover="course.info.course_cover"
               :options="options"
               @play="onPlay($event)"
               @pause="onPause($event)"
               @playing="onPlaying($event)"
+              v-if="course.info.course_video"
           />
+          <img :src="course.info.course_cover" style="width: 100%;" alt="" v-else>
         </div>
         <div class="wrap-right">
-          <h3 class="course-name">Linux系统基础5周入门精讲</h3>
-          <p class="data">23475人在学&nbsp;&nbsp;&nbsp;&nbsp;课程总时长：148课时/180小时&nbsp;&nbsp;&nbsp;&nbsp;难度：初级</p>
-          <div class="sale-time">
-            <p class="sale-type">限时免费</p>
-            <p class="expire">距离结束：仅剩 01天 04小时 33分 <span class="second">08</span> 秒</p>
+          <h3 class="course-name">{{ course.info.name }}</h3>
+          <p class="data">
+            {{ course.info.students }}人在学&nbsp;&nbsp;&nbsp;&nbsp;课程总时长：{{
+              course.info.pub_lessons
+            }}课时/{{ course.info.lessons }}课时&nbsp;&nbsp;&nbsp;&nbsp;难度：{{ course.info.get_level_display }}</p>
+          <div class="sale-time" v-if="course.info.discount.type">
+            <p class="sale-type">{{ course.info.discount.type }}</p>
+            <p class="expire" v-if="course.info.discount.expire>0">距离结束：仅剩
+              {{ parseInt(course.info.discount.expire / 86400) }}天
+              {{ fill0(parseInt(course.info.discount.expire / 3600 % 24)) }}小时
+              {{ fill0(parseInt(course.info.discount.expire / 60 % 60)) }}分 <span
+                  class="second">{{ fill0(parseInt(course.info.discount.expire % 60)) }}</span> 秒</p>
           </div>
-          <p class="course-price">
+          <div class="sale-time" v-if="!course.info.discount.type">
+            <p class="sale-type">课程价格 ¥{{ parseFloat(course.info.price).toFixed(2) }}</p>
+          </div>
+          <p class="course-price" v-if="course.info.discount.price">
             <span>活动价</span>
-            <span class="discount">¥0.00</span>
-            <span class="original">¥29.00</span>
+            <span class="discount">¥{{ parseFloat(course.info.discount.price).toFixed(2) }}</span>
+            <span class="original">¥{{ parseFloat(course.info.price).toFixed(2) }}</span>
           </p>
           <div class="buy">
             <div class="buy-btn">
@@ -38,19 +52,19 @@
       </div>
       <div class="course-tab">
         <ul class="tab-list">
-          <li :class="state.tabIndex===1?'active':''" @click="state.tabIndex=1">详情介绍</li>
-          <li :class="state.tabIndex===2?'active':''" @click="state.tabIndex=2">课程章节 <span
-              :class="state.tabIndex!==2?'free':''">(试学)</span></li>
-          <li :class="state.tabIndex===3?'active':''" @click="state.tabIndex=3">用户评论 (42)</li>
-          <li :class="state.tabIndex===4?'active':''" @click="state.tabIndex=4">常见问题</li>
+          <li :class="course.tabIndex===1?'active':''" @click="course.tabIndex=1">详情介绍</li>
+          <li :class="course.tabIndex===2?'active':''" @click="course.tabIndex=2">课程章节 <span
+              :class="course.tabIndex!==2?'free':''">(试学)</span></li>
+          <li :class="course.tabIndex===3?'active':''" @click="course.tabIndex=3">用户评论 (42)</li>
+          <li :class="course.tabIndex===4?'active':''" @click="course.tabIndex=4">常见问题</li>
         </ul>
       </div>
       <div class="course-content">
         <div class="course-tab-list">
-          <div class="tab-item" v-if="state.tabIndex===1">
-            <p><img alt="" src="//hcdn2.luffycity.com/media/frontend/activity/详情页_01.png"></p>
+          <div class="tab-item" v-if="course.tabIndex===1" v-html="course.info.description">
+
           </div>
-          <div class="tab-item" v-if="state.tabIndex===2">
+          <div class="tab-item" v-if="course.tabIndex===2">
             <div class="tab-item-title">
               <p class="chapter">课程章节</p>
               <p class="chapter-length">共11章 147个课时</p>
@@ -86,10 +100,10 @@
               </ul>
             </div>
           </div>
-          <div class="tab-item" v-if="state.tabIndex===3">
+          <div class="tab-item" v-if="course.tabIndex===3">
             用户评论
           </div>
-          <div class="tab-item" v-if="state.tabIndex===4">
+          <div class="tab-item" v-if="course.tabIndex===4">
             常见问题
           </div>
         </div>
@@ -98,13 +112,14 @@
             <h4 class="side-title"><span>授课老师</span></h4>
             <div class="teacher-content">
               <div class="cont1">
-                <img src="../assets/avatar.jpg">
+                <img :src="course.info.teacher.avatar">
                 <div class="name">
-                  <p class="teacher-name">Avrion</p>
-                  <p class="teacher-title">老男孩LInux学科带头人</p>
+                  <p class="teacher-name">{{ course.info.teacher.name }}</p>
+                  <p class="teacher-title">
+                    {{ course.info.teacher.get_role_display }}，{{ course.info.teacher.title }}</p>
                 </div>
               </div>
-              <p class="narrative">路飞学城高级讲师，曾参与新加坡南洋理工大学大数据医疗相关项目，就职过多家互联网企业，有着多年开发经验，精通java,python,go等编程语言</p>
+              <div class="narrative" v-html="course.info.teacher.brief"></div>
             </div>
           </div>
         </div>
@@ -115,27 +130,63 @@
 </template>
 
 <script setup>
-import {reactive, ref, watch} from "vue"
-import {useRoute} from "vue-router"
+import {reactive, ref} from "vue"
+import {useRoute, useRouter} from "vue-router"
 import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import {AliPlayerV3} from "vue-aliplayer-v3"
+import course from "../api/course"
+import {ElMessage} from 'element-plus'
+import {fill0} from "../utils/func";
 
 let route = useRoute()
+let router = useRouter()
 let player = ref(null)
 
-const state = reactive({
-  course_id: route.params.id,
-  tabIndex: 2,
-})
 
+// 获取url地址栏上的课程ID
+course.course_id = route.params.id;
+
+// 简单判断课程ID是否合法
+if (course.course_id > 0) {
+  // 根据课程ID到服务端获取课程详情数据
+  course.get_course().then(response => {
+    course.info = response.data.data;
+    clearInterval(course.timer);
+    course.timer = setInterval(() => {
+      if (course.info.discount.expire && course.info.discount.expire > 0) {
+        course.info.discount.expire--
+      }
+    }, 1000);
+
+  }).catch(error => {
+    ElMessage.error({
+      message: "非法的URL地址，无法获取课程信息！",
+      duration: 1000,
+      onClose() {
+        router.go(-1)
+      }
+    })
+  })
+} else {
+  ElMessage.error({
+    message: "非法的URL地址，无法获取课程信息！",
+    duration: 1000,
+    onClose() {
+      router.go(-1)
+    }
+  })
+}
+
+// 阿里云播放器的选项参数
 const options = reactive({
-  source: "/src/assets/1.mp4",
-  cover: "/src/assets/course-1.png",
-  autoplay: false,
-  preload: true,
-  isLive: false, //切换为直播流的时候必填true
-  // format: 'm3u8'  //切换为直播流的时候必填
+  // source: "/src/assets/1.mp4",
+  // cover: "/src/assets/course-1.png",
+
+  autoplay: false,   // 是否自动播放
+  preload: true,     // 是否自动预加载
+  isLive: false,     // 切换为直播流的时候必填true
+  // format: 'm3u8'  // 切换为直播流的时候必填
 })
 
 const onPlay = (event) => {
@@ -146,6 +197,7 @@ const onPlay = (event) => {
 const onPause = (event) => {
   console.log("暂停播放");
   console.log(player.value.getCurrentTime());
+  console.log(player.value.getDuration());  // 获取视频长度
 }
 
 const onPlaying = (event) => {
