@@ -72,7 +72,7 @@
           </div>
           <ul class="course-list clearfix">
             <li class="course-card" v-for="course_info in course.course_list">
-              <a target="_blank" href="">
+              <router-link :to="`/project/${course_info.id}`">
                 <div class="img"><img :src="course_info.course_cover" alt=""></div>
                 <p class="title ellipsis2">{{ course_info.name }}</p>
                 <p class="one">
@@ -80,27 +80,20 @@
                   <span class="discount r">
                           <i class="name" v-if="course_info.discount.type">{{ course_info.discount.type }}</i>
                           <i class="countdown"
-                             v-if="course_info.discount.expire">{{ parseInt(course_info.discount.expire / 86400) }}
-                            <span class="day">天</span>
-                            {{
-                              fill0(parseInt(course_info.discount.expire / 3600 % 24))
-                            }}:{{
-                              fill0(parseInt(course_info.discount.expire / 60 % 60))
-                            }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}
-                          </i>
+                             v-if="course_info.discount.expire">{{ parseInt(course_info.discount.expire / 86400) }}<span
+                              class="day">天</span>{{ fill0(parseInt(course_info.discount.expire / 3600 % 24)) }}:{{ fill0(parseInt(course_info.discount.expire / 60 % 60)) }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}</i>
                         </span>
                 </p>
                 <p class="two clearfix">
                   <span class="price l red bold"
-                        v-if="course_info.discount.price">￥{{
-                      parseFloat(course_info.discount.price).toFixed(2)
-                    }}</span>
+                        v-if="course_info.discount.price">￥{{ parseFloat(course_info.discount.price).toFixed(2) }}</span>
                   <span class="price l red bold" v-else>￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
                   <span class="origin-price l delete-line"
                         v-if="course_info.discount.price">￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
-                  <span class="add-shop-cart r"><img class="icon imv2-shopping-cart" src="../assets/cart2.svg" alt="">加购物车</span>
+                  <span class="add-shop-cart r"><img class="icon imv2-shopping-cart"
+                                                     src="../assets/cart2.svg" alt="">加购物车</span>
                 </p>
-              </a>
+              </router-link>
             </li>
           </ul>
           <div class="page" v-if="course.count > course.size">

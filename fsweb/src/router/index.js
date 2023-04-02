@@ -43,7 +43,15 @@ const routes = [
         path: '/project',
         name: "Course",
         component: () => import("../views/Course.vue"),
-    },
+    }, {
+        meta: {
+            title: "飞升在线教育-课程详情",
+            keepAlive: true
+        },
+        path: '/project/:id',     // :id vue的路径参数，代表了课程的ID
+        name: "Info",
+        component: () => import("../views/Info.vue"),
+    }
 ]
 // 路由对象实例化
 const router = createRouter({
