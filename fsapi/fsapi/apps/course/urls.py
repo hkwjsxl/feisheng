@@ -12,5 +12,6 @@ router.register("search", views.CourseSearchViewSet, basename="course-search")
 
 urlpatterns = [
     path("search/hot/", views.HotWordAPIView.as_view()),
+    path("<int:pk>/", views.CourseRetrieveAPIView.as_view()),
 ]
 urlpatterns += router.urls

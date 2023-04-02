@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSetMixin
+from rest_framework.generics import GenericAPIView
 from rest_framework.filters import OrderingFilter
 from django_filters import FilterSet, filters
 from django_filters.rest_framework import DjangoFilterBackend
@@ -12,7 +13,7 @@ from django_redis import get_redis_connection
 from .models import CourseDirection, CourseCategory, Course
 from .serializers import (
     CourseDirectionModelSerializer, CourseCategoryModelSerializer, CourseInfoModelSerializer,
-    CourseIndexHaystackSerializer
+    CourseIndexHaystackSerializer, CourseRetrieveModelSerializer
 )
 
 import constants
@@ -123,3 +124,12 @@ class HotWordAPIView(APIView):
         # 按分数store进行倒序显示排名靠前的指定数量的热词
         word_list = redis.zrevrange(constants.DEFAULT_HOT_WORD, 0, constants.HOT_WORD_LENGTH - 1)
         return APIResponse(data=word_list)
+
+
+class CourseRetrieveAPIView(ReRetrieveModelMixin, GenericAPIView):
+    """课程详情信息"""
+    queryset = Course.objects.filter(is_show=True, is_deleted=False).all()
+    serializer_class = CourseRetrieveModelSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
