@@ -816,6 +816,13 @@ vite@^4.1.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vue-aliplayer-v3@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npmmirror.com/vue-aliplayer-v3/-/vue-aliplayer-v3-1.0.3.tgz#347f1a7611266067eb57b6a8df57ecb9d7a6bb9c"
+  integrity sha512-265Ms4LSQGohHQtnmbvcVGTUK04Ab5rwn6o7lGvM/RNGOdLfDzkdp7L0r+ZRuMHSdf05nJARsTnVw4VoiMFVEA==
+  dependencies:
+    vue "^3.1.1"
+
 vue-demi@*:
   version "0.13.11"
   resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
@@ -828,7 +835,7 @@ vue-router@^4.0.13:
   dependencies:
     "@vue/devtools-api" "^6.0.0"
 
-vue@^3.2.45:
+vue@^3.1.1, vue@^3.2.45:
   version "3.2.47"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.2.47.tgz#3eb736cbc606fc87038dbba6a154707c8a34cff0"
   integrity sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==
