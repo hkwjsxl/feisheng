@@ -174,7 +174,7 @@ LANGUAGE_CODE = "zh-hans"
 TIME_ZONE = "Asia/Shanghai"
 USE_I18N = True
 USE_L10N = True
-USE_TZ = False
+USE_TZ = False  # 关闭时区转换以后，django会默认使用TIME_ZONE作为时区
 
 # 静态路径配置
 # 访问静态文件的url地址前缀
