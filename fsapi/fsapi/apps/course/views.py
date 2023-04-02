@@ -10,10 +10,10 @@ from drf_haystack.filters import HaystackFilter
 from drf_haystack.generics import HaystackGenericAPIView
 from django_redis import get_redis_connection
 
-from .models import CourseDirection, CourseCategory, Course
+from .models import CourseDirection, CourseCategory, Course, CourseChapter
 from .serializers import (
     CourseDirectionModelSerializer, CourseCategoryModelSerializer, CourseInfoModelSerializer,
-    CourseIndexHaystackSerializer, CourseRetrieveModelSerializer
+    CourseIndexHaystackSerializer, CourseRetrieveModelSerializer, CourseChapterModelSerializer
 )
 
 import constants
@@ -133,3 +133,21 @@ class CourseRetrieveAPIView(ReRetrieveModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
+
+
+class CourseChapterListAPIView(ReListModelMixin, GenericAPIView):
+    """课程章节列表"""
+    serializer_class = CourseChapterModelSerializer
+
+    def get_queryset(self):
+        """列表页数据"""
+        course = int(self.kwargs.get("course", 0))
+        try:
+            ret = Course.objects.filter(pk=course).all()
+        except:
+            return []
+        queryset = CourseChapter.objects.filter(course=course, is_show=True, is_deleted=False).order_by("orders", "id")
+        return queryset.all()
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)

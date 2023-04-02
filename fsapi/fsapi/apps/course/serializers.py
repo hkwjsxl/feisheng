@@ -4,7 +4,9 @@ from rest_framework import serializers
 from drf_haystack.serializers import HaystackSerializer
 
 from .search_indexes import CourseIndex
-from .models import CourseDirection, CourseCategory, Course, Teacher
+from .models import (
+    CourseDirection, CourseCategory, Course, Teacher, CourseChapter
+)
 
 
 class CourseDirectionModelSerializer(serializers.ModelSerializer):
@@ -75,3 +77,11 @@ class CourseRetrieveModelSerializer(serializers.ModelSerializer):
             "direction_name", "category", "category_name",
             "teacher"
         ]
+
+
+class CourseChapterModelSerializer(serializers.ModelSerializer):
+    """课程章节序列化器"""
+
+    class Meta:
+        model = CourseChapter
+        fields = ["id", "orders", "name", "summary", "get_lesson_list"]
