@@ -75,7 +75,7 @@ class CourseRetrieveModelSerializer(serializers.ModelSerializer):
             "description", "pub_date", "status", "get_status_display", "students", "discount",
             "lessons", "pub_lessons", "price", "direction",
             "direction_name", "category", "category_name",
-            "teacher"
+            "teacher", "can_free_study"
         ]
 
 
