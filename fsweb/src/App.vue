@@ -36,4 +36,19 @@ img {
 input {
   outline: none;
 }
+
+.cart .el-checkbox .el-checkbox__inner {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #aaa;
+}
+
+.cart .el-checkbox .el-checkbox__inner::after {
+  height: 17px;
+  left: 7px;
+  width: 10px;
+  border: 3px solid #FFF;
+  border-left: 0;
+  border-top: 0;
+}
 </style>
