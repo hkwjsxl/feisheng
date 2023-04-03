@@ -81,17 +81,24 @@
                           <i class="name" v-if="course_info.discount.type">{{ course_info.discount.type }}</i>
                           <i class="countdown"
                              v-if="course_info.discount.expire">{{ parseInt(course_info.discount.expire / 86400) }}<span
-                              class="day">天</span>{{ fill0(parseInt(course_info.discount.expire / 3600 % 24)) }}:{{ fill0(parseInt(course_info.discount.expire / 60 % 60)) }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}</i>
+                              class="day">天</span>{{
+                              fill0(parseInt(course_info.discount.expire / 3600 % 24))
+                            }}:{{
+                              fill0(parseInt(course_info.discount.expire / 60 % 60))
+                            }}:{{ fill0(parseInt(course_info.discount.expire % 60)) }}</i>
                         </span>
                 </p>
                 <p class="two clearfix">
                   <span class="price l red bold"
-                        v-if="course_info.discount.price>=0">￥{{ parseFloat(course_info.discount.price).toFixed(2) }}</span>
+                        v-if="course_info.discount.price>=0">￥{{
+                      parseFloat(course_info.discount.price).toFixed(2)
+                    }}</span>
                   <span class="price l red bold" v-else>￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
                   <span class="origin-price l delete-line"
                         v-if="course_info.discount.price>=0">￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
-                  <span class="add-shop-cart r"><img class="icon imv2-shopping-cart"
-                                                     src="../assets/cart2.svg" alt="">加购物车</span>
+                  <span class="add-shop-cart r" @click.prevent.stop="add_cart(course_info)">
+                    <img class="icon imv2-shopping-cart" src="../assets/cart2.svg" alt="">加入购物车
+                  </span>
                 </p>
               </router-link>
             </li>
@@ -123,8 +130,12 @@ import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import course from "../api/course";
 import {fill0} from "../utils/func";
-
+import cart from "../api/cart";
+import {ElMessage} from 'element-plus'
 import {watch} from "vue";
+import {useStore} from "vuex";
+
+const store = useStore()
 
 // 获取课程学习方向
 const get_direction = () => {
@@ -195,6 +206,24 @@ const search_by_hotword = (hot_word) => {
   course.text = hot_word;
   get_course_list();
 }
+
+// 添加课程到购物车
+const add_cart = (course_info) => {
+  // 从本地存储中获取jwt token
+  let token = sessionStorage.token || localStorage.token;
+  cart.add_course_to_cart(course_info.id, token).then(response => {
+    if (response.data.code !== 500) {
+      ElMessage.success(response.data.message.msg)
+    } else {
+      ElMessage.error("添加商品到购物车失败.")
+    }
+
+  }).catch(error => {
+    console.log(error)
+    ElMessage.error(error);
+  })
+}
+
 
 watch(
     // 监听切换不同的课程分类，在改变时，更新对应分类下的课程信息

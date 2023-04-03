@@ -46,7 +46,12 @@
               <button class="buy-now">立即购买</button>
               <button class="free">免费试学</button>
             </div>
-            <div class="add-cart"><img src="../assets/cart-yellow.svg" alt="">加入购物车</div>
+            <el-popconfirm title="您确认添加当前课程加入购物车吗？" @confirm="add_cart" confirmButtonText="确定"
+                           cancelButtonText="取消">
+              <template #reference>
+                <div class="add-cart"><img src="../assets/cart-yellow.svg" alt="">加入购物车</div>
+              </template>
+            </el-popconfirm>
           </div>
         </div>
       </div>
@@ -126,7 +131,10 @@ import {AliPlayerV3} from "vue-aliplayer-v3"
 import course from "../api/course"
 import {ElMessage} from 'element-plus'
 import {fill0} from "../utils/func";
+import cart from "../api/cart";
+import {useStore} from "vuex";
 
+const store = useStore()
 let route = useRoute()
 let router = useRouter()
 let player = ref(null)
@@ -195,7 +203,21 @@ const onPlaying = (event) => {
   console.log("播放中");
   console.log(player.value.getCurrentTime());
 }
+
+// 添加商品到购物车
+let add_cart = () => {
+  let token = sessionStorage.token || localStorage.token
+  // 详情页中添加商品到购物车，不用传递参数，直接使用state.course来获取课程信息
+  cart.add_course_to_cart(course.course_id, token).then(response => {
+    ElMessage.success(response.data.message.msg);
+  }).catch(error => {
+    console.log(error)
+    ElMessage.error("error,请查看终端报错信息");
+  })
+}
+
 </script>
+
 
 <style scoped>
 .main {
