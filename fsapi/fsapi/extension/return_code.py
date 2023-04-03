@@ -1,3 +1,5 @@
+from rest_framework import status
+
 # 成功
 SUCCESS = 0
 
@@ -21,3 +23,8 @@ EXCEPTION_ERROR = 1
 
 # 服务器异常错误
 SERVER_ERROR = 5000
+
+# 创建成功
+HTTP_201_CREATED = status.HTTP_201_CREATED
+# 无效请求
+HTTP_400_BAD_REQUEST = status.HTTP_400_BAD_REQUEST

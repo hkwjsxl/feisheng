@@ -11,4 +11,5 @@ urlpatterns = [
     path('home/', include(('home.urls', 'home'), namespace='home')),
     path('user/', include(('user.urls', 'user'), namespace='user')),
     path('course/', include(('course.urls', 'course'), namespace='course')),
+    path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
 ]

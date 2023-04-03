@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "user.apps.UserConfig",
     "course.apps.CourseConfig",
+    "cart.apps.CartConfig",
 
 ]
 
@@ -126,6 +127,14 @@ CACHES = {
     "hot_word": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://:%s@%s:%s/3" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # 提供存储购物车课程商品
+    "cart": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:%s@%s:%s/4" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
