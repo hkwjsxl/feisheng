@@ -6,7 +6,7 @@ from django_redis import get_redis_connection
 from course.models import Course
 
 from response import APIResponse
-from return_code import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from return_code import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
 
 
 class CartAPIView(APIView):
@@ -50,7 +50,7 @@ class CartAPIView(APIView):
         }
         """
         if len(cart_hash) < 1:
-            return APIResponse(message="购物车没有任何商品.")
+            return APIResponse(HTTP_204_NO_CONTENT, message="购物车没有任何商品.")
         cart = [(int(key.decode()), bool(value.decode())) for key, value in cart_hash.items()]
         # cart = [ (课程id,是否勾选布尔值) (4,True) (5,True) ]
         course_id_list = [item[0] for item in cart]
@@ -70,3 +70,52 @@ class CartAPIView(APIView):
                     str(course.id).encode()].decode() == "1"
             })
         return APIResponse(data=cart_course_data)
+
+    def patch(self, request):
+        """切换购物车中商品勾选状态"""
+        user_id = request.user.id
+        # 获取购物车的课程ID与勾选状态
+        course_id = int(request.data.get("course_id", 0))
+        selected = int(bool(request.data.get("selected", True)))
+
+        redis = get_redis_connection("cart")
+
+        # 判断课程是否存在
+        is_exists = Course.objects.filter(pk=course_id, is_show=True, is_deleted=False).exists()
+        if not is_exists:
+            redis.hdel(f"cart_{user_id}", course_id)
+            return APIResponse(message="当前商品不存在或已经被下架.")
+
+        redis.hset(f"cart_{user_id}", course_id, selected)
+        return APIResponse()
+
+    def put(self, request):
+        """"全选 / 全不选"""
+        user_id = request.user.id
+        selected = int(bool(request.data.get("selected", True)))
+        redis = get_redis_connection("cart")
+
+        # 获取购物车中所有商品课程信息
+        cart_hash = redis.hgetall(f"cart_{user_id}")
+        """
+        cart_hash = {
+            # b'商品课程ID': b'勾选状态', 
+            b'2': b'1', 
+            b'4': b'1', 
+            b'5': b'1'
+        }
+        """
+        if len(cart_hash) < 1:
+            return APIResponse(HTTP_204_NO_CONTENT, "购物车没有任何商品.")
+
+        # 把redis中的购物车课程ID信息转换成普通列表
+        cart_list = [int(course_id.decode()) for course_id in cart_hash]
+
+        # 批量修改购物车中所有商品课程的勾选状态
+        pipe = redis.pipeline()
+        pipe.multi()
+        for course_id in cart_list:
+            pipe.hset(f"cart_{user_id}", course_id, selected)
+        pipe.execute()
+
+        return APIResponse()
