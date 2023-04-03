@@ -140,13 +140,54 @@ class Course(BaseModel):
 
     @property
     def discount(self):
-        # todo 将来通过计算获取当前课程的折扣优惠相关的信息
-        import random
-        return {
-            "type": ["限时优惠", "限时减免"].pop(random.randint(0, 1)),  # 优惠类型
-            "expire": random.randint(100000, 1200000),  # 优惠倒计时
-            "price": float(self.price - random.randint(1, 10) * 10),  # 优惠价格
-        }
+        """通过计算获取当前课程的折扣优惠相关的信息"""
+        # 获取折扣优惠相关的信息
+        now_time = datetime.now()
+        # 获取当前课程参与的最新活动记录
+        # 活动__开始时间 < 当前时间 < 活动__结束时间
+        last_activity_log = self.price_list.filter(
+            activity__end_time__gt=now_time,
+            activity__start_time__lt=now_time
+        ).order_by("-id").first()
+
+        type_text = ""  # 优惠类型的默认值
+        price = -1  # 优惠价格
+        expire = 0  # 优惠剩余时间
+
+        if last_activity_log:
+            # 获取优惠类型的提示文本
+            type_text = last_activity_log.discount.discount_type.name
+
+            # 获取限时活动剩余时间戳[单位：s]
+            expire = last_activity_log.activity.end_time.timestamp() - now_time.timestamp()
+
+            # 判断当前课程的价格是否满足优惠条件
+            course_price = float(self.price)
+            condition_price = float(last_activity_log.discount.condition)
+            # 课程价格比优惠劵金额大时或相等时，加上优惠卷的优惠
+            if course_price >= condition_price:
+                # 计算本次课程参与了优惠以后的价格
+                sale = last_activity_log.discount.sale
+                if sale == "0":
+                    # 免费
+                    price = 0
+                elif sale[0] == "*":
+                    # 折扣
+                    price = course_price * float(sale[1:])
+                elif sale[0] == "-":
+                    # 减免
+                    price = course_price - float(sale[1:])
+                price = float(f"{price:.2f}")
+
+        data = {}
+        if type_text:
+            data["type"] = type_text
+        if expire > 0:
+            data["expire"] = expire
+        if price != -1:
+            data["price"] = price
+
+        return data
 
     def discount_json(self):
         # 必须转成字符串才能保存到es中。所以该方法提供给es使用的。
@@ -327,6 +368,7 @@ class DiscountType(BaseModel):
 class Discount(BaseModel):
     discount_type = models.ForeignKey("DiscountType", on_delete=models.CASCADE, related_name='discount_list',
                                       db_constraint=False, verbose_name="优惠类型")
+    # 要优惠的价格
     condition = models.IntegerField(blank=True, default=0, verbose_name="满足优惠的价格条件",
                                     help_text="设置享受优惠的价格条件,如果不填或0则没有优惠门槛")
     sale = models.TextField(

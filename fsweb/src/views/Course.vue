@@ -86,10 +86,10 @@
                 </p>
                 <p class="two clearfix">
                   <span class="price l red bold"
-                        v-if="course_info.discount.price">￥{{ parseFloat(course_info.discount.price).toFixed(2) }}</span>
+                        v-if="course_info.discount.price>=0">￥{{ parseFloat(course_info.discount.price).toFixed(2) }}</span>
                   <span class="price l red bold" v-else>￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
                   <span class="origin-price l delete-line"
-                        v-if="course_info.discount.price">￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
+                        v-if="course_info.discount.price>=0">￥{{ parseFloat(course_info.price).toFixed(2) }}</span>
                   <span class="add-shop-cart r"><img class="icon imv2-shopping-cart"
                                                      src="../assets/cart2.svg" alt="">加购物车</span>
                 </p>
