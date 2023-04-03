@@ -209,6 +209,7 @@ let add_cart = () => {
   let token = sessionStorage.token || localStorage.token
   // 详情页中添加商品到购物车，不用传递参数，直接使用state.course来获取课程信息
   cart.add_course_to_cart(course.course_id, token).then(response => {
+    store.commit("cart_total", response.data.message.cart_total)
     ElMessage.success(response.data.message.msg);
   }).catch(error => {
     console.log(error)

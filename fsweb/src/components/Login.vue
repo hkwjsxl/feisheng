@@ -64,6 +64,7 @@ const loginhandler = () => {
     let payload = response.data.token.split(".")[1]  // 载荷
     let payload_data = JSON.parse(atob(payload)) // 用户信息
     store.commit("login", payload_data)
+    store.commit("cart_total", response.data.cart_total)
 
     // 成功提示
     ElMessage.success("登录成功.")
@@ -110,6 +111,7 @@ const login_mobile_handler = () => {
     let payload = response.data.token.split(".")[1]  // 载荷
     let payload_data = JSON.parse(atob(payload)) // 用户信息
     store.commit("login", payload_data)
+    store.commit("cart_total", response.data.cart_total)
 
     // 成功提示
     ElMessage.success("登录成功.")

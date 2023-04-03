@@ -213,9 +213,10 @@ const add_cart = (course_info) => {
   let token = sessionStorage.token || localStorage.token;
   cart.add_course_to_cart(course_info.id, token).then(response => {
     if (response.data.code !== 500) {
-      ElMessage.success(response.data.message.msg)
+      store.commit("cart_total", response.data.message.cart_total);
+      ElMessage.success(response.data.message.msg);
     } else {
-      ElMessage.error("添加商品到购物车失败.")
+      ElMessage.error("添加商品到购物车失败.");
     }
 
   }).catch(error => {

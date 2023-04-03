@@ -6,7 +6,8 @@ export default createStore({
     plugins: [createPersistedState()],
     state() {  // 相当于组件中的data，用于保存全局状态数据
         return {
-            user: {}
+            user: {},
+            cart_total: 0
         }
     },
     getters: {
@@ -39,6 +40,10 @@ export default createStore({
             state.user = {}
             localStorage.token = null;
             sessionStorage.token = null;
-        }
+        },
+        cart_total(state, total) {
+            // 设置商品数量的总数
+            state.cart_total = total
+        },
     }
 })

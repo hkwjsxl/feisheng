@@ -3,6 +3,7 @@ from django.contrib.auth.backends import ModelBackend, UserModel
 
 from rest_framework_jwt.utils import jwt_payload_handler
 from rest_framework_jwt.settings import api_settings
+from django_redis import get_redis_connection
 
 
 def custom_jwt_payload_handler(user):
@@ -69,3 +70,17 @@ def generate_jwt_token(user):
     jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
     payload = jwt_payload_handler(user)
     return jwt_encode_handler(payload)
+
+
+def jwt_response_payload_handler(token, user, request):
+    """
+    控制JWT返回的格式
+    """
+    redis = get_redis_connection("cart")
+    cart_total = redis.hlen(f"cart_{user.id}")
+
+    return {
+        # 增加返回购物车的商品数量
+        "cart_total": cart_total,
+        "token": token
+    }
