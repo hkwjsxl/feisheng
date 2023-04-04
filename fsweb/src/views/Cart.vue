@@ -75,7 +75,7 @@
                       </span>
                     </div>
                   </div>
-                  <div class="li-3"><span class="btn">去结算</span></div>
+                  <div class="li-3"><router-link to="/order" class="btn">去结算</router-link></div>
                 </div>
               </div>
             </div>

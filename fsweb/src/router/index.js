@@ -59,6 +59,14 @@ const routes = [
         path: '/cart',
         name: "Cart",
         component: () => import("../views/Cart.vue"),
+    }, {
+        meta: {
+            title: "飞升在线教育-确认下单",
+            keepAlive: true
+        },
+        path: '/order',
+        name: "Order",
+        component: () => import("../views/Order.vue"),
     }
 ]
 // 路由对象实例化
