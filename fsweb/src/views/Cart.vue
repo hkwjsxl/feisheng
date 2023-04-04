@@ -29,7 +29,7 @@
         <div class="cart-body-table">
           <div class="item" v-for="course_info in cart.course_list">
             <div class="item-1">
-              <el-checkbox v-model="course_info.selected"></el-checkbox>
+              <el-checkbox v-model="course_info.selected" @change="change_select_course(course_info)"></el-checkbox>
             </div>
             <div class="item-2">
               <router-link :to="`/project/${course_info.id}`" class="img-box l">
@@ -84,16 +84,13 @@
 
 <script setup>
 import {Close} from '@element-plus/icons-vue'
-import {reactive} from "vue"
+import {reactive, watch} from "vue"
 import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import cart from "../api/cart"
 import {ElMessage} from 'element-plus'
 import settings from "../settings.js";
 
-let state = reactive({
-  checked: false,
-})
 
 const get_cart = () => {
   // 获取购物车中的商品列表
@@ -102,6 +99,16 @@ const get_cart = () => {
     cart.course_list = response.data.data;
     // 获取购物车中的商品总价格
     get_cart_total();
+
+    // 监听所有课程的勾选状态是否发生
+    watch(
+        // watch多个数据必须是数组结构，但是cart.course_list是由我们通过vue.reactive装饰成响应式对象了，所以需要转换
+        [...cart.course_list],
+        () => {
+          get_cart_total();
+        },
+    )
+
   })
 }
 
@@ -128,6 +135,44 @@ const get_cart_total = () => {
     cart.checked = select_sum === cart.course_list.length;  // 购物车中是否全选商品了
   })
 }
+
+const change_select_course = (course) => {
+  // 切换指定课程的勾选状态
+  let token = sessionStorage.token || localStorage.token;
+  cart.select_course(course.id, course.selected, token).catch(error => {
+    ElMessage.error(error?.response?.data?.message);
+  })
+}
+
+
+// 监听全选按钮的状态切换
+watch(
+    () => cart.checked,
+    () => {
+      let token = sessionStorage.token || localStorage.token;
+      // 如果勾选了全选，则所有课程的勾选状态都为true
+      if (cart.checked) {
+        // 让客户端的所有课程状态先改版
+        cart.course_list.forEach((course, key) => {
+          course.selected = true
+        })
+
+        // 如果是因为购物车中所有课程的勾选状态都为true的情况下，是不需要发送全选的ajax请求
+        // 因为课程数据已经全在页面当中了
+        if (!(cart.selected_course_total === cart.course_list.length)) {
+          cart.select_all_course(true, token);
+        }
+      }
+
+      // 如果在所有课程的勾选状态都为true的情况下，把全选去掉，则所有课程的勾选状态也变成false
+      if ((cart.checked === false) && (cart.selected_course_total === cart.course_list.length)) {
+        cart.course_list.forEach((course, key) => {
+          course.selected = false
+        })
+        cart.select_all_course(false, token);
+      }
+    }
+)
 
 </script>
 

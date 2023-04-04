@@ -24,6 +24,27 @@ const cart = reactive({
                 Authorization: "JWT " + token,
             }
         })
+    },
+    select_course(course_id, selected, token) {
+        // 切换指定商品课程的勾选状态
+        return http.patch("/cart/", {
+            course_id,
+            selected,
+        }, {
+            headers: {
+                Authorization: "JWT " + token,
+            }
+        })
+    },
+    select_all_course(selected, token) {
+        // 切换购物车对应商品课程的全选状态
+        return http.put("/cart/", {
+            selected,
+        }, {
+            headers: {
+                Authorization: "JWT " + token,
+            }
+        })
     }
 })
 
