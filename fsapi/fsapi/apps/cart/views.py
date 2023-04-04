@@ -119,3 +119,12 @@ class CartAPIView(APIView):
         pipe.execute()
 
         return APIResponse()
+
+    def delete(self, request):
+        """从购物车中删除指定商品"""
+        user_id = request.user.id
+        # 因为delete方法没有请求体，所以改成地址栏传递课程ID
+        course_id = int(request.query_params.get("course_id", 0))
+        redis = get_redis_connection("cart")
+        redis.hdel(f"cart_{user_id}", course_id)
+        return APIResponse(HTTP_204_NO_CONTENT)
