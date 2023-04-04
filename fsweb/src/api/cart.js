@@ -45,6 +45,17 @@ const cart = reactive({
                 Authorization: "JWT " + token,
             }
         })
+    },
+    delete_course(course_id, token) {
+        // 从购物车中删除商品课程
+        return http.delete("/cart/", {
+            params: {
+                course_id,  // course_id: course_id,的简写
+            },
+            headers: {
+                Authorization: "JWT " + token,
+            }
+        })
     }
 })
 
