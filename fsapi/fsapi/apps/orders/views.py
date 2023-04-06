@@ -1,4 +1,4 @@
-from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticated
 
 from .models import Order
@@ -6,7 +6,7 @@ from .serializers import OrderModelSerializer
 from mixins import ReCreateModelMixin
 
 
-class OrderCreateAPIView(ReCreateModelMixin, GenericAPIView):
+class OrderCreateAPIView(ReCreateModelMixin, GenericViewSet):
     """创建订单"""
     permission_classes = (IsAuthenticated,)
 

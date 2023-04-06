@@ -19,8 +19,15 @@ class OrderModelSerializer(serializers.ModelSerializer):
         fields = ["pay_type", "id", "order_number", "pay_link"]
         read_only_fields = ["id", "order_number"]
         extra_kwargs = {
-            "pay_type": {"write_only": True},
+            "pay_type": {
+                "write_only": True,
+            },
         }
+
+    def validate_pay_type(self, pay_type):
+        if not pay_type:
+            raise exceptions.ValidationError("pay_type not none.")
+        return pay_type
 
     def create(self, validated_data):
         """创建订单"""
@@ -38,7 +45,7 @@ class OrderModelSerializer(serializers.ModelSerializer):
                     order_number=datetime.now().strftime("%Y%m%d") + ("%08d" % user_id) + "%08d" % redis.incr(
                         "order_number"),
                     # 基于redis生成分布式唯一订单号
-                    pay_type=validated_data.get("pay_type"),  # 支付方式
+                    pay_type=validated_data.get("pay_type", 1),  # 支付方式,默认是微信支付
                 )
 
                 # 记录本次下单的商品列表
@@ -89,7 +96,9 @@ class OrderModelSerializer(serializers.ModelSerializer):
                 # 删除原来的购物车
                 pipe.delete(f"cart_{user_id}")
                 # 重新把未勾选的商品记录到购物车中
-                pipe.hset(f"cart_{user_id}", cart_no_selectd)
+                # hmset不能设置空值
+                if cart_no_selectd:
+                    pipe.hmset(f"cart_{user_id}", cart_no_selectd)
                 # hset 在新版本的redis中实际上hmset已经被废弃了，改用hset替代hmset
                 pipe.execute()
 

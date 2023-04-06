@@ -20,7 +20,7 @@
           <div class="item" v-for="course_info in cart.select_course_list">
             <div class="item-2">
               <router-link :to="`/project/${course_info.id}`" class="img-box l">
-                <img :src="settings.host + course_info.course_cover">
+                <img :src="settings.host + course_info.course_cover" alt="">
               </router-link>
               <dl class="l has-package">
                 <dt>【{{ course_info.course_type }}】{{ course_info.name }}</dt>
@@ -217,7 +217,7 @@
               <p class="r rw price"><em>￥</em><span id="js-pay-price">1751.00</span></p>
               <p class="r price-text">应付：</p>
             </div>
-            <span class="r btn btn-red submit-btn">提交订单</span>
+            <span class="r btn btn-red submit-btn" @click="commit_order">提交订单</span>
           </div>
           <div class="pay-add-sign">
             <ul class="clearfix">
@@ -241,6 +241,8 @@ import {useStore} from "vuex";
 import cart from "../api/cart"
 import order from "../api/order";
 import settings from "../settings.js";
+import {ElMessage} from "element-plus";
+
 let store = useStore()
 
 const get_select_course = () => {
@@ -252,6 +254,28 @@ const get_select_course = () => {
 }
 
 get_select_course();
+
+
+const commit_order = () => {
+  // 生成订单
+  let token = sessionStorage.token || localStorage.token;
+  order.create_order(token).then(response => {
+    if (response.data.code === 500) {
+      ElMessage.error("报错了~")
+    } else {
+      console.log(response.data.data.order_number)  // todo 订单号
+      console.log(response.data.data.pay_link)      // todo 支付链接
+      // 成功提示
+      ElMessage.success("下单成功！马上跳转到支付页面，请稍候~")
+      // 扣除掉被下单的商品数量，更新购物车中的商品数量
+      store.commit("set_cart_total", store.state.cart_total - cart.select_course_list.length);
+    }
+  }).catch(error => {
+    if (error?.response?.status === 400) {
+      ElMessage.success("登录超时！请重新登录后再继续操作~");
+    }
+  })
+}
 
 
 // 监听用户选择的支付方式
