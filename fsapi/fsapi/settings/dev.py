@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "course.apps.CourseConfig",
     "cart.apps.CartConfig",
     "orders.apps.OrdersConfig",
+    "coupon.apps.CouponConfig",
 
 ]
 
