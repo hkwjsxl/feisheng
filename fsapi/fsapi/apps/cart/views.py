@@ -1,6 +1,5 @@
 from rest_framework.views import APIView
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
+from rest_framework.permissions import IsAuthenticated
 from django_redis import get_redis_connection
 
 from course.models import Course
@@ -10,7 +9,7 @@ from return_code import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONT
 
 
 class CartAPIView(APIView):
-    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         """添加课程商品到购物车中"""
@@ -132,7 +131,7 @@ class CartAPIView(APIView):
 
 class CartOrderAPIView(APIView):
     """购物车确认下单接口"""
-    authentication_classes = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         """获取勾选商品列表"""

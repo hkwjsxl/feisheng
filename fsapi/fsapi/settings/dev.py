@@ -305,7 +305,9 @@ JWT_AUTH = {
     # 自定义载荷
     'JWT_PAYLOAD_HANDLER': 'fsapi.extension.authenticate.custom_jwt_payload_handler',
     # 自定义响应数据
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'fsapi.extension.authenticate.jwt_response_payload_handler'
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'fsapi.extension.authenticate.jwt_response_payload_handler',
+    # Token的头为：jwt XXX
+    "JWT_AUTH_HEADER_PREFIX": "jwt",
 }
 
 # django自定义认证
