@@ -22,7 +22,7 @@ class Order(BaseModel):
     order_number = models.CharField(max_length=64, verbose_name="订单号")
 
     order_status = models.SmallIntegerField(choices=status_choices, default=0, verbose_name="订单状态")
-    pay_type = models.SmallIntegerField(choices=pay_choices, default=1, verbose_name="支付方式")
+    pay_type = models.SmallIntegerField(choices=pay_choices, default=0, verbose_name="支付方式")
 
     order_desc = models.TextField(null=True, blank=True, max_length=500, verbose_name="订单描述")
     pay_time = models.DateTimeField(null=True, blank=True, verbose_name="支付时间")

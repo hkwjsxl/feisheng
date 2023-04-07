@@ -200,8 +200,15 @@ get_select_course();
 
 const commit_order = () => {
   // 生成订单
-  let token = sessionStorage.token || localStorage.token;
-  order.create_order(token).then(response => {
+  let token = sessionStorage.token || localStorage.token
+
+  // 当用户选择了优惠券，则需要获取当前选择的优惠券发放记录的id
+  let user_coupon_id = -1;
+  if (order.select !== -1) {
+    user_coupon_id = order.coupon_list[order.select].user_coupon_id;
+  }
+
+  order.create_order(user_coupon_id, token).then(response => {
     if (response.data.code === 500) {
       ElMessage.error("报错了~")
     } else {
@@ -210,7 +217,7 @@ const commit_order = () => {
       // 成功提示
       ElMessage.success("下单成功！马上跳转到支付页面，请稍候~")
       // 扣除掉被下单的商品数量，更新购物车中的商品数量
-      store.commit("set_cart_total", store.state.cart_total - cart.select_course_list.length);
+      store.commit("cart_total", store.state.cart_total - cart.select_course_list.length);
     }
   }).catch(error => {
     if (error?.response?.status === 400) {
@@ -249,7 +256,6 @@ watch(
 
       // 根据下标select，获取当前选中的优惠券信息
       let current_coupon = order.coupon_list[order.select]
-      console.log(current_coupon);
 
       // 针对折扣优惠券，找到最大优惠的课程
       let max_discount = -1;
