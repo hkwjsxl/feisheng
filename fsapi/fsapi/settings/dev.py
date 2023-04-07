@@ -141,6 +141,14 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # 提供存储优惠券
+    "coupon": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:%s@%s:%s/5" % (REDIS_PASSWORD, REDIS_HOST, REDIS_PORT),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 }
 
 # 设置用户登录admin站点时,记录登录状态的session保存到redis缓存中

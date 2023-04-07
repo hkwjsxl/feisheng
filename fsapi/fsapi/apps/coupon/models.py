@@ -38,6 +38,12 @@ class Coupon(BaseModel):
         verbose_name = "优惠券"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        if self.name:
+            return self.name
+        else:
+            return str(self)
+
 
 class CouponDirection(models.Model):
     direction = models.ForeignKey(CourseDirection, on_delete=models.CASCADE, related_name="to_coupon",
