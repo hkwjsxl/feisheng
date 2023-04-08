@@ -38,6 +38,7 @@
               <dl class="l has-package">
                 <dt>【{{ course_info.course_type }}】 {{ course_info.name }}</dt>
                 <p class="package-item" v-if="course_info.discount.type">{{ course_info.discount.type }}</p>
+                <p class="package-item" v-if="course_info.credit>0">{{ course_info.credit }}积分抵扣</p>
               </dl>
             </div>
 

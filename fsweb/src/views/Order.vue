@@ -23,8 +23,9 @@
                 <img :src="settings.host + course_info.course_cover" alt="">
               </router-link>
               <dl class="l has-package">
-                <dt>【{{ course_info.course_type }}】{{ course_info.name }}</dt>
+                <dt>【{{ course_info.course_type }}】 {{ course_info.name }}</dt>
                 <p class="package-item" v-if="course_info.discount.type">{{ course_info.discount.type }}</p>
+                <p class="package-item" v-if="course_info.credit>0">{{ course_info.credit }}积分抵扣</p>
               </dl>
             </div>
             <div class="item-3">
@@ -231,10 +232,14 @@ const commit_order = () => {
 const get_enable_coupon_list = () => {
   let token = sessionStorage.token || localStorage.token;
   order.get_enable_coupon_list(token).then(response => {
-    order.coupon_list = response.data.data;
+    order.coupon_list = response.data.data.coupon_list;
+    // 获取积分相关信息
+    order.credit_to_money = response.data.data.credit_to_money;
+    order.has_credit = response.data.data.has_credit;
   })
 }
 get_enable_coupon_list()
+
 
 // 监听用户选择的支付方式
 watch(
