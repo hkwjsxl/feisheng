@@ -13,11 +13,13 @@ const order = reactive({
     pay_type: 0,         // 支付方式
     credit_to_money: 0,  // 积分兑换现金的比例
     has_credit: 0,       // 用户拥有的积分
+    credit_course_list: [], // 可使用积分抵扣的课程列表
     create_order(user_coupon_id, token) {
         // 生成订单
         return http.post("/order/", {
             pay_type: this.pay_type,
             user_coupon_id,
+            credit: this.credit,
         }, {
             headers: {
                 Authorization: "jwt " + token,
