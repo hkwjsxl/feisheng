@@ -14,17 +14,15 @@ from constants import CREDIT_TO_MONEY
 
 
 class OrderModelSerializer(serializers.ModelSerializer):
-    pay_link = serializers.CharField(read_only=True)
     user_coupon_id = serializers.IntegerField(write_only=True, default=-1)
 
     class Meta:
         model = Order
-        fields = ["pay_type", "id", "order_number", "pay_link", "user_coupon_id", "credit"]
+        fields = ["pay_type", "id", "order_number", "user_coupon_id", "credit"]
         read_only_fields = ["id", "order_number"]
         extra_kwargs = {
-            "pay_type": {
-                "write_only": True,
-            },
+            "pay_type": {"write_only": True},
+            "credit": {"write_only": True},
         }
 
     def get_validated_data(self, validated_data):
@@ -186,8 +184,6 @@ class OrderModelSerializer(serializers.ModelSerializer):
                 self.delete_cart(redis, user_id, cart_hash)
                 # 把优惠券和当前订单进行绑定
                 self.bind_discount_and_order(user_coupon, order, user_id, user_coupon_id)
-                # todo 支付链接地址[后面实现支付功能的时候，再做]
-                order.pay_link = ""
                 return order
 
             except Exception as e:

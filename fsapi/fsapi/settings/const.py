@@ -88,3 +88,5 @@ SIMPLEUI_INDEX = 'http://127.0.0.1:5173/'
 
 # 后台访问地址
 BACKEND_URL = "http://127.0.0.1:8000"
+# 前端访问地址
+FRONT_END_URL = 'http://127.0.0.1:8080'

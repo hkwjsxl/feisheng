@@ -342,3 +342,17 @@ CKEDITOR_CONFIGS = {
         'height': 130,
     },
 }
+# 支付宝相关配置
+ALIPAY = {
+    # 'gateway': 'https://openapi.alipay.com/gateway.do',   # 真实网关地址
+    'gateway': 'https://openapi.alipaydev.com/gateway.do',  # 沙箱网关地址
+    'appid': '2021000122613847',  # 支付应用ID
+    'sign_type': 'RSA2',  # 签证的加密算法
+    'debug': True,  # 沙箱模式下必须设置为True
+    'verbose': True,  # 是否在调试模式下输出调试数据
+    'timeout': 15,  # 请求超时时间，单位：秒
+    "app_private_key_path": os.path.join(BASE_DIR, "apps/payments/keys/app_private_key.pem"),  # 应用私钥路径
+    "alipay_public_key_path": os.path.join(BASE_DIR, "apps/payments/keys/alipay_public_key.pem"),  # 支付宝公钥路径
+    "return_url": f"{FRONT_END_URL}/alipay",  # 同步回调结果通知地址
+    "notify_url": f"{BACKEND_URL}/payments/alipay/notify",  # 异步回调结果通知地址
+}
