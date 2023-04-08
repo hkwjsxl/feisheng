@@ -14,6 +14,10 @@ const order = reactive({
     credit_to_money: 0,  // 积分兑换现金的比例
     has_credit: 0,       // 用户拥有的积分
     credit_course_list: [], // 可使用积分抵扣的课程列表
+    course_list: [],     // 本次购买的商品课程列表
+    real_price: 0,       // 付款金额
+    pay_time: undefined, // 付款时间
+    is_show: false,      // 是否展示支付成功的内容
     create_order(user_coupon_id, token) {
         // 生成订单
         return http.post("/order/", {
@@ -33,6 +37,14 @@ const order = reactive({
                 Authorization: "jwt " + token,
             }
         })
+    },
+    alipay_page_pay(order_number) {
+        // 获取订单的支付宝支付链接信息
+        return http.get(`/payments/alipay/${order_number}/`)
+    },
+    relay_alipay_result(query_string) {
+        // 把地址栏中的查询字符串(支付成功以后的同步回调通知)转发给服务端
+        return http.get(`/payments/alipay/result/${query_string}/`)
     }
 })
 

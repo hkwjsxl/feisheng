@@ -54,7 +54,8 @@ const routes = [
     }, {
         meta: {
             title: "飞升在线教育-购物车",
-            keepAlive: true
+            keepAlive: true,
+            authorization: true,
         },
         path: '/cart',
         name: "Cart",
@@ -62,12 +63,21 @@ const routes = [
     }, {
         meta: {
             title: "飞升在线教育-确认下单",
-            keepAlive: true
+            keepAlive: true,
+            authorization: true,
         },
         path: '/order',
         name: "Order",
         component: () => import("../views/Order.vue"),
-    }
+    }, {
+        meta: {
+            title: "支付成功",
+            keepAlive: true
+        },
+        path: '/alipay',
+        name: "PaySuccess",
+        component: () => import("../views/AliPaySuccess.vue"),
+    },
 ]
 // 路由对象实例化
 const router = createRouter({
