@@ -86,7 +86,8 @@ class Course(BaseModel):
     lessons = models.IntegerField(default=0, verbose_name="总课时数量")
     pub_lessons = models.IntegerField(default=0, verbose_name="已更新课时数量")
 
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="课程原价", default=0)
+    price = models.DecimalField(blank=True, null=True, max_digits=10, decimal_places=2, verbose_name="课程原价", default=0)
+    credit = models.IntegerField(blank=True, null=True, default=0, verbose_name="积分")
     recomment_home_hot = models.BooleanField(default=False, verbose_name="是否推荐到首页新课栏目")
     recomment_home_top = models.BooleanField(default=False, verbose_name="是否推荐到首页必学栏目")
 

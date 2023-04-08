@@ -22,6 +22,7 @@ class CourseIndex(indexes.SearchIndex, indexes.Indexable):
     price = indexes.DecimalField(model_attr="price")
     discount = indexes.CharField(model_attr="discount_json")
     orders = indexes.IntegerField(model_attr="orders")
+    credit = indexes.IntegerField(model_attr="credit")
 
     # 指定与当前es索引模型对接的mysql的ORM模型
     def get_model(self):

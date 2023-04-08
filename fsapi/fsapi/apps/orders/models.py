@@ -30,6 +30,8 @@ class Order(BaseModel):
     user = models.ForeignKey(UserInfo, related_name='user_orders', on_delete=models.DO_NOTHING,
                              db_constraint=False, verbose_name="下单用户")
 
+    credit = models.IntegerField(default=0, null=True, blank=True, verbose_name="积分")
+
     class Meta:
         db_table = "fs_order"
         verbose_name = "订单记录"

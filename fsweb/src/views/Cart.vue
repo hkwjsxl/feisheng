@@ -75,7 +75,9 @@
                       </span>
                     </div>
                   </div>
-                  <div class="li-3"><router-link to="/order" class="btn">去结算</router-link></div>
+                  <div class="li-3">
+                    <router-link to="/order" class="btn">去结算</router-link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -116,6 +118,8 @@ const get_cart = () => {
         },
     )
 
+  }).catch(error => {
+    ElMessage.error("报错了，可能时登录超时！请重新登录后再继续操作~");
   })
 }
 
@@ -192,6 +196,8 @@ const del_cart = (key) => {
     store.commit("cart_total", cart.course_list.length);
     // 重新计算购物车中的商品课程的总价格
     get_cart_total();
+  }).catch(error => {
+    ElMessage.error("报错了，可能时登录超时！请重新登录后再继续操作~");
   })
 }
 </script>
