@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from django_redis import get_redis_connection
 
 from course.models import Course
+from user.models import UserCourse
 
 from response import APIResponse
 from return_code import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_204_NO_CONTENT
@@ -23,7 +24,11 @@ class CartAPIView(APIView):
         is_exists = Course.objects.filter(is_show=True, is_deleted=False, pk=course_id).exists()
         if not is_exists:
             return APIResponse(HTTP_400_BAD_REQUEST, "当前课程不存在.")
-        # todo 判断用户是否已经购买了
+        # 判断用户是否已经购买了
+        is_shop = UserCourse.objects.filter(user_id=user_id, course_id=course_id,
+                                            is_deleted=False, is_show=True).exists()
+        if is_shop:
+            return APIResponse(HTTP_400_BAD_REQUEST, "您已经购买过当前课程，不需要重新购买了.")
 
         # 3. 添加商品到购物车
         redis = get_redis_connection("cart")

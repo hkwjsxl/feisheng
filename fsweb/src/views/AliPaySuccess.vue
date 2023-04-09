@@ -5,21 +5,23 @@
       <div class="title">
         <i class="el-icon-chat-dot-round"></i>
         <div class="success-tips">
-          <p class="tips1">您已成功购买 1 门课程！</p>
+          <p class="tips1">您已成功购买 {{ order.course_list?.length }} 门课程！</p>
           <p class="tips2">你还可以加入QQ群 <span>747556033</span> 学习交流</p>
         </div>
       </div>
       <div class="order-info">
-        <p class="info1"><b>付款时间：</b><span>2019/04/02 10:27</span></p>
-        <p class="info2"><b>付款金额：</b><span>0</span></p>
-        <p class="info3"><b>课程信息：</b><span><span>《Pycharm使用秘籍》</span></span></p>
+        <p class="info1"><b>付款时间：</b><span>{{ order.pay_time }}</span></p>
+        <p class="info2"><b>付款金额：</b><span>{{ order.real_price?.toFixed(2) }}</span></p>
+        <p class="info3"><b>课程信息：</b>
+          <span v-for="course in order.course_list">《{{ course.name }}》</span>
+        </p>
       </div>
       <div class="wechat-code">
         <img src="../assets/wechat.jpg" alt="" class="er">
         <p><i class="el-icon-warning"></i>重要！微信扫码关注获得学习通知&amp;课程更新提醒！否则将严重影响学习进度和课程体验！</p>
       </div>
       <div class="study">
-        <span>立即学习</span>
+        <router-link to="/user/study"><span>立即学习</span></router-link>
       </div>
     </div>
     <Footer/>
@@ -31,14 +33,9 @@ import Header from "../components/Header.vue"
 import Footer from "../components/Footer.vue"
 import {ElMessage} from "element-plus";
 import order from "../api/order";
+import {useRouter} from "vue-router";
 
-</script>
-
-<script setup>
-import Header from "../components/Header.vue"
-import Footer from "../components/Footer.vue"
-import {ElMessage} from "element-plus";
-import order from "../api/order";
+const router = useRouter()
 
 let query_string = location.search; // 获取查询字符串的支付结果参数
 order.relay_alipay_result(query_string).then(response => {
@@ -48,7 +45,8 @@ order.relay_alipay_result(query_string).then(response => {
   order.real_price = result_data.real_price;
   order.pay_time = result_data.pay_time;
 }).catch(error => {
-  console.log(error);
+  ElMessage.error(error.response.data.message);
+  router.push("/");
 })
 
 </script>

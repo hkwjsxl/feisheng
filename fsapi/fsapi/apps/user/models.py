@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from stdimage import StdImageField
 
 from models import BaseModel
+from course.models import Course, CourseChapter, CourseLesson
 
 
 class UserInfo(AbstractUser):
@@ -20,6 +21,7 @@ class UserInfo(AbstractUser):
         null=True, blank=True, verbose_name="个人头像"
     )
     nickname = models.CharField(max_length=64, default="", null=True, blank=True, verbose_name="用户昵称")
+    study_time = models.IntegerField(default=0, verbose_name="总学习时长")
 
     is_deleted = models.BooleanField(default=False, verbose_name="是否删除")
 
@@ -89,3 +91,22 @@ class Credit(BaseModel):
             oper_text,
             abs(self.number)
         )
+
+
+class UserCourse(BaseModel):
+    """用户的课程"""
+    user = models.ForeignKey(UserInfo, related_name='user_courses', on_delete=models.CASCADE,
+                             verbose_name="用户", db_constraint=False)
+    course = models.ForeignKey(Course, related_name='course_users', on_delete=models.CASCADE,
+                               verbose_name="课程名称", db_constraint=False)
+    chapter = models.ForeignKey(CourseChapter, related_name="user_chapter", on_delete=models.DO_NOTHING,
+                                null=True, blank=True, verbose_name="章节信息", db_constraint=False)
+    lesson = models.ForeignKey(CourseLesson, related_name="user_lesson", on_delete=models.DO_NOTHING,
+                               null=True, blank=True, verbose_name="课时信息", db_constraint=False)
+
+    study_time = models.IntegerField(default=0, verbose_name="学习时长")
+
+    class Meta:
+        db_table = 'fs_user_course'
+        verbose_name = '用户课程购买记录'
+        verbose_name_plural = verbose_name
