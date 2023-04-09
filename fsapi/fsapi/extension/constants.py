@@ -27,3 +27,5 @@ HOT_WORD_EXPIRE = 7
 """优惠折扣"""
 # 积分抵扣现金的比例，n积分:1元
 CREDIT_TO_MONEY = 10
+# 订单超时的时间(单位：秒)
+ORDER_TIMEOUT = 15 * 60

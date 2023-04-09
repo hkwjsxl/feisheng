@@ -41,11 +41,13 @@ let query_string = location.search; // 获取查询字符串的支付结果参�
 order.relay_alipay_result(query_string).then(response => {
   order.is_show = true;
   let result_data = response.data.data;
+  console.log("result_data", result_data)
   order.course_list = result_data.course_list;
   order.real_price = result_data.real_price;
   order.pay_time = result_data.pay_time;
 }).catch(error => {
-  ElMessage.error(error.response.data.message);
+  console.log(error)
+  ElMessage.error(error.message);
   router.push("/");
 })
 

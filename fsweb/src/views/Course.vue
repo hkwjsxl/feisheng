@@ -212,11 +212,11 @@ const add_cart = (course_info) => {
   // 从本地存储中获取jwt token
   let token = sessionStorage.token || localStorage.token;
   cart.add_course_to_cart(course_info.id, token).then(response => {
-    if (response.data.code !== 500) {
+    if (response.data.code === 201) {
       store.commit("cart_total", response.data.message.cart_total);
       ElMessage.success(response.data.message.msg);
     } else {
-      ElMessage.error("添加商品到购物车失败.");
+      ElMessage.error(response.data.message);
     }
 
   }).catch(error => {

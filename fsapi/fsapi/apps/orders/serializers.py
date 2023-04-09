@@ -10,16 +10,17 @@ from .models import Order, OrderDetail, Course
 from coupon.models import CouponLog
 
 from logger import log
-from constants import CREDIT_TO_MONEY
+from constants import CREDIT_TO_MONEY, ORDER_TIMEOUT
 
 
 class OrderModelSerializer(serializers.ModelSerializer):
     user_coupon_id = serializers.IntegerField(write_only=True, default=-1)
+    order_timeout = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Order
-        fields = ["pay_type", "id", "order_number", "user_coupon_id", "credit"]
-        read_only_fields = ["id", "order_number"]
+        fields = ["pay_type", "id", "order_number", "user_coupon_id", "credit", "order_timeout"]
+        read_only_fields = ["id", "order_number", "order_timeout"]
         extra_kwargs = {
             "pay_type": {"write_only": True},
             "credit": {"write_only": True},
@@ -184,6 +185,8 @@ class OrderModelSerializer(serializers.ModelSerializer):
                 self.delete_cart(redis, user_id, cart_hash)
                 # 把优惠券和当前订单进行绑定
                 self.bind_discount_and_order(user_coupon, order, user_id, user_coupon_id)
+                # 返回订单超时时间
+                order.order_timeout = ORDER_TIMEOUT
                 return order
 
             except Exception as e:
