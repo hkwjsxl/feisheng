@@ -59,7 +59,6 @@ class AlipayAPIViewSet(ViewSet):
 
         if order.order_status == 0:
             result = alipay.query(order_number)
-            print(f"result-{result}")
 
             if result.get("trade_status", None) in ["TRADE_FINISHED", "TRADE_SUCCESS"]:
                 """支付成功"""
@@ -82,13 +81,11 @@ class AlipayAPIViewSet(ViewSet):
                             coupon_log.use_status = 1  # 1 表示已使用
                             coupon_log.save()
 
-                        # 3. 用户和课程的关系绑定
+                        # 3. 用户和课程的关系绑定（上线后只保留异步处理结果中的绑定即可（def notify_result））
                         user_course_list = []
                         for course in course_list:
                             user_course_list.append(UserCourse(course=course, user=order.user))
                         UserCourse.objects.bulk_create(user_course_list)
-
-                        # todo 4. 取消订单超时
 
                     except Exception as e:
                         log.error(f"订单支付处理同步结果发生未知错误：{e}")
@@ -144,12 +141,6 @@ class AlipayAPIViewSet(ViewSet):
                             coupon_log.use_time = now_time
                             coupon_log.use_status = 1  # 1 表示已使用
                             coupon_log.save()
-
-                        # 3. 用户和课程的关系绑定
-                        user_course_list = []
-                        for course in course_list:
-                            user_course_list.append(UserCourse(course=course, user=order.user))
-                        UserCourse.objects.bulk_create(user_course_list)
 
                     except Exception as e:
                         log.error(f"订单支付处理同步结果发生未知错误：{e}")
