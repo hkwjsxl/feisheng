@@ -193,3 +193,25 @@ class OrderModelSerializer(serializers.ModelSerializer):
                 log.error(f"订单创建失败：{e}")
                 transaction.savepoint_rollback(transaction_start)
                 raise exceptions.ValidationError("订单创建失败.")
+
+
+class OrderDetailMdoelSerializer(serializers.ModelSerializer):
+    """订单详情序列化器"""
+    # 通过source修改数据源，可以把需要调用的部分外键字段提取到当前序列化器中
+    course_id = serializers.IntegerField(source="course.id")
+    course_name = serializers.CharField(source="course.name")
+    course_cover = serializers.ImageField(source="course.course_cover")
+
+    class Meta:
+        model = OrderDetail
+        fields = ["id", "price", "real_price", "discount_name", "course_id", "course_name", "course_cover"]
+
+
+class OrderListModelSerializer(serializers.ModelSerializer):
+    """订单列表序列化器"""
+    order_courses = OrderDetailMdoelSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = ["id", "order_number", "total_price", "real_price", "pay_time", "created_time", "credit", "coupon",
+                  "pay_type", "order_status", "order_courses"]

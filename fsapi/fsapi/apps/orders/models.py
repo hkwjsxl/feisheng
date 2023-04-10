@@ -40,6 +40,19 @@ class Order(BaseModel):
     def __str__(self):
         return "%s,总价: %s,实付: %s" % (self.name, self.total_price, self.real_price)
 
+    def coupon(self):
+        """当前订单关联的优惠券信息"""
+        coupon_related = self.to_coupon.first()
+        if coupon_related:
+            return {
+                "id": coupon_related.coupon.id,
+                "name": coupon_related.coupon.name,
+                "sale": coupon_related.coupon.sale,
+                "discount": coupon_related.coupon.discount,
+                "condition": coupon_related.coupon.condition,
+            }
+        return {}
+
 
 class OrderDetail(BaseModel):
     """
