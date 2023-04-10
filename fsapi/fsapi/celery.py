@@ -17,3 +17,5 @@ app.autodiscover_tasks()
 # 启动
 # celery -A fsapi worker -l info
 # celery -A fsapi beat
+# windows如果可以运行celery但没有执行任务，可以用下面的命令
+# celery -A fsapi worker --pool=solo -l info

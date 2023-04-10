@@ -7,9 +7,10 @@ from rest_framework import exceptions
 from django_redis import get_redis_connection
 
 from .models import Order, OrderDetail, Course
-from coupon.models import CouponLog
+from .tasks import order_timeout
 
 from logger import log
+from coupon.models import CouponLog
 from constants import CREDIT_TO_MONEY, ORDER_TIMEOUT
 
 
@@ -167,6 +168,12 @@ class OrderModelSerializer(serializers.ModelSerializer):
             redis = get_redis_connection("coupon")
             redis.delete(f"{user_id}:{user_coupon_id}")
 
+    def handle_order(self, order):
+        # 将来订单状态发生改变，再修改优惠券的使用状态，如果订单过期，则再次还原优惠券到redis中
+        order_timeout.apply_async(kwargs={"order_id": order.id}, countdown=ORDER_TIMEOUT)
+        # 返回订单超时时间
+        order.order_timeout = ORDER_TIMEOUT
+
     def create(self, validated_data):
         """创建订单"""
         redis = get_redis_connection("cart")
@@ -185,8 +192,8 @@ class OrderModelSerializer(serializers.ModelSerializer):
                 self.delete_cart(redis, user_id, cart_hash)
                 # 把优惠券和当前订单进行绑定
                 self.bind_discount_and_order(user_coupon, order, user_id, user_coupon_id)
-                # 返回订单超时时间
-                order.order_timeout = ORDER_TIMEOUT
+                # 处理订单其余的操作
+                self.handle_order(order)
                 return order
 
             except Exception as e:

@@ -1,6 +1,7 @@
 from django.db import transaction
 
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.permissions import IsAuthenticated
 
@@ -25,15 +26,16 @@ class OrderCreateAPIView(ReCreateModelMixin, GenericViewSet):
 
 class OrderPayChoicesAPIView(APIView):
     def get(self, request):
-        """订单过滤过滤选项"""
+        """返回订单状态"""
         return APIResponse(data=Order.status_choices)
 
 
 class OrderListAPIView(ReListModelMixin, GenericViewSet):
     """当前登录用户的订单列表"""
     permission_classes = [IsAuthenticated]
-    serializer_class = OrderListModelSerializer
     pagination_class = RePageNumberPagination
+
+    serializer_class = OrderListModelSerializer
 
     def get_queryset(self):
         user = self.request.user  # 获取当前登录用户
@@ -42,10 +44,10 @@ class OrderListAPIView(ReListModelMixin, GenericViewSet):
         status_list = [item[0] for item in Order.status_choices]
         if order_status in status_list:
             query = query.filter(order_status=order_status)
+        else:
+            # 订单状态传入不正确时，返回所有的订单
+            query = query.all()
         return query.order_by("-id").all()
-
-
-from rest_framework.viewsets import ViewSet
 
 
 class OrderViewSet(ViewSet):
@@ -55,7 +57,8 @@ class OrderViewSet(ViewSet):
         """取消订单"""
         try:
             order = Order.objects.get(pk=pk, order_status=0)
-        except:
+        except Exception as e:
+            log.error("当前订单记录不存在或不能取消---%s", str(e))
             return APIResponse(HTTP_400_BAD_REQUEST, "当前订单记录不存在或不能取消.")
 
         with transaction.atomic():
@@ -79,5 +82,5 @@ class OrderViewSet(ViewSet):
 
             except Exception as e:
                 transaction.savepoint_rollback(save_id)
-                log.error(f"订单无法取消！发生未知错误！{e}")
+                log.error(f"订单无法取消，发生未知错误.---{e}")
                 return APIResponse(HTTP_500_INTERNAL_SERVER_ERROR, "当前订单无法取消，请联系客服工作人员.")
