@@ -65,9 +65,12 @@ const loginhandler = () => {
     let payload_data = JSON.parse(atob(payload)) // 用户信息
     store.commit("login", payload_data)
     store.commit("cart_total", response.data.cart_total)
+    // 设置用户头像
+    store.state.user.avatar = payload_data.avatar;
 
     // 成功提示
     ElMessage.success("登录成功.")
+    store.state.user.avatar = response.data.avatar;
     // 关闭登录弹窗，对外发送一个登录成功的信息
     user.account = ""
     user.password = ""

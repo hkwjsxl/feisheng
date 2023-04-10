@@ -33,13 +33,17 @@
             <router-link to="">我的课堂</router-link>
             <el-dropdown>
                 <span class="el-dropdown-link">
-                  <el-avatar class="avatar" size="50" src="/src/assets/avatar.jpg"></el-avatar>
+                  <router-link to="/user">
+                  <el-avatar class="avatar" size="50" :src="settings.host + store.state.user.avatar"></el-avatar>
+                  </router-link>
                 </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item icon="el-icon-user">学习中心</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-edit-outline">订单列表</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-setting">个人设置</el-dropdown-item>
+                  <el-dropdown-item :icon="UserFilled">
+                    <router-link to="/user">个人中心</router-link>
+                  </el-dropdown-item>
+                  <el-dropdown-item :icon="List">订单列表</el-dropdown-item>
+                  <el-dropdown-item :icon="Setting">个人设置</el-dropdown-item>
                   <el-dropdown-item :icon="Position" @click="logout">注销登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -71,7 +75,7 @@ import nav from "../api/nav";
 import Login from "./Login.vue";
 import {reactive} from "vue";
 import {UserFilled, List, Setting, Position} from '@element-plus/icons-vue'
-
+import settings from "../settings.js";
 import {useStore} from "vuex"
 
 const store = useStore()
