@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django_redis import get_redis_connection
 
@@ -69,7 +70,7 @@ def get_user_enable_coupon_list(user_id):
         elif coupon_type == 3:
             # 指定课程优惠券
             coupon_course = {int(course_item["course__id"]) for course_item in item.get("to_course")}
-            # 并集处理
+            # 交集处理
             ret = course_id_list & coupon_course
             if len(ret) > 0:
                 item["enable_course"] = {int(course.id) for course in course_list if course.id in ret}
@@ -78,7 +79,7 @@ def get_user_enable_coupon_list(user_id):
         elif coupon_type == 2:
             # 指定课程分配优惠券
             coupon_category = {int(category_item["category__id"]) for category_item in item.get("to_category")}
-            # 并集处理
+            # 交集处理
             ret = category_id_list & coupon_category
 
             if len(ret) > 0:
@@ -88,7 +89,7 @@ def get_user_enable_coupon_list(user_id):
         elif coupon_type == 1:
             # 指定学习方向的优惠券
             coupon_direction = {int(direction_item["direction__id"]) for direction_item in item.get("to_direction")}
-            # 并集处理
+            # 交集处理
             ret = direction_id_list & coupon_direction
 
             if len(ret) > 0:
@@ -96,3 +97,40 @@ def get_user_enable_coupon_list(user_id):
                 enable_coupon_list.append(item)
 
     return enable_coupon_list
+
+
+def add_coupon_to_redis(obj):
+    """
+    添加优惠券使用记录到redis中
+    """
+    redis = get_redis_connection("coupon")
+    # 记录优惠券信息到redis中
+    pipe = redis.pipeline()
+    pipe.multi()
+    pipe.hset(f"{obj.user.id}:{obj.id}", "coupon_id", obj.coupon.id)
+    pipe.hset(f"{obj.user.id}:{obj.id}", "name", obj.coupon.name)
+    pipe.hset(f"{obj.user.id}:{obj.id}", "discount", obj.coupon.discount)
+    pipe.hset(f"{obj.user.id}:{obj.id}", "get_discount_display", obj.coupon.get_discount_display())
+
+    pipe.hset(f"{obj.user.id}:{obj.id}", "coupon_type", obj.coupon.coupon_type)
+    pipe.hset(f"{obj.user.id}:{obj.id}", "get_coupon_type_display", obj.coupon.get_coupon_type_display())
+
+    pipe.hset(f"{obj.user.id}:{obj.id}", "start_time", obj.coupon.start_time.strftime("%Y-%m-%d %H:%M:%S"))
+    pipe.hset(f"{obj.user.id}:{obj.id}", "end_time", obj.coupon.end_time.strftime("%Y-%m-%d %H:%M:%S"))
+
+    pipe.hset(f"{obj.user.id}:{obj.id}", "get_type", obj.coupon.get_type)
+    pipe.hset(f"{obj.user.id}:{obj.id}", "get_get_type_display", obj.coupon.get_get_type_display())
+
+    pipe.hset(f"{obj.user.id}:{obj.id}", "condition", obj.coupon.condition)
+    pipe.hset(f"{obj.user.id}:{obj.id}", "sale", obj.coupon.sale)
+
+    pipe.hset(f"{obj.user.id}:{obj.id}", "to_direction",
+              json.dumps(list(obj.coupon.to_direction.values("direction__id", "direction__name"))))
+    pipe.hset(f"{obj.user.id}:{obj.id}", "to_category",
+              json.dumps(list(obj.coupon.to_category.values("category__id", "category__name"))))
+    pipe.hset(f"{obj.user.id}:{obj.id}", "to_course",
+              json.dumps(list(obj.coupon.to_course.values("course__id", "course__name"))))
+
+    # 设置当前优惠券的有效期
+    pipe.expire(f"{obj.user.id}:{obj.id}", int(obj.coupon.end_time.timestamp() - datetime.now().timestamp()))
+    pipe.execute()

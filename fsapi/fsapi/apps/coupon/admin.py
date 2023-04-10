@@ -7,6 +7,7 @@ from django_redis import get_redis_connection
 
 from .models import Coupon, CouponDirection, CouponCourseCat, CouponCourse, CouponLog
 from logger import log
+from coupon.services import add_coupon_to_redis
 
 
 class CouponDirectionInLine(admin.TabularInline):  # admin.StackedInline
@@ -54,38 +55,7 @@ class CouponLogModelAdmin(admin.ModelAdmin):
         redis = get_redis_connection("coupon")
         if obj.use_status == 0 and obj.use_time == None:
             # 未使用过的 记录优惠券信息到redis中
-            pipe = redis.pipeline()
-            pipe.multi()
-            pipe.hset(f"{obj.user.id}:{obj.id}", "coupon_id", obj.coupon.id)
-            pipe.hset(f"{obj.user.id}:{obj.id}", "name", obj.coupon.name)
-            pipe.hset(f"{obj.user.id}:{obj.id}", "discount", obj.coupon.discount)
-            pipe.hset(f"{obj.user.id}:{obj.id}", "get_discount_display", obj.coupon.get_discount_display())
-            pipe.hset(f"{obj.user.id}:{obj.id}", "coupon_type", obj.coupon.coupon_type)
-            pipe.hset(f"{obj.user.id}:{obj.id}", "get_coupon_type_display", obj.coupon.get_coupon_type_display())
-            pipe.hset(f"{obj.user.id}:{obj.id}", "start_time", obj.coupon.start_time.strftime("%Y-%m-%d %H:%M:%S"))
-            pipe.hset(f"{obj.user.id}:{obj.id}", "end_time", obj.coupon.end_time.strftime("%Y-%m-%d %H:%M:%S"))
-            pipe.hset(f"{obj.user.id}:{obj.id}", "get_type", obj.coupon.get_type)
-            pipe.hset(f"{obj.user.id}:{obj.id}", "get_get_type_display", obj.coupon.get_get_type_display())
-            pipe.hset(f"{obj.user.id}:{obj.id}", "condition", obj.coupon.condition)
-            pipe.hset(f"{obj.user.id}:{obj.id}", "sale", obj.coupon.sale)
-            pipe.hset(
-                f"{obj.user.id}:{obj.id}", "to_direction",
-                json.dumps(list(obj.coupon.to_direction.values("direction__id", "direction__name")))
-            )
-            pipe.hset(
-                f"{obj.user.id}:{obj.id}", "to_category",
-                json.dumps(list(obj.coupon.to_category.values("category__id", "category__name")))
-            )
-            pipe.hset(
-                f"{obj.user.id}:{obj.id}", "to_course",
-                json.dumps(list(obj.coupon.to_course.values("course__id", "course__name")))
-            )
-            # 设置当前优惠券的有效期
-            pipe.expire(
-                f"{obj.user.id}:{obj.id}",
-                int(obj.coupon.end_time.timestamp() - datetime.datetime.now().timestamp())
-            )
-            pipe.execute()
+            add_coupon_to_redis(obj)
         else:
             # 使用过的优惠直接删除
             redis.delete(f"{obj.user.id}:{obj.id}")

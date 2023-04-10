@@ -7,7 +7,9 @@
             class="js-all-num" v-if="order.order_status===-1">{{ order.count }}</i></a></li>
         <li :class="{action: order.order_status===status[0]}" v-for="status in order.order_status_chioces">
           <a href="" @click.prevent="order.order_status=status[0]">{{ status[1] }}<i class="js-all-num"
-                                                                                     v-if="order.order_status===status[0]">{{ order.count }}</i></a>
+                                                                                     v-if="order.order_status===status[0]">{{
+              order.count
+            }}</i></a>
         </li>
       </ul>
     </div>
@@ -37,7 +39,9 @@
                           v-if="course_info.price > course_info.real_price">￥{{ course_info.price }}</span>
                     <span class="l truepay-text" v-if="course_info.price > course_info.real_price">折扣</span>
                     <span class="l line-though clearfix" style="float: none"
-                          v-if="course_info.price > course_info.real_price">￥{{ parseFloat(course_info.price - course_info.real_price).toFixed(2) }}</span>
+                          v-if="course_info.price > course_info.real_price">￥{{
+                        parseFloat(course_info.price - course_info.real_price).toFixed(2)
+                      }}</span>
                     <span class="l truepay-text">实付</span>
                     <span class="l course-little-price">￥{{ course_info.real_price }}</span>
                   </p>
@@ -122,9 +126,37 @@ getOrderList()
 
 let pay_now = (order_info) => {
   // 订单继续支付
+  order.order_number = order_info.order_number;
+  let token = sessionStorage.token || localStorage.token;
+  if (order.pay_type === 0) {
+    // 如果当前订单的支付方式属于支付宝，发起支付宝支付
+    order.alipay_page_pay(order_info.order_number, token).then(response => {
+      // 新开浏览器窗口，跳转到支付页面
+      window.open(response.data.data.link, "_blank");
+      // 新建定时器，每隔5秒到服务端查询一次当前订单的支付结果
+      let max_query_timer = 180;
+      clearInterval(order.timer);
+      order.timer = setInterval(() => {
+        max_query_timer--;
+        if (max_query_timer > 0) {
+          order.query_order(token).then(response => {
+            order_info.order_status = 1;
+            clearInterval(order.timer);
+          })
+        } else {
+          clearInterval(order.timer);
+        }
+      }, 5000);
+    })
+  }
 }
+
 let pay_cancel = (order_info) => {
   // 取消订单
+  let token = sessionStorage.token || localStorage.token;
+  order.order_cancel(order_info.id, token).then(response => {
+    order_info.order_status = 2;
+  })
 }
 
 let evaluate_now = (order_info) => {
