@@ -19,3 +19,5 @@ app.autodiscover_tasks()
 # celery -A fsapi beat
 # windows如果可以运行celery但没有执行任务，可以用下面的命令
 # celery -A fsapi worker --pool=solo -l info
+# 启动celery-flower, pip install flower
+# celery -A fsapi flower --port=5555

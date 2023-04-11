@@ -26,6 +26,12 @@ const course = reactive({
     },
     tabIndex: 1,      // 课程详情页中默认展示的课程信息的选项卡
     chapter_list: [], // 课程章节列表
+
+    course_type: [],  // 我的课程-课程类型列表
+    current_course_type: -1,  // 我的课程-当前显示的课程类型，默认为-1，表示全部
+    user_course_count: 0,    // 我的课程-课程列表总数
+    user_course_list: [], // 用户中心的课程列表
+
     get_course_direction() {
         // 获取学习方向信息
         return http.get("/course/direction/")
