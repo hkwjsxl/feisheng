@@ -6,13 +6,17 @@ from django_redis import get_redis_connection
 
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from . import models
-from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerializer
+from .models import UserCourse
+from course.models import Course
+from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerializer, UserCourseModelSerializer
 
 from response import APIResponse
 from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR
-from mixins import ReCreateModelMixin
+from mixins import ReCreateModelMixin, ReListModelMixin
+from paginations import RePageNumberPagination
 from .tasks import send_sms
 
 
@@ -92,3 +96,20 @@ class UserLoginSMSGenericAPIView(APIView):
         if not serializer.is_valid():
             return APIResponse(VALIDATE_ERROR, serializer.errors)
         return APIResponse(data=serializer.data)
+
+
+class CourseListAPIView(ReListModelMixin, GenericViewSet):
+    """当前用户的课程列表信息"""
+    permission_classes = [IsAuthenticated]
+    pagination_class = RePageNumberPagination
+
+    serializer_class = UserCourseModelSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        query = UserCourse.objects.filter(user=user)
+        course_type = int(self.request.query_params.get("type", -1))
+        course_type_list = [item[0] for item in Course.course_type_choices]
+        if course_type in course_type_list:
+            query = query.filter(course__course_type=course_type)
+        return query.order_by("-id").all()

@@ -110,3 +110,46 @@ class UserCourse(BaseModel):
         db_table = 'fs_user_course'
         verbose_name = '用户课程购买记录'
         verbose_name_plural = verbose_name
+
+    def progress(self):
+        """学习进度值"""
+        # 获取当前课程学习的最后一个章节
+        if not self.chapter:
+            return 0
+
+        # 获取当前课程的总章数
+        chapter_total = self.course.chapter_list.count()
+        if chapter_total < 1:
+            return 0
+
+        # 获取当前已经完成学习的章节的序号
+        chapter_order = self.chapter.orders - 1
+        # 获取章节学习进度
+        chapter_progress = float(f"{((chapter_order / chapter_total) * 100):.2f}")
+
+        # 获取当前最后学习章节的总课时
+        lesson_total = self.chapter.lesson_list.count()
+        if lesson_total < 1:
+            return 0
+
+        # 获取当前已经完成学习的课时的序号
+        lesson_order = self.lesson.orders - 1
+        # 获取课时学习进度
+        lesson_progress = float(f"{((lesson_order / lesson_total) * 100):.2f}")
+        # 总学习进度 = 章节学习进度 + (100 / 总章数) * 课时学习进度
+        # 总学习进度 = 章节学习进度 + 单章学习进度 * 课时学习进度
+        course_progress = chapter_progress + (100 / chapter_total) * lesson_progress / 100
+
+        return f"{course_progress:.2f}"
+
+    def note(self):
+        """笔记数量"""
+        return 0
+
+    def qa(self):
+        """问答数量"""
+        return 0
+
+    def code(self):
+        """代码数量"""
+        return 0

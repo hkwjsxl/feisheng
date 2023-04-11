@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from . import models
+from .models import UserCourse
 
 from authenticate import generate_jwt_token
 
@@ -121,3 +122,27 @@ class UserLoginSMSModelSerializer(serializers.ModelSerializer):
         user.token = generate_jwt_token(user)
 
         return user
+
+
+class UserCourseModelSerializer(serializers.ModelSerializer):
+    """用户课程信息序列化器"""
+    course_cover = serializers.ImageField(source="course.course_cover")
+    course_name = serializers.CharField(source="course.name")
+    chapter_name = serializers.CharField(source="chapter.name", default="")
+    chapter_id = serializers.IntegerField(source="chapter.id", default=0)
+    chapter_orders = serializers.IntegerField(source="chapter.orders", default=0)
+    lesson_id = serializers.IntegerField(source="lesson.id", default=0)
+    lesson_name = serializers.CharField(source="lesson.name", default="")
+    lesson_orders = serializers.IntegerField(source="lesson.orders", default=0)
+    course_type = serializers.IntegerField(source="course.course_type", default=0)
+    get_course_type_display = serializers.CharField(source="course.get_course_type_display", default="")
+
+    class Meta:
+        model = UserCourse
+        fields = [
+            "course_id", "course_cover", "course_name", "study_time",
+            "chapter_id", "chapter_orders", "chapter_name",
+            "lesson_id", "lesson_orders", "lesson_name",
+            "course_type", "get_course_type_display", "progress",
+            "note", "qa", "code"
+        ]

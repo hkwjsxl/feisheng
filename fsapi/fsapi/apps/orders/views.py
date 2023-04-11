@@ -44,9 +44,6 @@ class OrderListAPIView(ReListModelMixin, GenericViewSet):
         status_list = [item[0] for item in Order.status_choices]
         if order_status in status_list:
             query = query.filter(order_status=order_status)
-        else:
-            # 订单状态传入不正确时，返回所有的订单
-            query = query.all()
         return query.order_by("-id").all()
 
 

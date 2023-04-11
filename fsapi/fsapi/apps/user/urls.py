@@ -12,6 +12,9 @@ urlpatterns = [
     path('mobile/<str:mobile>/', views.MobileAPIView.as_view(), name='mobile'),
     path('sms/<str:mobile>/', views.SMSAPIView.as_view(), name='sms'),
     path('login/sms/', views.UserLoginSMSGenericAPIView.as_view(), name='login_sms'),
+
+    # 我的课程列表
+    path("course/", views.CourseListAPIView.as_view({"get": "list"})),
 ]
 
 urlpatterns += router.urls

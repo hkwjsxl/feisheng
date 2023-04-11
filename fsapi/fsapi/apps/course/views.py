@@ -157,4 +157,4 @@ class CourseTypeListAPIView(APIView):
     """课程类型"""
 
     def get(self, request):
-        return APIResponse(data=Course.course_type)
+        return APIResponse(data=Course.course_type_choices)
