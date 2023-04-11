@@ -151,3 +151,10 @@ class CourseChapterListAPIView(ReListModelMixin, GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+class CourseTypeListAPIView(APIView):
+    """课程类型"""
+
+    def get(self, request):
+        return APIResponse(data=Course.course_type)

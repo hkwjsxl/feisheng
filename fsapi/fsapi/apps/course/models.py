@@ -48,7 +48,7 @@ class CourseCategory(BaseModel):
 
 
 class Course(BaseModel):
-    course_type = (
+    course_type_choices = (
         (0, '实战课程'),
         (1, '会员专享'),
         (2, '学位课程'),
@@ -71,7 +71,7 @@ class Course(BaseModel):
     course_video = models.FileField(upload_to="course/video", max_length=255, verbose_name="封面视频",
                                     blank=True, null=True)
 
-    course_type = models.SmallIntegerField(choices=course_type, default=0, verbose_name="付费类型")
+    course_type = models.SmallIntegerField(choices=course_type_choices, default=0, verbose_name="付费类型")
     level = models.SmallIntegerField(choices=level_choices, default=1, verbose_name="难度等级")
     status = models.SmallIntegerField(choices=status_choices, default=0, verbose_name="课程状态")
 
