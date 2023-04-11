@@ -112,7 +112,24 @@ const course = reactive({
     get_course_chapters() {
         // 获取指定课程的章节列表
         return http.get(`/course/${this.course_id}/chapter/`)
-    }
+    },
+    get_course_type_list(token) {
+        // 获取课程类型
+        return http.get("/course/type/")
+    },
+    get_user_course_list(token) {
+        // 获取用户的课程列表
+        return http.get("/user/course/", {
+            params: {
+                type: this.current_course_type,
+                page: this.page,
+                size: this.size,
+            },
+            headers: {
+                Authorization: "jwt " + token,
+            }
+        })
+    },
 })
 
 export default course;

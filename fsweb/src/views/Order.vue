@@ -395,7 +395,12 @@ watch(
 window.onscroll = () => {
   let cart_body_table = document.querySelector(".cart-body-table")
   let offsetY = window.scrollY
-  let maxY = cart_body_table.offsetTop + cart_body_table.offsetHeight
+  console.log("cart_body_table", cart_body_table)
+  console.log("offsetY", offsetY)
+  let maxY = 0
+  if (cart_body_table) {
+    maxY = cart_body_table.offsetTop + cart_body_table.offsetHeight;
+  }
   order.fixed = offsetY < maxY
 }
 </script>
