@@ -23,5 +23,7 @@ urlpatterns = [
     path("<int:course>/chapter/", views.CourseChapterListAPIView.as_view()),
     # 课程类型
     path("type/", views.CourseTypeListAPIView.as_view()),
+    # 保利威云视频获取token
+    path("polyv/token/<str:vid>/", views.PolyvViewSet.as_view({"get": "token"})),
 ]
 urlpatterns += router.urls

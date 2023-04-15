@@ -1,9 +1,14 @@
 from datetime import datetime, timedelta
 
+from django.conf import settings
+
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet, ViewSetMixin
 from rest_framework.generics import GenericAPIView
 from rest_framework.filters import OrderingFilter
+from rest_framework.viewsets import ViewSet
+from rest_framework.permissions import IsAuthenticated
+
 from django_filters import FilterSet, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_haystack.filters import HaystackFilter
@@ -20,6 +25,7 @@ import constants
 from mixins import ReListModelMixin, ReRetrieveModelMixin
 from paginations import RePageNumberPagination
 from response import APIResponse
+from polyv import PolyvPlayer
 
 
 class CourseDirectionGenericAPIView(GenericViewSet, ReListModelMixin):
@@ -158,3 +164,23 @@ class CourseTypeListAPIView(APIView):
 
     def get(self, request):
         return APIResponse(data=Course.course_type_choices)
+
+
+class PolyvViewSet(ViewSet):
+    """保利威云视频服务相关的API接口"""
+    permission_classes = [IsAuthenticated]
+
+    def token(self, request, vid):
+        """获取视频播放的授权令牌token"""
+        userId = settings.POLYV["userId"]
+        secretkey = settings.POLYV["secretkey"]
+        tokenUrl = settings.POLYV["tokenUrl"]
+        polyv = PolyvPlayer(userId, secretkey, tokenUrl)
+
+        user_ip = request.META.get("REMOTE_ADDR")  # 客户端的IP地址
+        user_id = request.user.id  # 用户ID
+        user_name = request.user.username  # 用户名
+
+        token = polyv.get_video_token(vid, user_ip, user_id, user_name)
+
+        return APIResponse(data={"token": token})

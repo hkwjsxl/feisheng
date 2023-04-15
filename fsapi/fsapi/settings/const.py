@@ -90,3 +90,12 @@ SIMPLEUI_INDEX = 'http://127.0.0.1:5173/'
 BACKEND_URL = "http://127.0.0.1:8000"
 # 前端访问地址
 FRONT_END_URL = 'http://127.0.0.1:5173'
+
+# 保利威视频加密服务
+POLYV = {
+    "userId": "085a2e302a",
+    "writeToken": "a1765fbd-19e4-48a9-8386-4a5802107842",
+    "readToken": "12e97ba9-1c84-43b1-ba63-962cbad5824a",
+    "secretkey": "yi10YtdCHd",
+    "tokenUrl": "https://hls.videocc.net/service/v1/token",
+}
