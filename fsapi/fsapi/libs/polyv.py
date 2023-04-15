@@ -41,12 +41,18 @@ class PolyvPlayer(object):
         key_temp = sorted(plain)
         for key in key_temp:
             plain_sorted[key] = plain[key]
-        print(plain_sorted)
+        # print(plain_sorted)
+        """
+        {'extraParams': 'HTML5', 'ts': 1681526229068, 'userId': '085a2e302a', 'videoId': '085a2e302a675951ad88c4480a8920df_0', 'viewerId': 1, 'viewerIp': '127.0.0.1', 'viewerName': 'root'}
+        """
 
         plain_string = ''
         for k, v in plain_sorted.items():
             plain_string += str(k) + str(v)
-        print(plain_string)
+        # print(plain_string)
+        """
+        extraParamsHTML5ts1681526229068userId085a2e302avideoId085a2e302a675951ad88c4480a8920df_0viewerId1viewerIp127.0.0.1viewerNameroot
+        """
 
         # 首尾拼接上秘钥
         sign_data = self.secretKey + plain_string + self.secretKey

@@ -40,7 +40,7 @@
               <span> <a href="">笔记 <i>{{ course_info.note }}</i></a> </span>
               <span class="i-mid"> <a href="">代码 <i>{{ course_info.code }}</i></a> </span>
               <span class="i-right"> <a href="">问答 <i>{{ course_info.qa }}</i></a> </span>
-              <router-link to="/user/study" class="continute-btn">继续学习</router-link>
+              <router-link :to="`/user/study/${course_info.course_id}/`" class="continute-btn">继续学习</router-link>
             </div>
             <div class="share-box clearfix">
               <div class="show-btn">

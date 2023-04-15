@@ -109,6 +109,15 @@ const routes = [
         path: '/alipay',
         name: "PaySuccess",
         component: () => import("../views/AliPaySuccess.vue"),
+    }, {
+        meta: {
+            title: "飞升在线教育-学习中心",
+            keepAlive: true,
+            authorization: true
+        },
+        path: '/user/study/:course',
+        name: "Study",
+        component: () => import("../views/Study.vue"),
     },
 ]
 // 路由对象实例化
