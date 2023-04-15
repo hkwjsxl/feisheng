@@ -2,6 +2,7 @@ import re
 import random
 
 from django.conf import settings
+from django.db import transaction
 from django_redis import get_redis_connection
 
 from rest_framework.views import APIView
@@ -10,16 +11,19 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from . import models
-from .models import UserCourse
-from course.models import Course
+from .tasks import send_sms
+from .models import UserCourse, StudyProgress
+from course.models import Course, CourseLesson
 from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerializer, UserCourseModelSerializer
 
+from logger import log
+from constants import MAV_SEEK_TIME
 from response import APIResponse
-from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR, HTTP_400_BAD_REQUEST
+from return_code import (
+    SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR, HTTP_400_BAD_REQUEST
+)
 from mixins import ReCreateModelMixin, ReListModelMixin
 from paginations import RePageNumberPagination
-from .tasks import send_sms
-from logger import log
 
 
 class MobileAPIView(APIView):
@@ -151,3 +155,93 @@ class UserCourseAPIView(GenericAPIView):
         data["lesson_link"] = lesson.lesson_link
 
         return APIResponse(data=data)
+
+
+class StudyLessonAPIView(APIView):
+    """用户在当前课时的学习时间进度"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        lesson_id = int(request.query_params.get("lesson"))
+        user = request.user
+
+        # 查找课时
+        lesson = CourseLesson.objects.get(pk=lesson_id)
+
+        progress = StudyProgress.objects.filter(user=user, lesson=lesson).first()
+
+        # 如果查询没有进度，则默认进度为0
+        if progress is None:
+            progress = StudyProgress.objects.create(
+                user=request.user,
+                lesson=lesson,
+                study_time=0
+            )
+
+        return APIResponse(data=progress.study_time)
+
+
+class StudyProgressAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        """添加课时学习进度"""
+        try:
+            # 1. 接收客户端提交的视频进度和课时ID
+            study_time = int(request.data.get("time"))
+            lesson_id = int(request.data.get("lesson"))
+            user = request.user
+
+            # 判断当前课时是否免费或者当前课时所属的课程是否被用户购买了
+
+            # 判断本次更新学习时间是否超出阈值，当超过阈值，则表示用户已经违规快进了。
+            if study_time > MAV_SEEK_TIME:
+                raise Exception
+
+            # 查找课时
+            lesson = CourseLesson.objects.get(pk=lesson_id)
+
+        except:
+
+            return APIResponse(HTTP_400_BAD_REQUEST, "无效的参数或当前课程信息不存在.")
+
+        with transaction.atomic():
+            save_id = transaction.savepoint()
+            try:
+                # 2. 记录课时学习进度
+                progress = StudyProgress.objects.filter(user=user, lesson=lesson).first()
+
+                if progress is None:
+                    """新增一条用户与课时的学习记录"""
+                    progress = StudyProgress(
+                        user=user,
+                        lesson=lesson,
+                        study_time=study_time
+                    )
+                else:
+                    """直接更新现有的学习时间"""
+                    progress.study_time = int(progress.study_time) + int(study_time)
+
+                progress.save()
+
+                # 3. 记录课程学习的总进度
+                user_course = UserCourse.objects.get(user=user, course=lesson.course)
+                user_course.study_time = int(user_course.study_time) + int(study_time)
+
+                # 4. 记录用户正在查看的章节和课时
+                # 用户如果往后观看章节，则记录下
+                if lesson.chapter.orders > user_course.chapter.orders:
+                    user_course.chapter = lesson.chapter
+                # 用户如果往后观看课时，则记录下
+                if lesson.orders > user_course.lesson.orders:
+                    user_course.lesson = lesson
+
+                user_course.save()
+
+                return APIResponse(message="课时学习进度更新完成.")
+
+            except Exception as e:
+
+                log.error(f"更新课时进度失败.---{e}")
+                transaction.savepoint_rollback(save_id)
+                return APIResponse(message="当前课时学习进度丢失.")

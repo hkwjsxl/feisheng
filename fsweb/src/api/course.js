@@ -150,6 +150,28 @@ const course = reactive({
                 Authorization: "jwt " + token,
             }
         })
+    },
+    get_lesson_study_time(lesson, token) {
+        // 获取课程课时学习进度时间
+        return http.get("/user/lesson/", {
+            params: {
+                lesson,
+            },
+            headers: {
+                Authorization: "jwt " + token,
+            }
+        })
+    },
+    update_user_study_progress(lesson, seed, token) {
+        // 更新课时学习的进度
+        return http.post('/user/progress/', {
+            time: seed,
+            lesson: lesson,
+        }, {
+            headers: {
+                Authorization: "jwt " + token,
+            }
+        })
     }
 })
 

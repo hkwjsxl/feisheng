@@ -4,13 +4,14 @@
     <div class="chapter-list">
       <h2>{{ course.course_info.name }}</h2>
       <el-tree
+          v-if="course.current_lesson"
           highlight-current
           class="filter-tree"
           :data="course.lesson_list"
-          :props="course.lesson_tree_props"
           default-expand-all
           node-key="id"
           @node-click="node_click"
+          :current-node-key="`lesson-`+course.current_lesson"
       >
       </el-tree>
     </div>
@@ -23,6 +24,8 @@ import http from "../utils/http"
 import course from "../api/course";
 import "../utils/player"
 import {useRoute} from "vue-router";
+import store from "../store/index.js";
+import settings from "../settings.js";
 
 const route = useRoute()
 
@@ -57,9 +60,27 @@ course.get_course().then(response => {
 // 当用户点击右侧课程的章节课时的回调函数
 const node_click = (data) => {
   // 先删除原来的播放器
-  course.player?.destroy(); // 如果course.player为True，则调用course.player.destroy();// 新建一个播放器
-  console.log("data.lesson.lesson_link", data.lesson.lesson_link)
-  polyv(data.lesson.lesson_link);
+  // course.player?.destroy(); // 如果course.player为True，则调用course.player.destroy();// 新建一个播放器
+  // console.log(data.lesson.lesson_link)
+  if (!data.lesson) {
+    return;
+  }
+
+  let token = sessionStorage.token || localStorage.token;
+  course.get_lesson_study_time(data.lesson.id, token,).then(response => {
+    // 先删除原来的播放器
+    try {
+      course.player.destroy();
+    } catch (error) {
+    }
+    // 重置视频播放时间
+    course.current_time = response.data.data;
+    // 重置当前播放的课时ID
+    course.current_lesson = data.lesson.id
+    // console.log("course.current_lesson", course.current_lesson)
+    // 新建一个播放器
+    polyv(data.lesson.lesson_link);
+  })
 }
 
 let polyv = (vid) => {
@@ -73,7 +94,8 @@ let polyv = (vid) => {
     height: document.documentElement.clientHeight,     // 页面高度
     forceH5: true,
     vid: vid,
-    code: "root", // 一般是用户昵称
+    // code: "root", // 一般是用户昵称
+    code: store.state.user.username, // 一般是用户昵称
     // 视频加密播放的配置
     playsafe(vid, next) { // 向后端发送请求获取加密的token
       http.get(`course/polyv/token/${vid}/`, {
@@ -89,7 +111,7 @@ let polyv = (vid) => {
 
   // 设置播放进度
   course.player.on('s2j_onPlayerInitOver', (e) => {
-    course.player.j2s_seekVideo(0);
+    course.player.j2s_seekVideo(course.current_time);
   });
 
   // 设置自动播放，但是谷歌浏览器会拦截自动播放
@@ -102,8 +124,14 @@ let polyv = (vid) => {
   let video = document.querySelector(".pv-video")
   // 监听是否是否播放中
   video.ontimeupdate = () => {
-    // console.log(video.currentTime)
-    // todo 每隔几秒，发送一次ajax到服务端更新学习进度和课时进度
+    let watch_time = parseInt(video.currentTime);
+    // console.log("watch_time", watch_time)
+    if (watch_time % settings.seed_time === 0) {
+      if (course.current_time < watch_time) {
+        // 监听当前课时的播放时间
+        course.current_time = watch_time;
+      }
+    }
   }
 
 }
@@ -137,6 +165,19 @@ onMounted(() => {
 
   }
 })
+
+
+watch(
+    () => course.current_time,
+    () => {
+      console.log("current_time", course.current_time);
+      let token = sessionStorage.token || localStorage.token;
+      let lesson = course.current_lesson;
+      course.update_user_study_progress(lesson, settings.seed_time, token).then(response => {
+        console.log(response.data.message);
+      })
+    }
+)
 
 </script>
 

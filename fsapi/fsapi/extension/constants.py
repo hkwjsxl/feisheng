@@ -29,3 +29,7 @@ HOT_WORD_EXPIRE = 7
 CREDIT_TO_MONEY = 10
 # 订单超时的时间(单位：秒)
 ORDER_TIMEOUT = 15 * 60
+
+"""个人中心"""
+# 更新课时学习时间时的跳动最大阀值
+MAV_SEEK_TIME = 300
