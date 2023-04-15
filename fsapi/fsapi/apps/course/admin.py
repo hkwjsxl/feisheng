@@ -110,9 +110,6 @@ class CourseLessonModelAdmin(admin.ModelAdmin):
     # 分页配置，一夜数据量
     list_per_page = 10
 
-    CourseLesson.text.admin_order_field = "orders"
-    CourseLesson.text.short_description = "课时名称"
-
 
 admin.site.register(CourseLesson, CourseLessonModelAdmin)
 

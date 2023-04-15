@@ -51,4 +51,21 @@ input {
   border-left: 0;
   border-top: 0;
 }
+
+.player {
+  background-color: #333;
+}
+
+.player .el-tree-node__content:hover,
+.player .el-tree-node__content:active,
+.player .el-tree-node:focus > .el-tree-node__content,
+.player .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+  background-color: #FF9900;
+  color: #fff;
+}
+
+.player .el-tree {
+  background-color: #333;
+  color: #fff;
+}
 </style>

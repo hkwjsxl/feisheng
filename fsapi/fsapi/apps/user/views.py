@@ -6,6 +6,7 @@ from django_redis import get_redis_connection
 
 from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from . import models
@@ -14,10 +15,11 @@ from course.models import Course
 from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerializer, UserCourseModelSerializer
 
 from response import APIResponse
-from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR
+from return_code import SUCCESS, AUTH_FAILED, TOO_MANY_REQUESTS, SERVER_ERROR, VALIDATE_ERROR, HTTP_400_BAD_REQUEST
 from mixins import ReCreateModelMixin, ReListModelMixin
 from paginations import RePageNumberPagination
 from .tasks import send_sms
+from logger import log
 
 
 class MobileAPIView(APIView):
@@ -113,3 +115,39 @@ class CourseListAPIView(ReListModelMixin, GenericViewSet):
         if course_type in course_type_list:
             query = query.filter(course__course_type=course_type)
         return query.order_by("-id").all()
+
+
+class UserCourseAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserCourseModelSerializer
+
+    def get(self, request, course_id):
+        """获取用户在当前课程的学习进度"""
+        user = request.user
+        try:
+            user_course = UserCourse.objects.get(user=user, course=course_id)
+        except UserCourse.DoesNotExist:
+            return APIResponse(HTTP_400_BAD_REQUEST, "当前课程您尚未购买.")
+
+        chapter_id = user_course.chapter_id
+        if chapter_id:
+            """曾经学习过本课程"""
+            lesson = user_course.lesson
+        else:
+            """从未学习当前课程"""
+            # 获取当前课程第1个章节
+            chapter = user_course.course.chapter_list.order_by("orders").first()
+            # 获取当前章节第1个课时
+            lesson = chapter.lesson_list.order_by("orders").first()
+            # 保存本次学习起始进度
+            user_course.chapter = chapter
+            user_course.lesson = lesson
+            user_course.save()
+
+        serializer = self.get_serializer(user_course)
+        data = serializer.data
+        # 获取当前课时的课时类型和课时链接
+        data["lesson_type"] = lesson.lesson_type
+        data["lesson_link"] = lesson.lesson_link
+
+        return APIResponse(data=data)

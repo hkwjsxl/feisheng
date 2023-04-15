@@ -15,6 +15,8 @@ urlpatterns = [
 
     # 我的课程列表
     path("course/", views.CourseListAPIView.as_view({"get": "list"})),
+    # 获取用户在当前课程的学习进度
+    path("course/<int:course_id>/", views.UserCourseAPIView.as_view()),
 ]
 
 urlpatterns += router.urls

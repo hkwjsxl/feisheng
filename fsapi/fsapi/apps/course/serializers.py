@@ -60,6 +60,14 @@ class CourseTearchModelSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "avatar", "role", "get_role_display", "title", "signature", "brief"]
 
 
+class CourseChapterModelSerializer(serializers.ModelSerializer):
+    """课程章节序列化器"""
+
+    class Meta:
+        model = CourseChapter
+        fields = ["id", "orders", "name", "summary", "get_lesson_list"]
+
+
 class CourseRetrieveModelSerializer(serializers.ModelSerializer):
     """课程详情的序列化器"""
     direction_name = serializers.CharField(source="direction.name")
@@ -74,14 +82,6 @@ class CourseRetrieveModelSerializer(serializers.ModelSerializer):
             "name", "course_cover", "course_video", "level", "get_level_display",
             "description", "pub_date", "status", "get_status_display", "students", "discount", "credit",
             "lessons", "pub_lessons", "price", "direction",
-            "direction_name", "category", "category_name",
-            "teacher", "can_free_study"
+            "direction_name", "category", "category_name", "can_free_study",
+            "teacher", "get_chapter_list"
         ]
-
-
-class CourseChapterModelSerializer(serializers.ModelSerializer):
-    """课程章节序列化器"""
-
-    class Meta:
-        model = CourseChapter
-        fields = ["id", "orders", "name", "summary", "get_lesson_list"]

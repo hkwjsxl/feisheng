@@ -32,6 +32,19 @@ const course = reactive({
     user_course_count: 0,    // 我的课程-课程列表总数
     user_course_list: [], // 用户中心的课程列表
 
+    lesson_list: [],
+    lesson_tree_props: {
+        children: 'children',
+        label: 'label',
+    },
+    user_course: {},       // 用户在当前课程的学习进度记录
+    current_chapter: null, // 正在学习的章节ID
+    current_lesson: null,  // 正在学习的课时ID
+    lesson_link: null,  // 正在学习的课时视频ID
+    player: null,       // 当前页面的视频播放器对象
+    current_time: 0,    // 播放器，当前播放时间
+    course_info: [],    // 课程信息
+
     get_course_direction() {
         // 获取学习方向信息
         return http.get("/course/direction/")
@@ -130,6 +143,14 @@ const course = reactive({
             }
         })
     },
+    get_user_course(token) {
+        // 获取用户的指定课程信息包含学习进度
+        return http.get(`/user/course/${this.course_id}/`, {
+            headers: {
+                Authorization: "jwt " + token,
+            }
+        })
+    }
 })
 
 export default course;

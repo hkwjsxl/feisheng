@@ -200,6 +200,18 @@ class Course(BaseModel):
         lesson_list = self.lesson_list.filter(is_deleted=False, is_show=True).order_by("orders").all()
         return len(lesson_list) > 0
 
+    def get_chapter_list(self):
+        """返回当前章节的课时列表"""
+        chapter_list = self.chapter_list.filter(is_deleted=False, is_show=True).order_by("orders").all()
+        return [{
+            "id": chapter.id,
+            "name": chapter.name,
+            "orders": chapter.orders,
+            "summary": chapter.summary,
+            "pub_date": chapter.pub_date,
+            "lesson_list": chapter.get_lesson_list(),
+        } for chapter in chapter_list]
+
 
 class Teacher(BaseModel):
     role_choices = (
@@ -329,8 +341,8 @@ class CourseLesson(BaseModel):
     def __str__(self):
         return "%s-%s" % (self.chapter, self.name)
 
-    def text(self, obj):
-        return obj.__str__()
+    def text(self):
+        return self.__str__()
 
     # admin站点配置排序规则和显示的字段文本提示
     text.short_description = "课时名称"
