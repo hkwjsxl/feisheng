@@ -31,6 +31,7 @@
 <script setup>
 import user from "../api/user"
 import {ElMessage} from 'element-plus'
+import settings from "../settings.js";
 
 const emit = defineEmits(["login_success",])
 
@@ -63,14 +64,22 @@ const loginhandler = () => {
     // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
     let payload = response.data.token.split(".")[1]  // 载荷
     let payload_data = JSON.parse(atob(payload)) // 用户信息
+    // console.log("payload_data", payload_data);
     store.commit("login", payload_data)
     store.commit("cart_total", response.data.cart_total)
-    // 设置用户头像
-    store.state.user.avatar = payload_data.avatar;
+    // 设置用户信息
+    store.state.user.avatar = response.data.avatar;
+    store.state.user.username = response.data.username;
+    store.state.user.credit = response.data.credit;
+    store.state.user.email = response.data.email;
+    store.state.user.mobile = response.data.mobile;
+    store.state.user.nickname = response.data.nickname;
+    store.state.user.money = response.data.money;
+    store.state.user.last_login = response.data.last_login;
 
     // 成功提示
     ElMessage.success("登录成功.")
-    store.state.user.avatar = response.data.avatar;
+    // store.state.user.avatar = response.data.avatar;
     // 关闭登录弹窗，对外发送一个登录成功的信息
     user.account = ""
     user.password = ""
@@ -104,17 +113,30 @@ const login_mobile_handler = () => {
     sessionStorage.removeItem("token")
     if (user.remember) { // 判断是否记住登录状态
       // 记住登录
-      localStorage.token = response.data.token
+      localStorage.token = response.data.data.token
     } else {
       // 不记住登录，关闭浏览器以后就删除状态
-      sessionStorage.token = response.data.token
+      sessionStorage.token = response.data.data.token
     }
 
     // vuex存储用户登录信息，保存token，并根据用户的选择，是否记住密码
-    let payload = response.data.token.split(".")[1]  // 载荷
+    let payload = response.data.data.token.split(".")[1]  // 载荷
     let payload_data = JSON.parse(atob(payload)) // 用户信息
+    // console.log("payload_data", payload_data);
     store.commit("login", payload_data)
     store.commit("cart_total", response.data.cart_total)
+
+    // 设置用户信息
+    console.log("response.data", response.data.data)
+    store.state.user.avatar = "/media/" + response.data.data.avatar;
+    // store.state.user.avatar = `${settings.host}/media/` + response.data.data.avatar;
+    store.state.user.username = response.data.data.username;
+    store.state.user.credit = response.data.data.credit;
+    store.state.user.email = response.data.data.email;
+    store.state.user.mobile = user.mobile;
+    store.state.user.nickname = response.data.data.nickname;
+    store.state.user.money = response.data.data.money;
+    store.state.user.last_login = response.data.data.last_login;
 
     // 成功提示
     ElMessage.success("登录成功.")

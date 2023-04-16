@@ -84,9 +84,25 @@ class UserLoginSMSModelSerializer(serializers.ModelSerializer):
     token = serializers.CharField(read_only=True)
     mobile = serializers.CharField(required=True, write_only=True)
 
+    username = serializers.CharField(required=False, read_only=True)
+    money = serializers.IntegerField(required=False, read_only=True)
+    credit = serializers.IntegerField(required=False, read_only=True)
+    nickname = serializers.CharField(required=False, read_only=True)
+    study_time = serializers.CharField(required=False, read_only=True)
+    email = serializers.CharField(required=False, read_only=True)
+    last_login = serializers.DateTimeField(required=False, read_only=True)
+    avatar = serializers.CharField(required=False, read_only=True)
+    cart_total = serializers.CharField(required=False, read_only=True)
+
     class Meta:
         model = models.UserInfo
-        fields = ("mobile", "sms_code", "token")
+        fields = (
+            "mobile", "sms_code", "token",
+
+            "username", "money", "credit",
+            "nickname", "study_time", "email",
+            "last_login", "avatar", "cart_total",
+        )
 
     def validate(self, attrs):
         # 验证手机号格式
@@ -118,8 +134,14 @@ class UserLoginSMSModelSerializer(serializers.ModelSerializer):
         redis.delete(f"interval_{mobile}")
 
         user = user.first()
+
         # 返回token
         user.token = generate_jwt_token(user)
+
+        # 购物车数量
+        redis = get_redis_connection("cart")
+        cart_total = redis.hlen(f"cart_{user.id}")
+        user.cart_total = cart_total
 
         return user
 

@@ -5,6 +5,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from . import views
 
 router = SimpleRouter()
+# 注册
 router.register('register', views.UserRegisterGenericAPIView)
 
 urlpatterns = [
@@ -21,6 +22,9 @@ urlpatterns = [
     path("lesson/", views.StudyLessonAPIView.as_view()),
     # 更新用户的学习时间进度
     path("progress/", views.StudyProgressAPIView.as_view()),
+    # 个人信息
+    path("info/", views.UserInfoAPIView.as_view()),
+
 ]
 
 urlpatterns += router.urls

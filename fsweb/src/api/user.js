@@ -42,6 +42,14 @@ const user = reactive({
             "sms_code": this.code,
         })
     },
+    get_user_info(token) {
+        // 获取用户个人信息
+        return http.get("/user/info/", {
+            headers: {
+                Authorization: "jwt " + token,
+            }
+        })
+    },
 })
 
 export default user;

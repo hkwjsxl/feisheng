@@ -14,7 +14,9 @@ from . import models
 from .tasks import send_sms
 from .models import UserCourse, StudyProgress
 from course.models import Course, CourseLesson
-from .serializers import UserRegisterModelSerializer, UserLoginSMSModelSerializer, UserCourseModelSerializer
+from .serializers import (
+    UserRegisterModelSerializer, UserLoginSMSModelSerializer, UserCourseModelSerializer
+)
 
 from logger import log
 from constants import MAV_SEEK_TIME
@@ -245,3 +247,31 @@ class StudyProgressAPIView(APIView):
                 log.error(f"更新课时进度失败.---{e}")
                 transaction.savepoint_rollback(save_id)
                 return APIResponse(message="当前课时学习进度丢失.")
+
+
+class UserInfoAPIView(APIView):
+    """用户个人信息"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_id = request.user.id
+
+        user_obj = models.UserInfo.objects.filter(pk=user_id, is_deleted=False)
+        if not user_obj.exists():
+            return APIResponse(HTTP_400_BAD_REQUEST, "用户不存在.")
+
+        user_obj = user_obj.first()
+        user_data = {
+            "user_id": user_obj.id,
+            "username": user_obj.username,
+            "mobile": user_obj.mobile,
+            "money": float(user_obj.money),
+            "credit": user_obj.credit,
+            "avatar": user_obj.avatar.url,
+            "nickname": user_obj.nickname,
+            "study_time": user_obj.study_time,
+            "email": user_obj.email,
+            "last_login": user_obj.last_login,
+        }
+        # print("user_data", user_data)
+        return APIResponse(data=user_data)

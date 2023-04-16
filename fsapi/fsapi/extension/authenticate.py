@@ -82,5 +82,15 @@ def jwt_response_payload_handler(token, user, request):
     return {
         # 增加返回购物车的商品数量
         "cart_total": cart_total,
-        "token": token
+        "token": token,
+
+        "username": user.username,
+        "mobile": user.mobile,
+        "money": float(user.money),
+        "credit": user.credit,
+        "avatar": user.avatar.url,
+        "nickname": user.nickname,
+        "study_time": user.study_time,
+        "email": user.email,
+        "last_login": user.last_login,
     }
