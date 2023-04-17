@@ -1,0 +1,10 @@
+deb http://repo.huaweicloud.com/ubuntu/ focal main restricted
+deb http://repo.huaweicloud.com/ubuntu/ focal-updates main restricted
+deb http://repo.huaweicloud.com/ubuntu/ focal universe
+deb http://repo.huaweicloud.com/ubuntu/ focal-updates universe
+deb http://repo.huaweicloud.com/ubuntu/ focal multiverse
+deb http://repo.huaweicloud.com/ubuntu/ focal-updates multiverse
+deb http://repo.huaweicloud.com/ubuntu/ focal-backports main restricted universe multiverse
+deb http://repo.huaweicloud.com/ubuntu focal-security main restricted
+deb http://repo.huaweicloud.com/ubuntu focal-security universe
+deb http://repo.huaweicloud.com/ubuntu focal-security multiverse

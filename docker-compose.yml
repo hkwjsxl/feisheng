@@ -1,0 +1,78 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:1.23.3
+    restart: always
+    ports:
+      - "80:80"
+    container_name: "nginx"
+    volumes:
+      - ./fsapi/static:/home/fsapi/static
+      - ./fsweb:/home/fsweb
+      - ./conf/nginx/web.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - default
+
+  mysql_master:
+    image: mysql:8.0.32
+    restart: always
+    container_name: "mysql_master"
+    networks:
+      - default
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root123456"
+      - "MYSQL_USER=fs"
+      - "MYSQL_PASSWORD=root123456"
+      - "MYSQL_DATABASE=fs"
+      - "TZ=Asia/Shanghai"
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_general_ci
+      --explicit_defaults_for_timestamp=true
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/logs
+      - ./initdb:/docker-entrypoint-initdb.d/
+
+  redis_master:
+    image: redis:7
+    restart: always
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+    command:
+      ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    container_name: "redis_master"
+    volumes:
+      - ./conf/redis/master.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis/master:/data
+
+  api1:
+    build: .
+    image: fsapi:1.0.0
+    container_name: api1
+    restart: always
+    ports:
+      - 8000:8000
+    networks:
+      - default
+    volumes:
+      - ./fsapi:/fsapi
+    command: >
+      sh -c "supervisord -c script/supervisord.conf && uwsgi --socket :8000 --workers 4 --master --enable-threads --module fsapi.wsgi"
+    environment:
+      - "DJANGO_SETTINGS_MODULE=fsapi.settings.prod"
+      - "C_FORCE_ROOT=1"
+      - "MYSQL_PASSWORD=root123456"
+      - "REDIS_PASSWORD=root123456"
+      - "RONGLIANYUNACCTOKEN=b6c417ddecb64f899a0a48e30c97b55d"
+    depends_on:
+      - mysql_master
+      - redis_master
+
+networks:
+  default:
