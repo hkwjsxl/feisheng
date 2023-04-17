@@ -30,7 +30,7 @@
             </el-badge>
           </div>
           <div class="login-box ">
-            <router-link to="">我的课堂</router-link>
+            <router-link to="/user/course">我的课堂</router-link>
             <el-dropdown>
                 <span class="el-dropdown-link">
                   <router-link to="/user">
@@ -42,8 +42,8 @@
                   <el-dropdown-item :icon="UserFilled">
                     <router-link to="/user">个人中心</router-link>
                   </el-dropdown-item>
-                  <el-dropdown-item :icon="List">订单列表</el-dropdown-item>
-                  <el-dropdown-item :icon="Setting">个人设置</el-dropdown-item>
+                  <el-dropdown-item :icon="List" to="/user/order">订单列表</el-dropdown-item>
+                  <el-dropdown-item :icon="Setting" to="/user">个人设置</el-dropdown-item>
                   <el-dropdown-item :icon="Position" @click="logout">注销登录</el-dropdown-item>
                 </el-dropdown-menu>
               </template>

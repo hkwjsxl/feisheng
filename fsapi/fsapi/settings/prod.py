@@ -158,18 +158,18 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
 
 # haystack连接elasticsearch的配置信息
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        # haystack操作es的核心模块
-        'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
-        # es服务端地址
-        'URL': 'http://%s:9200/' % SERVER_IP,
-        # es索引仓库
-        'INDEX_NAME': 'haystack',
-    },
-}
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         # haystack操作es的核心模块
+#         'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
+#         # es服务端地址
+#         'URL': 'http://%s:9200/' % SERVER_IP,
+#         # es索引仓库
+#         'INDEX_NAME': 'haystack',
+#     },
+# }
 # 当mysqlORM操作数据库改变时，自动更新es的索引，否则es的索引会找不到新增的数据
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -203,6 +203,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATIC_ROOT = BASE_DIR.parent / 'static'
 # 访问上传文件的url地址前缀
 MEDIA_URL = 'media/'
 # 项目中存储上传文件的根目录[手动创建]

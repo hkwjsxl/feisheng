@@ -203,6 +203,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATIC_ROOT = BASE_DIR.parent / 'static'
 # 访问上传文件的url地址前缀
 MEDIA_URL = 'media/'
 # 项目中存储上传文件的根目录[手动创建]
