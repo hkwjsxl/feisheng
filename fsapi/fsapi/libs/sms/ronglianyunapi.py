@@ -19,5 +19,5 @@ def send_sms(tid, mobile, datas):
     sdk = SmsSDK(ronglianyun.get("accId"), ronglianyun.get("accToken"), ronglianyun.get("appId"))
     resp = sdk.sendMessage(tid, mobile, datas)
     response = json.loads(resp)
-    print(f"response={response}")
+    # print(f"response={response}")
     return response.get("statusCode") == "000000"

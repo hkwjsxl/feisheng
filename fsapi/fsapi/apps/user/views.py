@@ -70,7 +70,8 @@ class SMSAPIView(APIView):
             return APIResponse(TOO_MANY_REQUESTS, f"短信发送过于频繁，请{interval}秒后再次点击获取!")
 
         # 基于随机数生成短信验证码
-        code = f"{random.randint(0, 999999):06d}"
+        code = f"{random.randint(0, 9999):04d}"
+
         # 获取短信有效期的时间
         time = settings.RONGLIANYUN.get("sms_expire")
         # 短信发送间隔时间

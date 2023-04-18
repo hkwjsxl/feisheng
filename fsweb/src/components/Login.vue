@@ -76,6 +76,7 @@ const loginhandler = () => {
     store.state.user.nickname = response.data.nickname;
     store.state.user.money = response.data.money;
     store.state.user.last_login = response.data.last_login;
+    store.state.user.study_time = response.data.study_time;
 
     // 成功提示
     ElMessage.success("登录成功.")
@@ -137,6 +138,7 @@ const login_mobile_handler = () => {
     store.state.user.nickname = response.data.data.nickname;
     store.state.user.money = response.data.data.money;
     store.state.user.last_login = response.data.data.last_login;
+    store.state.user.study_time = response.data.data.study_time;
 
     // 成功提示
     ElMessage.success("登录成功.")
