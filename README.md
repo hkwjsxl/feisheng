@@ -1,6 +1,8 @@
+
+
 ## 飞升项目
 
-**后续功能开发中...**
+
 
 ### 介绍
 
@@ -33,5 +35,9 @@ redis高级操作，celery异步框架的集成
 虚拟化技术：docker，podman的使用
 elasticsearch/elasticsearch-head/kibana安装和使用，elasticsearch集成到服务端项目中(haystack)，课程全文搜索，热门关键字搜索
 课程详情页/课程章节展示，集成第三方vue-alipayer视频播放组件
+6.价格优惠策略&购物车的实现（优惠券、积分）
+7.下单并支付（使用优惠券和积分），supervisor管理celery异步处理订单
+8.课程学习页面集成视频（第三方保利威平台）
+9.项目部署（linux/docker/docker-compose/ssh/nginx）
 ~~~
 
