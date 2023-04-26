@@ -63,11 +63,11 @@ elasticsearch/elasticsearch-head/kibana安装和使用，elasticsearch集成到�
 
 ![image-20230426173647062](https://img2023.cnblogs.com/blog/2570053/202304/2570053-20230426173645759-761115913.png)
 
-![image-20230426174236609](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20230426174236609.png)
+![image-20230426174236609](https://img2023.cnblogs.com/blog/2570053/202304/2570053-20230426174442596-938504259.png)
 
 #### 购物车
 
-![image-20230426173907446](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20230426173907446.png)
+![image-20230426173907446](https://img2023.cnblogs.com/blog/2570053/202304/2570053-20230426174444365-725671994.png)
 
 #### 结算
 
