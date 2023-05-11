@@ -6,7 +6,7 @@
         <router-link :to="nav.link" v-else>{{ nav.name }}</router-link>
       </li>
     </ul>
-    <p>Copyright © hankewei版权所有 | 京ICP备xxxxxxxxx号-x</p>
+    <p>Copyright © 韩科伟版权所有 | <a href="http://beian.miit.gov.cn/" target="_blank">冀ICP备2023015113号</a></p>
   </div>
 </template>
 
@@ -48,6 +48,10 @@ nav.get_footer_nav().then(response => {
 
 .footer p {
   text-align: center;
+  font-size: 12px;
+}
+
+.footer a {
   font-size: 12px;
 }
 </style>
